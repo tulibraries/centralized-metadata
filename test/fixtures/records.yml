@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: MyString
+  pref_label: MyString
+  var_label: MyString
+  local_pref_label: MyString
+  local_var_label: MyString
+  source_vocab: MyString
+  import_method: MyString
+  type: 
+  see_also: MyString
+  skos_exact_match: MyString
+  skos_close_match: MyString
+  lc_class: MyString
+  local_note: MyString
+
+two:
+  id: MyString
+  pref_label: MyString
+  var_label: MyString
+  local_pref_label: MyString
+  local_var_label: MyString
+  source_vocab: MyString
+  import_method: MyString
+  type: 
+  see_also: MyString
+  skos_exact_match: MyString
+  skos_close_match: MyString
+  lc_class: MyString
+  local_note: MyString
