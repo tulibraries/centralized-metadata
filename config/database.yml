@@ -5,21 +5,30 @@
 #   gem "sqlite3"
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
+  host: <%= ENV["CM_DB_HOST"] || "localhost" %>
+  database: <%= ENV["CM_DB_NAME"] || "centralized_metadata"  %>
+  username: <%= ENV["CM_DB_USER"] || "root" %>
+  password: <%= ENV["CM_DB_PASSWORD"] || "" %>
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: centralized_metadata
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: <%= ENV["CM_DB_NAME"] || "centralized_metadata-test" %>
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  host: <%= ENV["CM_DB_HOST"] || "localhost" %>
+  database: <%= ENV["CM_DB_NAME"] %>
+  username: <%= ENV["CM_DB_USER"] %>
+  password: <%= ENV["CM_DB_PASSWORD"] %>
+  pool: 5
+  timeout: 5000
