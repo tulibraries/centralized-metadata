@@ -1,0 +1,17 @@
+*/tmp*
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+.git
+.gitignore
+.gitattributes
+.DS_Store
+README.md
+/Dockerfile
+/spec
+/env.*
+/.bundle
+.ruby-version
+/config/master.key
+credentials.yml.enc
