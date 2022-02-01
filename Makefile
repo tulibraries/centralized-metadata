@@ -2,7 +2,7 @@
 include .env
 export #exports the .env variables
 
-IMAGE ?= tulibraries/centralized_metadata
+IMAGE ?= tulibraries/centralized-metadata
 VERSION ?= $(DOCKER_IMAGE_VERSION)
 HARBOR ?= harbor.k8s.temple.edu
 CLEAR_CACHES=no
