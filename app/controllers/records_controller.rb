@@ -3,14 +3,15 @@ class RecordsController < ApplicationController
 
   # GET /records
   def index
-    @records = Record.all
+    records = Record.all
+    @records = records.map(&:value)
 
     render json: @records
   end
 
   # GET /records/1
   def show
-    render json: @record
+    render json: @record.value
   end
 
   # POST /records

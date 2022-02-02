@@ -10,24 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_24_201908) do
+ActiveRecord::Schema.define(version: 2022_01_31_190325) do
 
   create_table "records", force: :cascade do |t|
     t.string "identifier"
-    t.string "pref_label"
-    t.string "var_label"
-    t.string "local_pref_label"
-    t.string "local_var_label"
-    t.string "source_vocab"
-    t.string "import_method"
-    t.string "type"
-    t.string "see_also"
-    t.string "skos_exact_match"
-    t.string "skos_close_match"
-    t.string "lc_class"
-    t.string "local_note"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.json "value", default: {}
     t.index ["identifier"], name: "index_records_on_identifier", unique: true
   end
 

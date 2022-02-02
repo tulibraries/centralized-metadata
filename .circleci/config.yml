@@ -1,0 +1,26 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@1.4.0
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
+jobs:
+  test:
+    docker:
+      - image: cimg/ruby:3.1-node
+
+    executor: ruby/default
+    environment:
+      CM_DB_ADAPTOR: sqlite3
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - run: bundle install
+      - run:
+          name: test
+          command: bundle exec rake
