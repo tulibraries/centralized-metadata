@@ -1,3 +1,5 @@
+require "centralized_metadata"
+
 class RecordsController < ApplicationController
   before_action :set_record, only: %i[ show update destroy ]
 
@@ -16,13 +18,11 @@ class RecordsController < ApplicationController
 
   # POST /records
   def create
-    @record = Record.new(record_params)
+    params.permit(:marc_file)
 
-    if @record.save
-      render json: @record, status: :created, location: @record
-    else
-      render json: @record.errors, status: :unprocessable_entity
-    end
+    marc_file = params[:marc_file].tempfile
+
+    CentralizedMetadata::Indexer.ingest(marc_file)
   end
 
   # PATCH/PUT /records/1
