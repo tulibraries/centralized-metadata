@@ -59,4 +59,5 @@ qa_deploy:
     - main
   script:
     - *export_variables
-    - helm upgrade centralized-metadata oci://$HARBOR/tulibraries/centralized-metadata-charts/centralized-metadata --version "0.1.*" --history-max=5 --namespace=centralized-metadata-qa --values values.yaml
+    - helm pull oci://$HARBOR/tulibraries/centralized-metadata-charts/centralized-metadata --version "0.1.*" --untar
+    - helm upgrade centralized-metadata oci://$HARBOR/tulibraries/centralized-metadata-charts/centralized-metadata --version "0.1.*" --history-max=5 --namespace=centralized-metadata-qa --values centralized-metadata/values.yaml
