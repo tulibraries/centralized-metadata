@@ -8,6 +8,8 @@ include:
 
 variables:
   IMAGE: "tulibraries/centralized-metadata"
+  HARBOR: "harbor.k8s.temple.edu"
+  HELM_EXPERIMENTAL_OCI: "1"
 
 .export_variables: &export_variables
   - source .env
@@ -31,11 +33,11 @@ lint:
 build:
   stage: build
   extends: .build_image
-  image: harbor.k8s.temple.edu/gitlab-ci/docker:20
+  image: $HARBOR/gitlab-ci/docker:20
   variables:
     DF: ".docker/app/Dockerfile --build-arg RAILS_MASTER_KEY=$MASTER_KEY --no-cache"
   services:
-    - name: harbor.k8s.temple.edu/gitlab-ci/docker:20-dind
+    - name: $HARBOR/gitlab-ci/docker:20-dind
       command: ["--tls=false"]
 
 scan:
@@ -50,13 +52,12 @@ tag:
 
 qa_deploy:
   variables:
-    IMAGE: harbor.k8s.temple.edu/tulibraries/centralized-metadata
+    IMAGE: $HARBOR/tulibraries/centralized-metadata
   stage: deploy
   extends: .helm_setup
   only:
     - main
   script:
     - *export_variables
-    - helm repo add tulibraries https://$HARBOR/chartrepo/tulibraries
-    - helm pull tulibraries/centralized-metadata --untar
-    - helm upgrade centralized-metadata ./centralized-metadata --history-max=5 --namespace=centralized-metadata-qa --set image.repository=$IMAGE:$VERSION
+    - helm pull oci://$HARBOR/tulibraries/centralized-metadata-charts/centralized-metadata --version "0.1.*" --untar
+    - helm upgrade centralized-metadata oci://$HARBOR/tulibraries/centralized-metadata-charts/centralized-metadata --version "0.1.*" --history-max=5 --namespace=centralized-metadata-qa --values centralized-metadata/values.yaml
