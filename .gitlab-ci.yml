@@ -53,6 +53,8 @@ tag:
 qa_deploy:
   variables:
     IMAGE: $HARBOR/tulibraries/centralized-metadata
+    RANCHER: rancher-np
+    CLUSTER: dev-library
   stage: deploy
   extends: .helm_setup
   only:
