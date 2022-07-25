@@ -17,9 +17,7 @@ RUN apk add -U --no-cache \
       build-base=0.5-r3 \
       git=2.36.2-r0 \
       postgresql14-dev=14.4-r0 \
-      libxslt-dev=1.1.35-r0 && \
-    gem install bundler:2.3.3 && \
-    bundle config build.nokogiri --use-system-libraries && \
+      libxslt-dev=1.1.35-r0 &&\
     bundle config set --local without "development test" && \
     bundle install --jobs=8 && \
     find "$GEM_HOME" -name Gemfile.lock -exec rm "{}" \; && \
