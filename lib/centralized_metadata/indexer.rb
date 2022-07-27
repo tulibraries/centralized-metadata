@@ -4,7 +4,7 @@ require "traject"
 
 class CentralizedMetadata::Indexer
 
-  def self.ingest(filepath)
+  def self.ingest(filepath, options={})
 
     filepath ||= ENV["CM_SOURCE"] || ""
 

@@ -21,8 +21,9 @@ class RecordsController < ApplicationController
     params.permit(:marc_file)
 
     marc_file = params[:marc_file].tempfile
+    filename = params[:marc_file].original_filename
 
-    CentralizedMetadata::Indexer.ingest(marc_file)
+    CentralizedMetadata::Indexer.ingest(marc_file, filename: filename)
   end
 
   # PATCH/PUT /records/1
