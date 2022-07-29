@@ -78,7 +78,7 @@ class CentralizedMetadata::ActiveRecordWriter
     def send_batch(batch)
       records = batch.collect do |context|
         record = context.output_hash
-        { id: record["id"].join(""), value: record }
+        { id: record["cm_id"].join(""), value: record }
       end
 
       begin
@@ -87,7 +87,7 @@ class CentralizedMetadata::ActiveRecordWriter
       rescue ActiveRecord::RecordNotUnique, PG::UniqueViolation
         # Try deleting the old records but keeping non non 'value' fields.
         # TODO: consider putting this in a transaction.
-        ids = records.map { |r| r[:id] }
+        ids = records.map { |r| r[:cm_id] }
         model.delete(ids)
 
         # TODO: save old local fields (or should we move those fields to their own table.
