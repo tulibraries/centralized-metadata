@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "pry"
-
 # A set of custom traject macros (extractors and normalizers) used by the
 module CentralizedMetadata::Macros::Custom
   def extract_original_key
