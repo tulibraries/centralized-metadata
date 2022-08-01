@@ -10,4 +10,13 @@ module CentralizedMetadata::Macros::Custom
       end
     end
   end
+
+  def extract_work_time_creation
+    lambda do |rec, acc|
+      field = rec["388"]
+      if field&.indicator1 == "1" || field&.indicator1 == " "
+        field.subfields.each { |sf| acc << sf.value if sf.code == "a" }
+      end
+    end
+  end
 end

@@ -58,7 +58,7 @@ to_field "cm_transposed_key", extract_marc("384|1*|a")
 to_field "cm_music_num_designation", default("discussion")
 to_field "cm_audience_characteristics", default("discussion")
 to_field "cm_characteristics", default("discussion")
-to_field "cm_work_time_creation", extract_marc("388|1*|a")
+to_field "cm_work_time_creation", extract_work_time_creation
 to_field "cm_aggwork_time_creation", extract_marc("388|2*|a")
 to_field "cm_work_language", extract_marc("100l:110l:111l:130l")
 to_field "cm_notmusic_format", default("discussion")
