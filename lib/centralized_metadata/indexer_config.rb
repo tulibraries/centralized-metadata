@@ -16,12 +16,10 @@ to_field "cm_created_at", default("pairing")
 to_field "cm_updated_at", default("pairing")
 to_field "cm_narrower_term", default("discussion")
 to_field "cm_broader_term", default("discussion")
-to_field "cm_use_subject" do |rec, acc| 
-    
-end
+to_field "cm_use_subject", default("pairing")
 to_field "cm_undiff_name",  default("pairing")
 to_field "cm_birth_date", default("easy")
-to_field "cm_death_date", default("easy")
+to_field "cm_death_date", extract_marc("046g")
 to_field "cm_establishment_date", default("easy")
 to_field "cm_termination_date", default("easy")
 to_field "cm_start_period", default("easy")
