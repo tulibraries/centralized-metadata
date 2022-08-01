@@ -39,4 +39,33 @@ RSpec.describe "Traject configuration" do
       end
     end
   end
+
+  describe "field cm_work_time_creation" do
+
+    context "388a does not exist" do
+      it "does not extract 388a field" do
+        expect(indexer.map_record(record)["cm_work_time_creation"]).to be_nil
+      end
+    end
+
+    context "388a exists with indicator1 is '1'" do
+      it "extracts the 388a subfield value" do
+        record.append(MARC::DataField.new("388", "1", nil, ["a", "Ancient period"]))
+        expect(indexer.map_record(record)["cm_work_time_creation"]).to eq(["Ancient period"])
+      end
+    end
+
+    context "388a exists with indicator1 is ' '" do
+      it "extracts the 388a subfield value" do
+        record.append(MARC::DataField.new("388", " ", nil, ["a", "Ancient period"]))
+        expect(indexer.map_record(record)["cm_work_time_creation"]).to eq(["Ancient period"])
+      end
+    end
+
+    context "388a exists with indicator1 is '0'" do
+      it "does not extract 388a field" do
+        expect(indexer.map_record(record)["cm_work_time_creation"]).to be_nil
+      end
+    end
+  end
 end
