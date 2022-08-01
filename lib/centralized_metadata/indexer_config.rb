@@ -1,4 +1,9 @@
 
+# Include custom traject macros
+#
+
+extend CentralizedMetadata::Macros::Custom
+
 to_field "cm_id", extract_marc("001", first: true), strip
 to_field "cm_pref_label", extract_marc("100:110:111:130:147:148:150:151:155")
 to_field "cm_var_label", extract_marc("400abcdfghjklmnopqrstv:410abcdfghjklmnoprstv:411acdefghklnpqstv:430adfghklmnoprstv:447acdgv:448av:450abgj:451agv:455av")
@@ -48,13 +53,13 @@ to_field "cm_medium_performance", extract_marc("382a")
 to_field "cm_solist", extract_marc("382b")
 to_field "cm_doubling_instrument", extract_marc("382d")
 to_field "cm_alternative_medium_performance", extract_marc("382p")
-to_field "cm_original_key", default("pairing")
+to_field "cm_original_key", extract_original_key
 to_field "cm_transposed_key", extract_marc("384|1*|a")
 to_field "cm_music_num_designation", default("discussion")
 to_field "cm_audience_characteristics", default("discussion")
 to_field "cm_characteristics", default("discussion")
-to_field "cm_work_time_creation", default("pairing")
-to_field "cm_aggwork_time_creation", default("pairing")
+to_field "cm_work_time_creation", extract_marc("388|1*|a")
+to_field "cm_aggwork_time_creation", extract_marc("388|2*|a")
 to_field "cm_work_language", extract_marc("100l:110l:111l:130l")
 to_field "cm_notmusic_format", default("discussion")
 to_field "cm_beginning_date_created", extract_marc("046k")
