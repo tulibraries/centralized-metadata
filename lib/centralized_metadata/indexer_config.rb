@@ -20,7 +20,7 @@ to_field "cm_use_subject" do |rec, acc|
     
 end
 to_field "cm_undiff_name",  default("pairing")
-to_field "cm_birth_date", default("easy")
+to_field "cm_birth_date", default("easy"), extract_marc("046f")
 to_field "cm_death_date", default("easy")
 to_field "cm_establishment_date", default("easy")
 to_field "cm_termination_date", default("easy")
