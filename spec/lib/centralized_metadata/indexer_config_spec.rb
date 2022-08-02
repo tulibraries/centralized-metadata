@@ -68,4 +68,20 @@ RSpec.describe "Traject configuration" do
       end
     end
   end
+
+  describe "field cm_use_subject" do
+
+    context "008 does not exist" do
+      it "does not extract 008 field" do
+        expect(indexer.map_record(record)["cm_use_subject"]).to be_nil
+      end
+    end
+
+    context "008[15] has value of 'a'" do
+      it "maps 'YES'" do
+        record.append(MARC::ControlField.new("008", "000707n| azannaabn          |a ana      "))
+        expect(indexer.map_record(record)["cm_use_subject"]).to eq(["YES"])
+      end
+
+
 end
