@@ -19,4 +19,16 @@ module CentralizedMetadata::Macros::Custom
       end
     end
   end
+
+  def extract_use_subject
+    lambda do |rec, acc|
+      acc << "YES" if rec["008"].value[15] == "a"
+    end
+  end
+
+  def extract_undiff_name
+    lambda do |rec, acc|
+      acc << "YES" if rec["008"].value[32] == "b"
+    end
+  end
 end
