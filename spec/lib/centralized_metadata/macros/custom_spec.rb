@@ -62,6 +62,13 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       end
     end
 
+    context "field 100 indicator 1 is 3 && subfield t does not exist" do
+      it "will set type to 'family name'" do
+        record.append(MARC::DataField.new("100", "3", nil, ["a", "Kennedy"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["family name"])
+      end
+    end
+
     context "field 110 does not have subfield t" do
       it "will set type to 'corporate name'" do
         record.append(MARC::DataField.new("110", nil, nil, ["a", "Alphabet Inc."]))
@@ -94,6 +101,48 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       it "will set type to 'name-title work'" do
         record.append(MARC::DataField.new("111", nil, nil, ["t", "Romeo and Juliet"]))
         expect(indexer.map_record(record)["cm_type"]).to eq(["name-title work"])
+      end
+    end
+
+    context "field 130 exists" do
+      it "will set type to 'uniform title work'" do
+        record.append(MARC::DataField.new("130", nil, nil, ["a", "Star Trek"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["uniform title work"])
+      end
+    end
+
+    context "field 147 exists" do
+      it "will set type to 'named event'" do
+        record.append(MARC::DataField.new("147", nil, nil, ["a", "Stock Market Crash"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["named event"])
+      end
+    end
+
+    context "field 148 exists" do
+      it "will set type to 'chronological term'" do
+        record.append(MARC::DataField.new("148", nil, nil, ["a", "1863"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["chronological term"])
+      end
+    end
+
+    context "field 150 exists" do
+      it "will set type to 'topical subject'" do
+        record.append(MARC::DataField.new("150", nil, nil, ["a", "Geology"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["topical subject"])
+      end
+    end
+
+    context "field 151 exists" do
+      it "will set type to 'geographic subject'" do
+        record.append(MARC::DataField.new("151", nil, nil, ["a", "Great Lakes"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["geographic subject"])
+      end
+    end
+
+    context "field 155 exists" do
+      it "will set type to 'genre'" do
+        record.append(MARC::DataField.new("155", nil, nil, ["a", "Cartoon"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["genre"])
       end
     end
   end
