@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "pry"
 
 # A set of custom traject macros (extractors and normalizers) used by the
 module CentralizedMetadata::Macros::Custom
@@ -75,4 +76,14 @@ module CentralizedMetadata::Macros::Custom
       end
     end
   end
+
+  def extract_see_also
+    lambda do |rec, acc|
+      Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av").collect_matching_lines(rec) do |field, spec, extractor|
+        see_also = extractor.collect_subfields(field, spec).first
+        unless field["500"]&.subfields&.none? { |sf| sf.code == "w" }
+
+      end  
+    end
+  end  
 end
