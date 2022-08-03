@@ -31,4 +31,27 @@ module CentralizedMetadata::Macros::Custom
       acc << "YES" if rec["008"].value[32] == "b"
     end
   end
+
+  def set_type
+    lambda do |rec, acc|
+
+      case
+      when rec["100"]&.indicator1 != "3" &&
+          rec["100"]&.subfields&.none? { |sf| sf.code == "t" }
+
+        acc << "personal name"
+      when  rec["110"]&.subfields&.none? { |sf| sf.code == "t" }
+
+        acc << "corporate name"
+      when  rec["111"]&.subfields&.none? { |sf| sf.code == "t" }
+
+        acc << "conference name"
+      when  rec["100"]&.subfields&.any? { |sf| sf.code == "t" } ||
+        rec["110"]&.subfields&.any? { |sf| sf.code == "t" }  ||
+        rec["111"]&.subfields&.any? { |sf| sf.code == "t" }
+
+        acc << "name-title work"
+      end
+    end
+  end
 end
