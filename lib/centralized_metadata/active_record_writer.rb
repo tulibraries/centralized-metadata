@@ -110,7 +110,7 @@ class CentralizedMetadata::ActiveRecordWriter
 
     def send_single(record)      
       r = model.where(id: record["id"].join(""))
-      model.create_or_update(id: record["id"].joing(""), value: record )
+      model.create_or_update(id: record["id"].join(""), value: record )
     end
 
     def after_send_batch(&block)
