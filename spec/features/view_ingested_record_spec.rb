@@ -3,7 +3,7 @@ require "centralized_metadata"
 
 RSpec.feature "ViewIngestedRecords", type: :feature do
   before do
-    CentralizedMetadata::Indexer.ingest("./spec/fixtures/marc/louis_armstrong.marc")
+    CentralizedMetadata::Indexer.ingest("./spec/fixtures/marc/louis_armstrong.mrc")
   end
 
   scenario "go to the records page" do

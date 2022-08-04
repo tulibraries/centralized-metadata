@@ -13,7 +13,7 @@ to_field "cm_source_vocab", default("pairing")
 to_field "cm_import_method", default("pairing")
 to_field "cm_filename", default("pairing")
 to_field "cm_type", set_type
-to_field "cm_see_also", default("discussion")
+to_field "cm_see_also", extract_see_also
 # to_field "cm_skos_exact_match", default("skip")
 # to_field "cm_skos_close_match", default("skip")
 to_field "cm_lc_class", extract_marc("053ab")
