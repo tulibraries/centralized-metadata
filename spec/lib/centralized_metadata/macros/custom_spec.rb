@@ -145,7 +145,7 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
     end
   end  
 
-  describe "see_also" do
+  describe "extract_see_also" do
     before(:each) do
       indexer.configure do
         to_field "cm_see_also", extract_see_also
@@ -177,6 +177,35 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       it "will extract 510 subfield values" do
         record.append(MARC::DataField.new("510", nil, nil, ["w", "b"], ["a", "Missouri"], ["b", "State Highway"]))
         expect(indexer.map_record(record)["cm_see_also"]).to eq(["Missouri State Highway"])
+      end
+    end
+  end
+
+  describe "extract_narrower_term" do
+    before(:each) do
+      indexer.configure do
+        to_field "cm_narrower_term", extract_narrower_term
+      end
+    end
+
+    context "field 500 exists and subfield w does not exist" do
+      it "will not extract 500" do
+        record.append(MARC::DataField.new("500", nil, nil, ["a", "Daniels, Michael J."]))
+        expect(indexer.map_record(record)["cm_narrower_term"]).to be_nil
+      end
+    end
+
+    context "field 510 exists and subfield w value starts with h" do
+      it "will extract 510" do
+        record.append(MARC::DataField.new("510", nil, nil, ["w", "h"], ["a", "Missouri"]))
+        expect(indexer.map_record(record)["cm_narrower_term"]).to eq(["Missouri"])
+      end
+    end
+
+    context "field 510 exists and subfield w value starts with h and other valid subfields" do
+      it "will extract 510 subfield values" do
+        record.append(MARC::DataField.new("510", nil, nil, ["w", "h"], ["a", "Missouri"], ["b", "State Highway"]))
+        expect(indexer.map_record(record)["cm_narrower_term"]).to eq(["Missouri State Highway"])
       end
     end
   end
