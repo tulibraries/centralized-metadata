@@ -109,6 +109,20 @@ module CentralizedMetadata::Macros::Custom
         end
       end  
     end
-  end  
+  end
+
+  def extract_broader_term
+    lambda do |rec, acc|
+      Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av").collect_matching_lines(rec) do |field, spec, extractor|
+        broader_term_datafields = rec.fields.select { |f| f if extractor.interesting_tag?(f.tag) }
+        selected_datafields = field if broader_term_datafields.include?(field)
+        
+        if selected_datafields&.any? { |f| f.code == "w" && f.value&.start_with?("g") }
+
+          acc << extractor.collect_subfields(selected_datafields, spec).first
+        end
+      end  
+    end
+  end
 
 end

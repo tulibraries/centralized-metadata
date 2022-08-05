@@ -209,4 +209,33 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       end
     end
   end
+
+  describe "extract_broader_term" do
+    before(:each) do
+      indexer.configure do
+        to_field "cm_broader_term", extract_broader_term
+      end
+    end
+
+    context "field 500 exists and subfield w does not exist" do
+      it "will not extract 500" do
+        record.append(MARC::DataField.new("500", nil, nil, ["a", "Daniels, Michael J."]))
+        expect(indexer.map_record(record)["cm_broader_term"]).to be_nil
+      end
+    end
+
+    context "field 510 exists and subfield w value starts with g" do
+      it "will extract 510" do
+        record.append(MARC::DataField.new("510", nil, nil, ["w", "g"], ["a", "Missouri"]))
+        expect(indexer.map_record(record)["cm_broader_term"]).to eq(["Missouri"])
+      end
+    end
+
+    context "field 510 exists and subfield w value starts with h and other valid subfields" do
+      it "will extract multiple 510 subfield values" do
+        record.append(MARC::DataField.new("510", nil, nil, ["w", "g"], ["a", "Wisconsin"], ["b", "State Highway"]))
+        expect(indexer.map_record(record)["cm_broader_term"]).to eq(["Wisconsin State Highway"])
+      end
+    end
+  end
 end

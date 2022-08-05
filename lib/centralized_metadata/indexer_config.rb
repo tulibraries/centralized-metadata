@@ -21,7 +21,7 @@ to_field "cm_local_note", default("discussion")
 to_field "cm_created_at", default("pairing")
 to_field "cm_updated_at", default("pairing")
 to_field "cm_narrower_term", extract_narrower_term
-to_field "cm_broader_term", default("discussion")
+to_field "cm_broader_term", extract_broader_term
 to_field "cm_use_subject", extract_use_subject
 to_field "cm_undiff_name",  extract_undiff_name
 to_field "cm_birth_date", extract_marc("046f")
