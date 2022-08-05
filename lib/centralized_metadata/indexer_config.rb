@@ -20,7 +20,7 @@ to_field "cm_lc_class", extract_marc("053ab")
 to_field "cm_local_note", default("discussion")
 to_field "cm_created_at", default("pairing")
 to_field "cm_updated_at", default("pairing")
-to_field "cm_narrower_term", default("discussion")
+to_field "cm_narrower_term", extract_narrower_term
 to_field "cm_broader_term", default("discussion")
 to_field "cm_use_subject", extract_use_subject
 to_field "cm_undiff_name",  extract_undiff_name
