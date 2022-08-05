@@ -82,10 +82,10 @@ module CentralizedMetadata::Macros::Custom
       Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av").collect_matching_lines(rec) do |field, spec, extractor|
         see_also_datafields = rec.fields.select { |f| f if extractor.interesting_tag?(f.tag) }
         select_datafields = field if see_also_datafields.include?(field)
-        
+      
         if select_datafields&.subfields&.none? { |sf| sf.code == "w" } ||
-          select_datafields&.map { |f| f.code == "w" && f.value&.start_with?("g") } ||
-          select_datafields&.map { |f| f.code == "w" && f.value&.start_with?("h") }
+          select_datafields&.any? { |f| f.code == "w" && !f.value&.start_with?("g") } ||
+          select_datafields&.any? { |f| f.code == "w" && !f.value&.start_with?("h") }
           
           acc << extractor.collect_subfields(select_datafields, spec).first
         end
@@ -99,7 +99,7 @@ module CentralizedMetadata::Macros::Custom
         see_also_datafields = rec.fields.select { |f| f if extractor.interesting_tag?(f.tag) }
         select_datafields = field if see_also_datafields.include?(field)
         
-        if select_datafields&.map { |f| f.code == "w" && f.value&.start_with?("h") }
+        if select_datafields&.any? { |f| f.code == "w" && f.value&.start_with?("h") }
 
           acc << extractor.collect_subfields(select_datafields, spec).first
         end
