@@ -6,6 +6,11 @@ class RecordsController < ApplicationController
   # GET /records
   def index
     records = Record.all
+
+    records.each do |rec|
+      add_update_create_date_metadata!(rec)
+    end
+
     @records = records.map(&:value)
 
     render json: @records
@@ -13,6 +18,7 @@ class RecordsController < ApplicationController
 
   # GET /records/1
   def show
+    add_update_create_date_metadata!(@record)
     render json: @record.value
   end
 
@@ -49,4 +55,10 @@ class RecordsController < ApplicationController
     def record_params
       params.require(:record).permit(:id, :pref_label, :var_label, :local_pref_label, :local_var_label, :source_vocab, :import_method, :type, :see_also, :skos_exact_match, :skos_close_match, :lc_class, :local_note)
     end
+
+    def add_update_create_date_metadata!(record)
+      record.value["cm_created_at"] = record.created_at
+      record.value["cm_updated_at"] = record.updated_at
+    end
+
 end
