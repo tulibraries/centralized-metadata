@@ -125,4 +125,9 @@ module CentralizedMetadata::Macros::Custom
     end
   end
 
+  def add_filename
+    lambda do |rec, acc|
+      acc << @settings.dig(:original_filename) || @settings.dig(:filename)
+    end
+  end
 end

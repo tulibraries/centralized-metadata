@@ -13,11 +13,20 @@ RSpec.describe "Records", type: :request do
   end
 
   describe "GET /records" do
-    it "gets records that contain a cm_updated_at and cm_created_at value " do
+    let(:record) { JSON.parse(response.body).first }
+
+    before do
       get "/records"
-      record = JSON.parse(response.body).first
+    end
+
+    it "gets records that contain a cm_updated_at and cm_created_at value " do
       expect(record).to have_key("cm_created_at")
       expect(record).to have_key("cm_updated_at")
+    end
+
+    it "gets records that contain a cm_filename" do
+      expect(record).to have_key("cm_filename")
+      expect(record["cm_filename"]).to eq(["louis_armstrong.mrc"])
     end
   end
 

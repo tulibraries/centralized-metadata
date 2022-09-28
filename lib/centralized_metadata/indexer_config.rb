@@ -11,7 +11,7 @@ to_field "cm_local_pref_label", default("discussion")
 to_field "cm_local_var_label", default("discussion")
 to_field "cm_source_vocab", default("pairing")
 to_field "cm_import_method", default("pairing")
-to_field "cm_filename", default("pairing")
+to_field "cm_filename", add_filename
 to_field "cm_type", set_type
 to_field "cm_see_also", extract_see_also
 # to_field "cm_skos_exact_match", default("skip")
