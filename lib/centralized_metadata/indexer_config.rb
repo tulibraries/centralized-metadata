@@ -9,7 +9,7 @@ to_field "cm_pref_label", extract_marc("100:110:111:130:147:148:150:151:155")
 to_field "cm_var_label", extract_marc("400abcdfghjklmnopqrstv:410abcdfghjklmnoprstv:411acdefghklnpqstv:430adfghklmnoprstv:447acdgv:448av:450abgj:451agv:455av")
 to_field "cm_local_pref_label", default("discussion")
 to_field "cm_local_var_label", default("discussion")
-to_field "cm_source_vocab", default("pairing")
+to_field "cm_source_vocab", add_source_vocab
 to_field "cm_import_method", default("pairing")
 to_field "cm_filename", add_filename
 to_field "cm_type", set_type
