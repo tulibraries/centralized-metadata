@@ -18,8 +18,9 @@ to_field "cm_see_also", extract_see_also
 # to_field "cm_skos_close_match", default("skip")
 to_field "cm_lc_class", extract_marc("053ab")
 to_field "cm_local_note", default("discussion")
-to_field "cm_created_at", default("pairing")
-to_field "cm_updated_at", default("pairing")
+# @see add_update_create_date_metadata! in records controller index and show action.
+#to_field "cm_created_at", default("pairing")
+#to_field "cm_updated_at", default("pairing")
 to_field "cm_narrower_term", extract_narrower_term
 to_field "cm_broader_term", extract_broader_term
 to_field "cm_use_subject", extract_use_subject
