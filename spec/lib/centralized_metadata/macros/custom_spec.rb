@@ -339,4 +339,32 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       end
     end
   end
+
+  describe "extract_marc_subfields" do
+    before do
+      indexer.configure do
+        to_field "cm_music_num_designation", extract_marc_subfields("383abcde")
+      end
+    end
+
+    context "no field 383" do
+      it "will not extract 383" do
+        expect(indexer.map_record(record)["cm_music_num_designation"]).to be_nil
+      end
+    end
+
+    context "field 383 subfield a" do
+      it "will extract 383a with subfield markup" do
+        record.append(MARC::DataField.new("383", nil, nil, ["a", "foo"]))
+        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$afoo"])
+      end
+    end
+
+    context "field 383 subfield abcde" do
+      it "will extract 383abcde with subfield markup" do
+        record.append(MARC::DataField.new("383", nil, nil, ["a", "foo"], ["b", "bar"], ["c", "bizz"], ["d", "buzz"], ["e", "fizz"]))
+        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$afoo$bbar$cbizz$dbuzz$efizz"])
+      end
+    end
+  end
 end

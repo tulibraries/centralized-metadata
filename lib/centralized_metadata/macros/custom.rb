@@ -164,4 +164,15 @@ module CentralizedMetadata::Macros::Custom
       end
     end
   end
+
+  def extract_marc_subfields(subfields, options = {})
+    lambda do |rec, acc|
+      Traject::MarcExtractor.cached(subfields).collect_matching_lines(rec) do |field, spec, extractor|
+        result = field.subfields.reduce("") { |value, sf|
+          value += "$#{sf.code}#{sf.value}"
+        }
+        acc << result
+      end
+    end
+  end
 end
