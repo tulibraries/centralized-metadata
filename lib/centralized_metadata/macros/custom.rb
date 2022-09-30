@@ -133,7 +133,7 @@ module CentralizedMetadata::Macros::Custom
 
   def add_source_vocab
     lambda do |rec, acc|
-      filename = @settings.dig(:original_filename) || @settings.dig(:filename)
+      filename = @settings.dig(:original_filename) || @settings.dig(:filename) || ""
       case
       when filename.include?("GNR")
         acc << "lcgft"
