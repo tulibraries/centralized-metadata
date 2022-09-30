@@ -362,7 +362,7 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
 
     context "field 383 multiple subfields" do
       it "will extract 383 with multiple subfield markup" do
-        record.append(MARC::DataField.new("383", nil, nil, ["c", "RV 269"], ["c", "RV 315"], ["c", "RV 293"], ["c", "RV 297"], ["e", "Ryom"]))
+        record.append(MARC::DataField.new("383", nil, nil, ["c", "RV 269"], ["c", "RV 315"], ["c", "RV 293"], ["c", "RV 297"], ["d", "Ryom"]))
         expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$cRV 269$cRV 315$cRV 293$cRV 297$dRyom"])
       end
     end
