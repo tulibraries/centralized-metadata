@@ -125,15 +125,19 @@ module CentralizedMetadata::Macros::Custom
     end
   end
 
+  def get_filename
+    (@settings.dig(:original_filename) || @settings.dig(:filename))
+  end
+
   def add_filename
     lambda do |rec, acc|
-      acc << (@settings.dig(:original_filename) || @settings.dig(:filename))
+      acc << get_filename
     end
   end
 
   def add_source_vocab
     lambda do |rec, acc|
-      filename = @settings.dig(:original_filename) || @settings.dig(:filename) || ""
+      filename = get_filename || ""
       case
       when filename.include?("GNR")
         acc << "lcgft"
@@ -151,5 +155,13 @@ module CentralizedMetadata::Macros::Custom
         acc << "fast"
       end
     end  
-  end  
+  end
+
+  def add_import_method
+    lambda do |rec, acc|
+      unless get_filename&.empty?
+        acc << "MARC binary"
+      end
+    end
+  end
 end

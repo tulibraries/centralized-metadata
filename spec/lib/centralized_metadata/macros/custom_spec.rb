@@ -289,6 +289,28 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
     end
   end
 
+  describe "add_import_method" do
+    before(:each) do
+      indexer.configure  do
+        to_field "cm_import_method", add_import_method
+      end
+    end
+
+    context "when filename is present" do
+      it "will set cm_import_method" do
+        indexer.settings[:filename] = "TEUSSUB.060"
+        expect(indexer.map_record(record)["cm_import_method"]).to eq(["MARC binary"])
+      end
+    end
+
+    context "when filename is not present" do
+      it "will not set cm_import_method" do
+        indexer.settings[:filename] = ""
+        expect(indexer.map_record(record)["cm_import_method"]).to be_nil
+      end
+    end
+  end
+
   describe "add_filename" do
     before(:each) do
       indexer.configure do
