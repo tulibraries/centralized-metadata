@@ -15,6 +15,7 @@ RSpec.describe "Traject configuration" do
 
   before do
     indexer.load_config_file("lib/centralized_metadata/indexer_config.rb")
+    indexer.settings[:filename] = "foo.mrc"
   end
 
   describe "field cm_original_key" do
