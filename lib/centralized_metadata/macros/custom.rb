@@ -127,7 +127,7 @@ module CentralizedMetadata::Macros::Custom
 
   def add_filename
     lambda do |rec, acc|
-      acc << @settings.dig(:original_filename) || @settings.dig(:filename)
+      acc << (@settings.dig(:original_filename) || @settings.dig(:filename))
     end
   end
 

@@ -288,4 +288,33 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       end
     end
   end
+
+  describe "add_filename" do
+    before(:each) do
+      indexer.configure do
+        to_field "cm_filename", add_filename
+      end
+    end
+
+    context "when filename override provided" do
+      it "adds the filename override provided" do
+        indexer.settings[:filename] = "xxxxxxxxx"
+        indexer.settings[:original_filename] = "TEUSSUB.045"
+        expect(indexer.map_record(record)["cm_filename"]).to eq(["TEUSSUB.045"])
+      end
+    end
+
+    context "when only filename provided" do
+      it "adds the filename provided" do
+        indexer.settings[:filename] = "TEUSSUB.045"
+        expect(indexer.map_record(record)["cm_filename"]).to eq(["TEUSSUB.045"])
+      end
+    end
+
+    context "when neither a filename nor filename override given" do
+      it "does not add a cm_filename field" do
+        expect(indexer.map_record(record)["cm_filename"]).to be_nil
+      end
+    end
+  end
 end
