@@ -6,7 +6,12 @@ require "centralized_metadata"
 
 RSpec.describe CentralizedMetadata::Macros::Custom do
   let(:indexer) { Traject::Indexer.new }
-  let(:record) { MARC::Record.new }
+  let(:record) do
+    MARC::Record.new_from_hash({
+      "leader"=>"          22        4500", 
+      "fields"=>[{"008"=>"foo"}]
+      })
+  end
 
   before do
     indexer.extend CentralizedMetadata::Macros::Custom
@@ -235,6 +240,51 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       it "will extract multiple 510 subfield values" do
         record.append(MARC::DataField.new("510", nil, nil, ["w", "g"], ["a", "Wisconsin"], ["b", "State Highway"]))
         expect(indexer.map_record(record)["cm_broader_term"]).to eq(["Wisconsin State Highway"])
+      end
+    end
+  end
+
+  describe "add_source_vocab" do
+    before(:each) do
+      indexer.configure do
+        to_field "cm_source_vocab", add_source_vocab
+      end
+    end
+
+    context "filename contains string GNR" do
+      it "will set cm_source_vocab to lcgft" do
+        indexer.settings[:filename] = "TEUSGNR.061"
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcgft"])
+      end
+    end
+
+    context "filename contains string NAM" do
+      it "will set cm_source_vocab to lcnaf" do
+        indexer.settings[:filename] = "TEUMNAMN.282"
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
+      end
+    end
+
+    context "filename contains string TTL" do
+      it "will set cm_source_vocab to lcnaf" do
+        indexer.settings[:filename] = "TEUSTTL.048"
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
+      end
+    end
+
+    context "filename contains string SUB and 008/11 is 1" do
+      it "will set cm_source_vocab to lcsh" do
+        indexer.settings[:filename] = "TEUSSUB.045"
+        record["008"].value = "190402|| anannbabn          |n ana     |"
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcsh"])
+      end
+    end
+
+    context "filename contains string SUB and 040f is fast" do
+      it "will set cm_source_vocab to fast" do
+        indexer.settings[:filename] = "TEUSSUB.060"
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "fast"], ["a", "PPT"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["fast"])
       end
     end
   end

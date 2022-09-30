@@ -130,4 +130,26 @@ module CentralizedMetadata::Macros::Custom
       acc << @settings.dig(:original_filename) || @settings.dig(:filename)
     end
   end
+
+  def add_source_vocab
+    lambda do |rec, acc|
+      filename = @settings.dig(:original_filename) || @settings.dig(:filename) || ""
+      case
+      when filename.include?("GNR")
+        acc << "lcgft"
+
+      when filename.include?("NAM") || filename.include?("TTL")
+        acc << "lcnaf"
+
+      when filename.include?("MSH")
+        acc << "mesh"
+
+      when filename.include?("SUB") && rec["008"].value[11] == "a"
+        acc << "lcsh"
+
+      when filename.include?("SUB") && rec["040"]&.subfields&.any? { |sf| sf.code == "f" && sf.value == "fast"}
+        acc << "fast"
+      end
+    end  
+  end  
 end
