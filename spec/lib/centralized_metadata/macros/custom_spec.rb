@@ -368,9 +368,9 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
     end
 
     context "field 383 multiple subfields with excluded subfield" do
-      it "will extract 383b but not 383e" do
-        record.append(MARC::DataField.new("383", nil, nil, ["b", "op. 5"], ["e", "Hummel"]))
-        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$bop. 5"])
+      it "will extract 383 $b but not 383 $3" do
+        record.append(MARC::DataField.new("383", nil, nil, ["3", "Romances"], ["b", "op. 127"]))
+        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$bop. 127"])
       end
     end
   end
