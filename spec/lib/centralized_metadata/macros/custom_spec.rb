@@ -373,4 +373,5 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
         expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$bop. 5"])
       end
     end
+  end
 end
