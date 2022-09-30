@@ -169,7 +169,11 @@ module CentralizedMetadata::Macros::Custom
     lambda do |rec, acc|
       Traject::MarcExtractor.cached(subfields).collect_matching_lines(rec) do |field, spec, extractor|
         result = field.subfields.reduce("") { |value, sf|
-          value += "$#{sf.code}#{sf.value}"
+          if spec.subfields.include? sf.code
+            value += "$#{sf.code}#{sf.value}"
+          else
+            value += ""
+          end
         }
         acc << result
       end
