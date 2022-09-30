@@ -10,7 +10,7 @@ to_field "cm_var_label", extract_marc("400abcdfghjklmnopqrstv:410abcdfghjklmnopr
 to_field "cm_local_pref_label", default("discussion")
 to_field "cm_local_var_label", default("discussion")
 to_field "cm_source_vocab", add_source_vocab
-to_field "cm_import_method", default("pairing")
+to_field "cm_import_method", add_import_method
 to_field "cm_filename", add_filename
 to_field "cm_type", set_type
 to_field "cm_see_also", extract_see_also
