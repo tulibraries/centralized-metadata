@@ -341,9 +341,15 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
   end
 
   describe "extract_marc_subfields" do
+    let(:marc_fields) { "383abcde" }
+
     before do
+      without_partial_double_verification do
+        allow(indexer).to receive(:marc_fields) { marc_fields }
+      end
+
       indexer.configure do
-        to_field "cm_music_num_designation", extract_marc_subfields("383abcde")
+        to_field "cm_music_num_designation", extract_marc_subfields(marc_fields)
       end
     end
 
