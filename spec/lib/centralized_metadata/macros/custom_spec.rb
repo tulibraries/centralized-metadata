@@ -8,7 +8,7 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
   let(:indexer) { Traject::Indexer.new }
   let(:record) do
     MARC::Record.new_from_hash({
-      "leader"=>"          22        4500", 
+      "leader"=>"          22        4500",
       "fields"=>[{"008"=>"foo"}]
       })
   end
@@ -148,7 +148,7 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
         expect(indexer.map_record(record)["cm_type"]).to eq(["genre"])
       end
     end
-  end  
+  end
 
   describe "extract_see_also" do
     before(:each) do
@@ -355,15 +355,22 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
 
     context "field 383 subfield a" do
       it "will extract 383a with subfield markup" do
-        record.append(MARC::DataField.new("383", nil, nil, ["a", "foo"]))
-        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$afoo"])
+        record.append(MARC::DataField.new("383", nil, nil, ["a", "no. 9"]))
+        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$ano. 9"])
       end
     end
 
-    context "field 383 subfield abcde" do
-      it "will extract 383abcde with subfield markup" do
-        record.append(MARC::DataField.new("383", nil, nil, ["a", "foo"], ["b", "bar"], ["c", "bizz"], ["d", "buzz"], ["e", "fizz"]))
-        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$afoo$bbar$cbizz$dbuzz$efizz"])
+    context "field 383 multiple subfields" do
+      it "will extract 383 with multiple subfield markup" do
+        record.append(MARC::DataField.new("383", nil, nil, ["c", "RV 269"], ["c", "RV 315"], ["c", "RV 293"], ["c", "RV 297"], ["d", "Ryom"]))
+        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$cRV 269$cRV 315$cRV 293$cRV 297$dRyom"])
+      end
+    end
+
+    context "field 383 multiple subfields with excluded subfield" do
+      it "will extract 383 $b but not 383 $3" do
+        record.append(MARC::DataField.new("383", nil, nil, ["3", "Romances"], ["b", "op. 127"]))
+        expect(indexer.map_record(record)["cm_music_num_designation"]).to eq(["$bop. 127"])
       end
     end
   end
