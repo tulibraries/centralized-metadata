@@ -5,10 +5,22 @@ require "traject"
 class CentralizedMetadata::Indexer
 
   def self.ingest(filepath, options = {})
-    options = options.with_indifferent_access
-    filepath ||= ENV["CM_SOURCE"] || "" 
-
+    filepath ||= ENV["CM_SOURCE"] || ""
     filepath = "./spec/fixtures/marc" if ["yes", "true", true].include?(ENV["CM_USE_FIXTURES"])
+
+    if File.directory?(filepath)
+      Dir.glob("#{filepath}/*.mrc").each { |f|
+        get_indexer(filepath, options)
+          .process(f)
+      }
+    elsif File.exist?(filepath)
+        get_indexer(filepath, options)
+          .process(filepath)
+    end
+  end
+
+  def self.get_indexer(filepath, options={})
+    options = options.with_indifferent_access
 
     indexer = Traject::Indexer::MarcIndexer.new(
       writer_class_name: "CentralizedMetadata::ActiveRecordWriter",
@@ -16,16 +28,7 @@ class CentralizedMetadata::Indexer
       filename: File.basename(filepath),
       original_filename: options.dig(:original_filename)
     )
-
     indexer.load_config_file("#{File.dirname(__FILE__)}/indexer_config.rb")
-
-    if File.directory?(filepath)
-      Dir.glob("#{filepath}/*.mrc").each { |f| 
-        indexer.settings["filename"] = File.basename(f)
-        indexer.process(f) 
-      } 
-    elsif File.exist?(filepath)
-      indexer.process(filepath)
-    end
+    indexer
   end
 end
