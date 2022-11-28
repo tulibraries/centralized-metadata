@@ -52,3 +52,7 @@ group :development do
   # gem "spring"
 end
 
+
+gem "api-pagination", "~> 5.0"
+
+gem "kaminari", "~> 1.2"
