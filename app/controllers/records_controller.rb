@@ -13,7 +13,7 @@ class RecordsController < ApplicationController
 
     @records = records.map(&:value)
 
-    render json: @records
+    paginate json: @records
   end
 
   # GET /records/1
