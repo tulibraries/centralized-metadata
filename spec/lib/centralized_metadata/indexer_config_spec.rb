@@ -17,6 +17,17 @@ RSpec.describe "Traject configuration" do
     indexer.load_config_file("lib/centralized_metadata/indexer_config.rb")
   end
 
+  describe "field cm_id" do
+
+    context "record has spaces in id field" do
+      let(:record) { MARC::Record.new_from_hash("fields"  => [{ "001" => " n  foo   bar  ", "008" => "foo" }]) }
+
+      it "removes the all the spaces from the cm_id field" do
+        expect(indexer.map_record(record)["cm_id"]).to eq([ "nfoobar" ])
+      end
+    end
+  end
+
   describe "field cm_original_key" do
 
     context "384a does not exist" do
