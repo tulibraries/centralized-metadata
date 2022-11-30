@@ -1,0 +1,2 @@
+class LocalMetadatum < ApplicationRecord
+end
