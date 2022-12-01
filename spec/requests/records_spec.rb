@@ -1,0 +1,116 @@
+require 'rails_helper'
+require 'swagger_helper'
+
+RSpec.describe "Records", type: :request do
+  before do
+    file = fixture_file_upload("louis_armstrong.mrc")
+    post "/records", params: { marc_file: file }
+  end
+
+  path '/records' do
+    get('list records') do
+      description "This web service returns records in a JSON format. 
+      The pagination default is set to return 25 records at a time. If you would like to change this,
+      add the parameter per_page=number_desired to the query parameters."
+      response(200, 'successful') do        
+
+        let(:record) { JSON.parse(response.body).first }
+
+        before do
+          get "/records"
+        end
+
+        it "returns http success" do
+          expect(response).to have_http_status(:success)
+        end
+      end
+    end
+
+    post('create record') do
+      description "This web service creates a new record. There are two methods for adding records.\n
+      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metadata-qa.k8s.temple.edu \n
+      Ingest with a rake task: rake db:ingest[spec/fixtures/marc]."
+      response(200, 'successful') do
+        it "returns http success" do
+          expect(response).to have_http_status(:success)
+        end
+      end
+    end
+  end
+
+  path '/records/{id}' do
+    # You'll want to customize the parameter types...
+    parameter name: 'id', in: :path, type: :string, description: 'id'
+
+    get('show record') do
+      description "This web service returns an indivudual record in JSON format."
+      response(200, 'successful') do
+        let(:id) { '123' }
+
+        it "returns http success" do
+          expect(response).to have_http_status(:success)
+        end
+      end
+    end
+
+    patch('update record') do
+      description "This web serive updates a record."
+      response(200, 'successful') do
+        let(:id) { '123' }
+
+        it "returns http success" do
+          expect(response).to have_http_status(:success)
+        end
+      end
+    end
+
+    put('update record') do
+      description "This web serive updates a record."
+      response(200, 'successful') do
+        let(:id) { '123' }
+
+        it "returns http success" do
+          expect(response).to have_http_status(:success)
+        end
+      end
+    end
+
+    delete('delete record') do
+      description "This web serive deletes a record."
+      response(200, 'successful') do
+        let(:id) { '123' }
+
+        it "returns http success" do
+          expect(response).to have_http_status(:success)
+        end
+      end
+    end
+  end
+
+  describe "GET /records" do
+    let(:record) { JSON.parse(response.body).first }
+
+    before do
+      get "/records"
+    end
+
+    it "gets records that contain a cm_updated_at and cm_created_at value " do
+      expect(record).to have_key("cm_created_at")
+      expect(record).to have_key("cm_updated_at")
+    end
+
+    it "gets records that contain a cm_filename" do
+      expect(record).to have_key("cm_filename")
+      expect(record["cm_filename"]).to eq(["louis_armstrong.mrc"])
+    end
+  end
+
+  describe "GET /records/:id" do
+    it "gets a record that contains a cm_updated_at and cm_created_at value " do
+      get "/records/2043308"
+      record = JSON.parse(response.body)
+      expect(record).to have_key("cm_created_at")
+      expect(record).to have_key("cm_updated_at")
+    end
+  end
+end

@@ -8,6 +8,10 @@ gem "okcomputer"
 gem "rake"
 gem "puma", "~> 5.0"
 gem "nokogiri", "1.13.6"
+gem "api-pagination", "~> 5.0"
+gem "kaminari", "~> 1.2"
+gem "rswag"
+
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -39,6 +43,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem "rspec-rails"
+  gem "rswag-specs"
   gem "byebug", platform: :mri
   gem "pry-rails"
   gem "capybara"
@@ -51,8 +56,3 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
-
-
-gem "api-pagination", "~> 5.0"
-
-gem "kaminari", "~> 1.2"
