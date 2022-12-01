@@ -5,15 +5,7 @@ class RecordsController < ApplicationController
 
   # GET /records
   def index
-    records = Record.all
-
-    records.each do |rec|
-      add_update_create_date_metadata!(rec)
-    end
-
-    @records = records.map(&:value)
-
-    paginate json: @records
+    paginate json: Record.all
   end
 
   # GET /records/1
