@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_01_152830) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_01_152000) do
   create_table "local_metadata", force: :cascade do |t|
     t.string "cm_local_pref_label"
     t.datetime "created_at", null: false
@@ -27,8 +27,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_01_152830) do
     t.string "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "local_metadatum_id"
-    t.index ["local_metadatum_id"], name: "index_records_on_local_metadatum_id"
   end
 
 end
