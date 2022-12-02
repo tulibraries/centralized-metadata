@@ -20,13 +20,13 @@ RSpec.describe "Records", type: :request do
     end
 
     it "gets records that contain a cm_updated_at and cm_created_at value " do
-      expect(record).to have_key("cm_created_at")
-      expect(record).to have_key("cm_updated_at")
+      expect(record["value"]).to have_key("cm_created_at")
+      expect(record["value"]).to have_key("cm_updated_at")
     end
 
     it "gets records that contain a cm_filename" do
-      expect(record).to have_key("cm_filename")
-      expect(record["cm_filename"]).to eq(["louis_armstrong.mrc"])
+      expect(record["value"]).to have_key("cm_filename")
+      expect(record.dig("value", "cm_filename")).to eq(["louis_armstrong.mrc"])
     end
   end
 
