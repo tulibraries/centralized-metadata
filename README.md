@@ -9,7 +9,7 @@ Example:
 
 ### Using the API controller
 ```
-curl -F "marc_file=@spec/fixtures/marc/louis_armstrong.mrc" https://centralized-metadata-qa.k8s.temple.edu
+curl -F "marc_file=@spec/fixtures/marc/louis_armstrong.mrc" https://centralized-metadata-qa.k8s.temple.edu/records
 
 ```
 
