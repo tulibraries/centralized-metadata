@@ -7,16 +7,22 @@ RSpec.describe CentralizedMetadata::Indexer do
   let (:indexer) { instance_double("Traject::Indexer::MarcIndexer") }
   let (:file) { instance_double(File) }
 
+  describe "#fields" do
+    it "gets the configured field names" do
+      expect(subject.class.fields.first).to eq("cm_id")
+    end
+  end
+
   describe "get_indexer" do
     before(:example) do
       allow(Traject::Indexer::MarcIndexer).to receive(:new).and_return(indexer)
       allow(indexer).to receive_messages(load_config_file: "", process: "")
-      allow(CentralizedMetadata::Indexer).to receive_messages(open: file)
+      allow(subject.class).to receive_messages(open: file)
     end
 
     context "When filepath is passed in with no extra options" do
       after(:example) do
-        CentralizedMetadata::Indexer.get_indexer("/path/to/file/myfile.mrc")
+        subject.class.get_indexer("/path/to/file/myfile.mrc")
       end
 
       it "loads indexer" do
@@ -33,7 +39,7 @@ RSpec.describe CentralizedMetadata::Indexer do
 
     context "when we add an overriding filename via the options" do
       after(:example) do
-        CentralizedMetadata::Indexer.get_indexer("/path/to/file/myfile.mrc", original_filename: "my_orignal_file.mrc")
+        subject.class.get_indexer("/path/to/file/myfile.mrc", original_filename: "my_orignal_file.mrc")
       end
 
       it "sets the original_filename inside the indexer settings" do

@@ -19,7 +19,7 @@ class CentralizedMetadata::Indexer
     end
   end
 
-  def self.get_indexer(filepath, options={})
+  def self.get_indexer(filepath="", options={})
     options = options.with_indifferent_access
 
     indexer = Traject::Indexer::MarcIndexer.new(
@@ -30,5 +30,10 @@ class CentralizedMetadata::Indexer
     )
     indexer.load_config_file("#{File.dirname(__FILE__)}/indexer_config.rb")
     indexer
+  end
+
+  def self.fields
+    get_indexer.instance_variable_get(:@index_steps)
+      .map(&:field_name)
   end
 end

@@ -11,12 +11,12 @@ RSpec.feature "ViewIngestedRecords", type: :feature do
 
     results = JSON.parse(html)
     expect(results.count).to eq(1)
-    expect(results.first["value"]["cm_id"].join("")).to eq("2043308")
+    expect(results.first["cm_id"].join("")).to eq("2043308")
   end
 
   scenario "go to a specific record" do
     visit "/records/2043308"
     object = JSON.parse(html)
-    expect(object["value"]["cm_id"].join("")).to eq("2043308")
+    expect(object["cm_id"].join("")).to eq("2043308")
   end
 end
