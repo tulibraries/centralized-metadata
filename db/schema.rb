@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_01_152000) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_05_212714) do
   create_table "local_metadata", force: :cascade do |t|
     t.string "cm_local_pref_label"
     t.datetime "created_at", null: false
@@ -20,13 +20,28 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_01_152000) do
     t.index ["record_id"], name: "index_local_metadata_on_record_id"
   end
 
+  create_table "local_notes", force: :cascade do |t|
+    t.integer "local_metadatum_id", null: false
+    t.string "cm_local_note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["local_metadatum_id"], name: "index_local_notes_on_local_metadatum_id"
+  end
+
+  create_table "local_variants", force: :cascade do |t|
+    t.integer "local_metadatum_id", null: false
+    t.string "cm_local_var_label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["local_metadatum_id"], name: "index_local_variants_on_local_metadatum_id"
+  end
+
   create_table "records", id: :string, force: :cascade do |t|
-    t.json "value", default: {}
-    t.string "pref_label"
-    t.string "var_label"
-    t.string "note"
+    t.json "value", default: "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"{}\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\"\""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "local_notes", "local_metadata"
+  add_foreign_key "local_variants", "local_metadata"
 end

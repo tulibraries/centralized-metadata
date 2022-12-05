@@ -5,6 +5,13 @@ RSpec.describe "Records", type: :request do
   before do
     file = fixture_file_upload("louis_armstrong.mrc")
     post "/records", params: { marc_file: file }
+    record = Record.first
+    metadatum = LocalMetadatum.create(cm_local_pref_label: "test_pref")
+    note = LocalNote.create(cm_local_note: "test_note")
+    variant = LocalVariant.create(cm_local_var_label: "test_var")
+    metadatum.local_notes << note
+    metadatum.local_variants << variant
+    record.local_metadatum = metadatum
   end
 
   path '/records' do
@@ -111,6 +118,9 @@ RSpec.describe "Records", type: :request do
       record = JSON.parse(response.body)
       expect(record).to have_key("cm_created_at")
       expect(record).to have_key("cm_updated_at")
+      expect(record.dig("local_metadatum", "cm_local_pref_label")).to eq("test_pref")
+      expect(record.dig("local_metadatum", "cm_local_var_label")).to eq(["test_var"])
+      expect(record.dig("local_metadatum", "cm_local_note")).to eq(["test_note"])
     end
   end
 end
