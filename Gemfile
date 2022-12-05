@@ -11,7 +11,7 @@ gem "nokogiri", "1.13.6"
 gem "api-pagination", "~> 5.0"
 gem "kaminari", "~> 1.2"
 gem "rswag"
-
+gem "active_model_serializers"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"

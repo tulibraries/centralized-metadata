@@ -10,14 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_31_190325) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_01_152000) do
+  create_table "local_metadata", force: :cascade do |t|
+    t.string "cm_local_pref_label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "record_id"
+    t.index ["cm_local_pref_label"], name: "index_local_metadata_on_cm_local_pref_label"
+    t.index ["record_id"], name: "index_local_metadata_on_record_id"
+  end
 
-  create_table "records", force: :cascade do |t|
-    t.string "identifier"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table "records", id: :string, force: :cascade do |t|
     t.json "value", default: {}
-    t.index ["identifier"], name: "index_records_on_identifier", unique: true
+    t.string "pref_label"
+    t.string "var_label"
+    t.string "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
