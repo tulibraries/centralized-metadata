@@ -16,6 +16,7 @@ RSpec.describe "Records", type: :request do
 
   path '/records' do
     get('list records') do
+      tags 'records'
       description "This web service returns records in a JSON format. 
       The pagination default is set to return 25 records at a time. If you would like to change this,
       add the parameter per_page=number_desired to the query parameters."
@@ -34,6 +35,7 @@ RSpec.describe "Records", type: :request do
     end
 
     post('create record') do
+      tags 'records'
       description "This web service creates a new record. There are two methods for adding records.\n
       Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metadata-qa.k8s.temple.edu \n
       Ingest with a rake task: rake db:ingest[spec/fixtures/marc]."
@@ -50,6 +52,7 @@ RSpec.describe "Records", type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show record') do
+      tags 'records'
       description "This web service returns an indivudual record in JSON format."
       response(200, 'successful') do
         let(:id) { '123' }
@@ -61,6 +64,7 @@ RSpec.describe "Records", type: :request do
     end
 
     patch('update record') do
+      tags 'records'
       description "This web serive updates a record."
       response(200, 'successful') do
         let(:id) { '123' }
@@ -72,6 +76,7 @@ RSpec.describe "Records", type: :request do
     end
 
     put('update record') do
+      tags 'records'
       description "This web serive updates a record."
       response(200, 'successful') do
         let(:id) { '123' }
@@ -83,6 +88,7 @@ RSpec.describe "Records", type: :request do
     end
 
     delete('delete record') do
+      tags 'records'
       description "This web serive deletes a record."
       response(200, 'successful') do
         let(:id) { '123' }
