@@ -20,13 +20,25 @@ paths:
       summary: create record
       tags:
       - records
+      parameters: []
       description: "This web service creates a new record. There are two methods for
         adding records.\n\n      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc'
-        https://centralized-metada\nta-qa.k8s.temple.edu \n\n      Ingest with a rake
+        https://centralized-metadata-qa.k8s.temple.edu \n\n      Ingest with a rake
         task: rake db:ingest[spec/fixtures/marc]."
       responses:
         '200':
           description: successful
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                marc_file:
+                  type: string
+                  format: binary
+                kind:
+                  type: string
   "/records/{id}":
     parameters:
     - name: id

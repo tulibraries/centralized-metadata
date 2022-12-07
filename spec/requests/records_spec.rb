@@ -36,6 +36,18 @@ RSpec.describe "Records", type: :request do
 
     post('create record') do
       tags 'records'
+      consumes  'multipart/form-data'
+      produces 'application/json'
+      # TODO: Stop using work around when upstream issue is fixed:
+      # ref:  https://github.com/rswag/rswag/issues/348
+      parameter name: :marc_file, in: :formData, schema: {
+        type: :object,
+        properties: {
+          marc_file: { type: :string, format: :binary },
+          kind: { type: :string }
+        }
+      }
+
       description "This web service creates a new record. There are two methods for adding records.\n
       Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metada
 ta-qa.k8s.temple.edu \n
