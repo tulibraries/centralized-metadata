@@ -18,7 +18,8 @@ paths:
       summary: create record
       description: "This web service creates a new record. There are two methods for
         adding records.\n\n      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc'
-        $http://$host \n\n      Ingest with a rake task: rake db:ingest[spec/fixtures/marc]."
+        https://centralized-metada\nta-qa.k8s.temple.edu \n\n      Ingest with a rake
+        task: rake db:ingest[spec/fixtures/marc]."
       responses:
         '200':
           description: successful
