@@ -9,14 +9,14 @@ USER root
 ARG RAILS_ENV=production
 
 RUN apk add -U --no-cache \
-      bash=5.2.12-r0 \
+      bash=5.2.15-r0 \
       tzdata=2022f-r1 \
       postgresql14-client=14.6-r1 \
       libc6-compat=1.2.3-r4 \
       libxslt=1.1.37-r0 && \
     apk add -U --no-cache --virtual build-dependencies \
       build-base=0.5-r3 \
-      git=2.38.1-r0 \
+      git=2.38.3-r1 \
       postgresql14-dev=14.6-r1 \
       libxslt-dev=1.1.37-r0 &&\
     bundle config set --local without "development test" && \
