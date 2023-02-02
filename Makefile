@@ -50,14 +50,7 @@ lint:
 		fi
 
 scan:
-	@if [ $(CLEAR_CACHES) == yes ]; \
-		then \
-			trivy image -c $(HARBOR)/$(IMAGE):$(VERSION); \
-		fi
-	@if [ $(CI) == false ]; \
-		then \
-			trivy $(HARBOR)/$(IMAGE):$(VERSION); \
-		fi
+	trivy image -c $(HARBOR)/$(IMAGE):$(VERSION);
 
 deploy: scan lint
 	@docker push $(HARBOR)/$(IMAGE):$(VERSION) \
