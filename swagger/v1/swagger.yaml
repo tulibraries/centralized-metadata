@@ -7,6 +7,8 @@ paths:
   "/records":
     get:
       summary: list records
+      tags:
+      - records
       description: "This web service returns records in a JSON format. \n      The
         pagination default is set to return 25 records at a time. If you would like
         to change this,\n      add the parameter per_page=number_desired to the query
@@ -16,6 +18,8 @@ paths:
           description: successful
     post:
       summary: create record
+      tags:
+      - records
       description: "This web service creates a new record. There are two methods for
         adding records.\n\n      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc'
         https://centralized-metadata-qa.k8s.temple.edu \n\n      Ingest with a rake
@@ -33,24 +37,32 @@ paths:
         type: string
     get:
       summary: show record
+      tags:
+      - records
       description: This web service returns an indivudual record in JSON format.
       responses:
         '200':
           description: successful
     patch:
       summary: update record
+      tags:
+      - records
       description: This web serive updates a record.
       responses:
         '200':
           description: successful
     put:
       summary: update record
+      tags:
+      - records
       description: This web serive updates a record.
       responses:
         '200':
           description: successful
     delete:
       summary: delete record
+      tags:
+      - records
       description: This web serive deletes a record.
       responses:
         '200':
