@@ -31,5 +31,5 @@ production:
   database: <%= ENV["CM_DB_NAME"] %>
   username: <%= ENV["CM_DB_USER"] %>
   password: <%= ENV["CM_DB_PASSWORD"] %>
-  pool: 5
+  pool: 15
   timeout: 5000
