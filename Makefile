@@ -50,7 +50,7 @@ lint:
 		fi
 
 scan:
-	trivy image -c $(HARBOR)/$(IMAGE):$(VERSION);
+	trivy image $(HARBOR)/$(IMAGE):$(VERSION);
 
 deploy: scan lint
 	@docker push $(HARBOR)/$(IMAGE):$(VERSION) \
