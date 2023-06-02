@@ -50,7 +50,7 @@ lint:
 		fi
 
 scan:
-	trivy image $(HARBOR)/$(IMAGE):$(VERSION);
+	trivy image $(HARBOR)/$(IMAGE):$(VERSION) --scanners vuln;
 
 deploy: scan lint
 	@docker push $(HARBOR)/$(IMAGE):$(VERSION) \
