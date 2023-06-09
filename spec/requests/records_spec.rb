@@ -65,7 +65,7 @@ RSpec.describe "Records", type: :request do
 
     patch('update record') do
       tags 'records'
-      description "This web serive updates a record."
+      description "This web service updates a record."
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -77,7 +77,7 @@ RSpec.describe "Records", type: :request do
 
     put('update record') do
       tags 'records'
-      description "This web serive updates a record."
+      description "This web service updates a record."
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -89,7 +89,7 @@ RSpec.describe "Records", type: :request do
 
     delete('delete record') do
       tags 'records'
-      description "This web serive deletes a record."
+      description "This web service deletes a record."
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -127,6 +127,22 @@ RSpec.describe "Records", type: :request do
       expect(record.dig("local_metadatum", "cm_local_pref_label")).to eq("test_pref")
       expect(record.dig("local_metadatum", "cm_local_var_label")).to eq(["test_var"])
       expect(record.dig("local_metadatum", "cm_local_note")).to eq(["test_note"])
+    end
+  end
+
+  describe "PATCH/PUT /records/:id" do
+    it "updates the values of an individual record" do
+      get "/records/2043308"
+      record = JSON.parse(response.body)
+      record.update("cm_type" => ["Test update"])
+      expect(record["cm_type"]).to eq(["Test update"])
+    end
+
+    it "updates the values of local metadatum" do
+      get "/records/2043308"
+      record = JSON.parse(response.body)
+      record["local_metadatum"].update("cm_local_note" => ["Changed note"])
+      expect(record["local_metadatum"]["cm_local_note"]).to eq(["Changed note"])
     end
   end
 end
