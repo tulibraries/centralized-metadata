@@ -24,7 +24,6 @@ class RecordsController < ApplicationController
   # PATCH/PUT /records/1
   def update
     if @record.update(record_params)
-      binding.pry
       render json: @record
     else
       render json: @record.errors, status: :unprocessable_entity
