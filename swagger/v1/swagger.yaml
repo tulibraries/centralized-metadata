@@ -22,7 +22,7 @@ paths:
       - records
       description: "This web service creates a new record. There are two methods for
         adding records.\n\n      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc'
-        https://centralized-metadata-qa.k8s.temple.edu \n\n      Ingest with a rake
+        https://centralized-metada\nta-qa.k8s.temple.edu \n\n      Ingest with a rake
         task: rake db:ingest[spec/fixtures/marc]."
       responses:
         '200':
@@ -68,7 +68,13 @@ paths:
         '200':
           description: successful
 servers:
-- url: https://centralized-metadata-qa.k8s.temple.edu/records
+- url: https://centralized-metadata-qa.k8s.temple.edu
+- url: http://localhost:3000
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: https://centralized-metadata-qa.k8s.temple.edu/records
+      default: localhost:3000
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: centralized-metadata-qa.k8s.temple.edu

@@ -37,7 +37,8 @@ RSpec.describe "Records", type: :request do
     post('create record') do
       tags 'records'
       description "This web service creates a new record. There are two methods for adding records.\n
-      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metadata-qa.k8s.temple.edu \n
+      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metada
+ta-qa.k8s.temple.edu \n
       Ingest with a rake task: rake db:ingest[spec/fixtures/marc]."
       response(200, 'successful') do
         it "returns http success" do

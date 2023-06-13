@@ -24,10 +24,24 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: 'https://centralized-metadata-qa.k8s.temple.edu/records',
+          url: 'https://centralized-metadata-qa.k8s.temple.edu',
+        },
+        {
+          url: 'http://localhost:3000',
+        },
+        {
+          url: 'http://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'https://centralized-metadata-qa.k8s.temple.edu/records'
+              default: 'localhost:3000'
+            }
+          }
+        },
+        {
+          url: 'https://{defaultHost}',
+          variables: {
+            defaultHost: {
+              default: 'centralized-metadata-qa.k8s.temple.edu'
             }
           }
         }
