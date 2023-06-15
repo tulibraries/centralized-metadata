@@ -51,7 +51,7 @@ paths:
       summary: show record
       tags:
       - records
-      description: This web service returns an indivudual record in JSON format.
+      description: This web service returns an individual record in JSON format.
       responses:
         '200':
           description: successful
@@ -86,7 +86,7 @@ paths:
       summary: update record
       tags:
       - records
-      description: This web serive updates a record. Use if you want to update the entire value of the record with the payload.
+      description: This web service updates a record. Use if you want to update the entire value of the record with the payload.
       responses:
         '422':
           description: unsuccesful
@@ -112,7 +112,7 @@ paths:
       summary: delete record
       tags:
       - records
-      description: This web serive deletes a record.
+      description: This web service deletes a record.
       responses:
         '200':
           description: successful
