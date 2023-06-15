@@ -34,13 +34,17 @@ class RecordsController < ApplicationController
       @record.errors.add(:cm_id, "The :cm_id and :id values must match.")
     end
 
+    # Somtimes the JSON string is not evaluated.
+    # Maybe just in the test environment?
+    if @record.value.is_a? String
+      @record.value = JSON.parse(@record.value)
+    end
+
     if @record.errors.blank?
       if request.put?
         @record.value = value_params
       elsif request.patch?
-        object = JSON.parse(@record.value)
-        object.merge!(value_params)
-        @record.value = object
+        @record.value.merge!(value_params)
       end
       @record.save!
     end
