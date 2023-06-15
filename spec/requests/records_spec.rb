@@ -143,19 +143,149 @@ ta-qa.k8s.temple.edu \n
     end
   end
 
-  describe "PATCH/PUT /records/:id" do
-    it "updates the values of an individual record" do
-      get "/records/2043308"
-      record = JSON.parse(response.body)
-      record.update("cm_type" => ["Test update"])
-      expect(record["cm_type"]).to eq(["Test update"])
+  describe "PUT /records/:id" do
+    before do
+      Record.new(
+        id: "put-test",
+        value: {
+          "cm_id"=>["put-test"],
+          "cm_pref_label"=>["Armstrong, Louis, 1901-1971. prf"],
+          "cm_import_method"=>["MARC binary"],
+          "cm_type"=>["personal name"],
+          "cm_see_also"=>
+        ["Biographical and program notes by Stanley Dance ([2] p. : 1 port.) in container; personnel and original issue and matrix no. on container.",
+         "Louis Armstrong, trumpet and vocals, and his band."],
+        }.to_json
+      ).save!
     end
 
-    it "updates the values of local metadatum" do
-      get "/records/2043308"
-      record = JSON.parse(response.body)
-      record["local_metadatum"].update("cm_local_note" => ["Changed note"])
-      expect(record["local_metadatum"]["cm_local_note"]).to eq(["Changed note"])
+    after do
+      Record.find_by(id: "put-test").destroy!
+    end
+
+
+    context "not sending required field in API call" do
+      it "should errror out because we need something to update to" do
+        put "/records/put-test"
+        expect(response.status).to eq(422)
+
+        data = JSON.parse(body)
+        expect(data["params"]).to eq(["param is missing or the value is empty: cm_id"])
+      end
+    end
+
+    context "not having required cm_id value" do
+      let(:payload) { {}.to_json }
+
+      it "should error out because the cm_id value is required" do
+        put "/records/put-test", params: payload , headers: { 'Content-Type' => 'application/json' }
+        expect(response.status).to eq(422)
+
+        data = JSON.parse(body)
+        expect(data["params"]).to eq(["param is missing or the value is empty: cm_id"])
+      end
+    end
+
+    context "cm_id value is not equal to :id in records/:id path" do
+      let(:payload) { { cm_id: ["not-put-test"], cm_type: ["foobar"] }.to_json }
+
+      it "should error out because the value of the cm_id field to be updated should match the path id" do
+        put "/records/put-test", params: payload , headers: { 'Content-Type' => 'application/json' }
+        expect(response.status).to eq(422)
+
+        data = JSON.parse(body)
+        expect(data["cm_id"]).to eq(["The :cm_id and :id values must match."])
+      end
+    end
+
+
+    context "A record is sent in as a payload in the request" do
+      let(:payload) { { cm_id: ["put-test"], cm_type: ["foobar"] }.to_json }
+
+      it "should completely replace the value or the record in the database with the updated value" do
+
+        put "/records/put-test", params: payload , headers: { 'Content-Type' => 'application/json' }
+
+        expect(response).to be_successful
+        data = JSON.parse(body)
+        expect(data.except("cm_updated_at", "cm_created_at", "local_metadatum")).to eq(JSON.parse(payload))
+      end
+    end
+  end
+
+  describe "PATCH /records/:id" do
+    before do
+      Record.new(
+        id: "patch-test",
+        value: {
+          "cm_id"=>["patch-test"],
+          "cm_pref_label"=>["Armstrong, Louis, 1901-1971. prf"],
+          "cm_import_method"=>["MARC binary"],
+          "cm_type"=>["personal name"],
+          "cm_see_also"=>
+        ["Biographical and program notes by Stanley Dance ([2] p. : 1 port.) in container; personnel and original issue and matrix no. on container.",
+         "Louis Armstrong, trumpet and vocals, and his band."],
+        }.to_json
+      ).save!
+    end
+
+    after do
+      Record.find_by(id: "patch-test").destroy!
+    end
+
+    context "not sending required field in API call" do
+      it "should errror out because we need something to update to" do
+        put "/records/patch-test"
+        expect(response.status).to eq(422)
+
+        data = JSON.parse(body)
+        expect(data["params"]).to eq(["param is missing or the value is empty: cm_id"])
+      end
+    end
+
+    context "not having required cm_id value" do
+      let(:payload) { {}.to_json }
+
+      it "should error out because the cm_id value is required" do
+        put "/records/patch-test", params: payload , headers: { 'Content-Type' => 'application/json' }
+        expect(response.status).to eq(422)
+
+        data = JSON.parse(body)
+        expect(data["params"]).to eq(["param is missing or the value is empty: cm_id"])
+      end
+    end
+
+    context "cm_id value is not equal to :id in records/:id path" do
+      let(:payload) { { cm_id: ["not-patch-test"], cm_type: ["foobar"] }.to_json }
+
+      it "should error out because the value of the cm_id field to be updated should match the path id" do
+        put "/records/patch-test", params: payload , headers: { 'Content-Type' => 'application/json' }
+        expect(response.status).to eq(422)
+
+        data = JSON.parse(body)
+        expect(data["cm_id"]).to eq(["The :cm_id and :id values must match."])
+      end
+    end
+
+    context "A record is sent in as a payload in the request" do
+      let(:payload) { { cm_id: ["patch-test"], cm_type: ["foobar"] }.to_json }
+
+      it "should only replace/update the specific fields in the payload" do
+
+        patch "/records/patch-test", params: payload , headers: { 'Content-Type' => 'application/json' }
+
+        expect(response).to be_successful
+        data = JSON.parse(body)
+        expect(data.except("cm_updated_at", "cm_created_at", "local_metadatum")).to eq({
+          "cm_id"=>["patch-test"],
+          "cm_pref_label"=>["Armstrong, Louis, 1901-1971. prf"],
+          "cm_import_method"=>["MARC binary"],
+          "cm_type"=>["foobar"],
+          "cm_see_also"=>
+        ["Biographical and program notes by Stanley Dance ([2] p. : 1 port.) in container; personnel and original issue and matrix no. on container.",
+         "Louis Armstrong, trumpet and vocals, and his band."],
+        })
+      end
     end
   end
 end
