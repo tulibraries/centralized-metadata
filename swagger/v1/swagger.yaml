@@ -16,6 +16,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Records"
     post:
       summary: create record
       tags:
@@ -28,6 +32,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Record"
       requestBody:
         content:
           multipart/form-data:
@@ -55,59 +63,80 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Record"
     patch:
       summary: update record
       tags:
       - records
-      description: This web service updates a record. But just the specific fields of the record "value" field. Use if you want to execute a partial update of a record.
+      description: This web service updates a record. But just the specific fields
+        of the record "value" field. Use if you want to execute a partial update of
+        a record.
+      parameters: []
       responses:
-        '422':
-          description: unsuccesful
         '200':
           description: successful
+        '422':
+          description: unsuccessful
       requestBody:
-        required: true
         content:
           application/json:
-            description: The value section of the centralized-metatadata record.
             schema:
-              $ref: "#/components/schemas/RecordPatchPutPayload"
+              "$ref": "#/components/schemas/Record"
             examples:
               example1:
+                summary: update record
                 value:
-                  cm_id: ["fst01423682"]
-                  cm_pref_label: ["Abbreviations of titles"]
-                  cm_source_vocab: ["lcgft"]
-                  cm_import_method: ["MARC binary"]
-                  cm_filename: ["TEUM_CNS_GNR.mrc"]
-                  cm_type: ["genre"]
-
+                  cm_id:
+                  - fst01423682
+                  cm_pref_label:
+                  - Abbreviations of titles
+                  cm_source_vocab:
+                  - lcgft
+                  cm_import_method:
+                  - MARC binary
+                  cm_filename:
+                  - TEUM_CNS_GNR.mrc
+                  cm_type:
+                  - genre
+        required: true
+        description: The value section of the centralized-metadata record
     put:
       summary: update record
       tags:
       - records
-      description: This web service updates a record. Use if you want to update the entire value of the record with the payload.
+      description: This web service updates a record.
+      parameters: []
       responses:
-        '422':
-          description: unsuccesful
         '200':
           description: successful
+        '422':
+          description: unsuccessful
       requestBody:
-        required: true
         content:
           application/json:
-            description: The value section of the centralized-metatadata record.
             schema:
-              $ref: "#/components/schemas/RecordPatchPutPayload"
+              "$ref": "#/components/schemas/Record"
             examples:
               example1:
+                summary: update record
                 value:
-                  cm_id: ["fst01423682"]
-                  cm_pref_label: ["Abbreviations of titles"]
-                  cm_source_vocab: ["lcgft"]
-                  cm_import_method: ["MARC binary"]
-                  cm_filename: ["TEUM_CNS_GNR.mrc"]
-                  cm_type: ["genre"]
+                  cm_id:
+                  - fst01423682
+                  cm_pref_label:
+                  - Abbreviations of titles
+                  cm_source_vocab:
+                  - lcgft
+                  cm_import_method:
+                  - MARC binary
+                  cm_filename:
+                  - TEUM_CNS_GNR.mrc
+                  cm_type:
+                  - genre
+        required: true
+        description: The value section of the centralized-metadata record
     delete:
       summary: delete record
       tags:
@@ -116,7 +145,6 @@ paths:
       responses:
         '200':
           description: successful
-
 servers:
 - url: https://centralized-metadata-qa.k8s.temple.edu
 - url: http://localhost:3000
@@ -128,16 +156,16 @@ servers:
   variables:
     defaultHost:
       default: centralized-metadata-qa.k8s.temple.edu
-
 components:
   schemas:
-    RecordPatchPutPayload:
+    Record:
       type: object
-      required: [ "cm_id" ]
+      required:
+      - cm_id
       properties:
         cm_id:
           type: array
-          itmes:
+          items:
             type: string
         cm_pref_label:
           type: array
@@ -383,3 +411,7 @@ components:
           type: array
           items:
             type: string
+    Records:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Record"

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'centralized_metadata'
 
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated
@@ -44,9 +45,30 @@ RSpec.configure do |config|
               default: 'centralized-metadata-qa.k8s.temple.edu'
             }
           }
+        }],
+
+        components: {
+          schemas: {
+            Record: {
+              type: "object",
+              required: %w(cm_id),
+              properties: CentralizedMetadata::Indexer.fields.reduce({}) { |acc, f|
+                acc.merge("#{f}": {
+                  type: "array",
+                  items: { type: "string" },
+                })
+              }
+            },
+            Records: {
+              type: "array",
+              items: { "$ref" => "#/components/schemas/Record" }
+            }
+          }
         }
-      ]
+
     }
+
+
   }
 
   # Specify the format of the output Swagger file when running 'rswag:specs:swaggerize'.

@@ -29,3 +29,5 @@ rake  db:ingest[spec/fixtures/marc]
 This API uses [Rswag](https://github.com/rswag/rswag) to generate swagger documentation.  
 
 Existing documentation can be found in spec/requests/records_spec.rb. If you need to edit this file, be sure to run the `bundle exec rails rswag` command to run the updates.
+
+Do not update the swagger.yaml file by hand.  Use swagger tests to create it and also test the API.
