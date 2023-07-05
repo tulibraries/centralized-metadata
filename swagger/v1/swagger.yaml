@@ -4,6 +4,175 @@ info:
   title: Centralized Metadata Records
   version: v1
 paths:
+  "/records/{record_id}/local_notes":
+    get:
+      summary: local_notes of a record
+      tags:
+      - local_notes
+      description: Returns a JSON array of local notes associated to a specific record.
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                no-notes:
+                  value: "[]"
+                a-note:
+                  value:
+                  - id: 1
+                    cm_local_note: foo
+                some-notes:
+                  value:
+                  - id: 1
+                    cm_local_note: foo
+                  - id: 2
+                    cm_local_note: bar
+    post:
+      summary: create a new note
+      tags:
+      - local_notes
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      description: This endpoint creates a new local note for specified record
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                some-notes:
+                  value:
+                  - id: 1
+                    cm_local_note: foo
+                  - id: 2
+                    cm_local_note: bar
+                a-note:
+                  value:
+                  - id: 1
+                    cm_local_note: foo
+              schema:
+                "$ref": "#/components/schemas/LocalNotes"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocalNote"
+            examples:
+              default:
+                summary: create a new note
+                value:
+                  cm_local_note: Hello World
+        required: true
+  "/records/{record_id}/local_notes/{note_id}":
+    get:
+      summary: show a local note
+      tags:
+      - local_notes
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        description: The id of the centralized metadata local note
+        required: true
+        schema:
+          type: string
+      description: This endpoint returns value o a specific local note.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      summary: delete a local note
+      tags:
+      - local_notes
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        description: The id of the centralized metadata local note
+        required: true
+        schema:
+          type: string
+      description: This endpoint deletes a specific local note.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      summary: update a  note
+      tags:
+      - local_notes
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        description: The id of the centralized metadata local note
+        required: true
+        schema:
+          type: string
+      description: This endpoint updates a local note for specified record
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocalNote"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocalNote"
+            examples:
+              default:
+                summary: update a  note
+                value:
+                  cm_local_note: Hello World
+        required: true
   "/records":
     get:
       summary: list records
@@ -158,6 +327,19 @@ servers:
       default: centralized-metadata-qa.k8s.temple.edu
 components:
   schemas:
+    LocalNote:
+      type: object
+      required:
+      - cm_local_note
+      properties:
+        id:
+          type: integer
+        cm_local_note:
+          type: string
+    LocalNotes:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LocalNote"
     Record:
       type: object
       required:
