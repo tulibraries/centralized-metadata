@@ -49,6 +49,15 @@ RSpec.configure do |config|
 
         components: {
           schemas: {
+            LocalNote: {
+              type: "object",
+              required: ["cm_local_note"],
+              properties:  { id: { type: "integer"}, cm_local_note: { type: "string"} },
+            },
+            LocalNotes: {
+              type: "array",
+              items: { "$ref" => "#/components/schemas/LocalNote" },
+            },
             Record: {
               type: "object",
               required: %w(cm_id),
@@ -62,10 +71,9 @@ RSpec.configure do |config|
             Records: {
               type: "array",
               items: { "$ref" => "#/components/schemas/Record" }
-            }
+            },
           }
         }
-
     }
 
 
