@@ -343,6 +343,30 @@ paths:
                 value:
                   cm_local_var_label: Hello World
         required: true
+  "/marc/ids":
+    post:
+      summary: Get record ids
+      tags:
+      - marc
+      parameters: []
+      description: This endpoint processes a posted marc file and returns the ids
+        of the records defined in the marc file.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                marc_file:
+                  type: string
+                  format: binary
+                kind:
+                  type: string
   "/records":
     get:
       summary: list records
