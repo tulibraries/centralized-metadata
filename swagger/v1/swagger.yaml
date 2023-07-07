@@ -173,6 +173,176 @@ paths:
                 value:
                   cm_local_note: Hello World
         required: true
+  "/records/{record_id}/local_variants":
+    get:
+      summary: local_variants of a record
+      tags:
+      - local_variants
+      description: Returns a JSON array of local variants associated to a specific
+        record.
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                no-variants:
+                  value: "[]"
+                a-variant:
+                  value:
+                  - id: 1
+                    cm_local_var_label: foo
+                some-variants:
+                  value:
+                  - id: 1
+                    cm_local_var_label: foo
+                  - id: 2
+                    cm_local_var_label: bar
+    post:
+      summary: create a new variant
+      tags:
+      - local_variants
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      description: This endpoint creates a new local variant for specified record
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                some-variants:
+                  value:
+                  - id: 1
+                    cm_local_var_label: foo
+                  - id: 2
+                    cm_local_var_label: bar
+                a-variant:
+                  value:
+                  - id: 1
+                    cm_local_var_label: foo
+              schema:
+                "$ref": "#/components/schemas/LocalVariants"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocalVariant"
+            examples:
+              default:
+                summary: create a new variant
+                value:
+                  cm_local_var_label: Hello World
+        required: true
+  "/records/{record_id}/local_variants/{variant_id}":
+    get:
+      summary: show a local variant
+      tags:
+      - local_variants
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: variant_id
+        in: path
+        description: The id of the centralized metadata local variant
+        required: true
+        schema:
+          type: string
+      description: This endpoint returns value o a specific local variant.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      summary: delete a local variant
+      tags:
+      - local_variants
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: variant_id
+        in: path
+        description: The id of the centralized metadata local variant
+        required: true
+        schema:
+          type: string
+      description: This endpoint deletes a specific local variant.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      summary: update a  variant
+      tags:
+      - local_variants
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: variant_id
+        in: path
+        description: The id of the centralized metadata local variant
+        required: true
+        schema:
+          type: string
+      description: This endpoint updates a local variant for specified record
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocalVariant"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocalVariant"
+            examples:
+              default:
+                summary: update a  variant
+                value:
+                  cm_local_var_label: Hello World
+        required: true
   "/records":
     get:
       summary: list records
@@ -340,6 +510,19 @@ components:
       type: array
       items:
         "$ref": "#/components/schemas/LocalNote"
+    LocalVariant:
+      type: object
+      required:
+      - cm_local_var_label
+      properties:
+        id:
+          type: integer
+        cm_local_var_label:
+          type: string
+    LocalVariants:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LocalVariant"
     Record:
       type: object
       required:
