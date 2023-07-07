@@ -3,6 +3,7 @@
 require "traject"
 
 class CentralizedMetadata::Indexer
+  INDEXER_CONFIG_FILE =  "#{File.dirname(__FILE__)}/indexer_config.rb"
 
   def self.ingest(filepath, options = {})
     filepath ||= ENV["CM_SOURCE"] || ""
@@ -21,9 +22,12 @@ class CentralizedMetadata::Indexer
 
   def self.get_indexer(filepath="", options={})
     options = options.with_indifferent_access
+    writer_class_name  = options["writer_class_name"] ||
+      "CentralizedMetadata::ActiveRecordWriter"
+
 
     indexer = Traject::Indexer::MarcIndexer.new(
-      writer_class_name: "CentralizedMetadata::ActiveRecordWriter",
+      writer_class_name: writer_class_name,
       "active_record.model": Record,
       filename: File.basename(filepath),
       original_filename: options.dig(:original_filename)
@@ -35,5 +39,13 @@ class CentralizedMetadata::Indexer
   def self.fields
     get_indexer.instance_variable_get(:@index_steps)
       .map(&:field_name)
+  end
+
+  def self.get_records(filepath)
+    indexer = get_indexer(filepath)
+    writer = Traject::ArrayWriter.new
+    reader = Traject::MarcReader.new(filepath, {})
+
+    indexer.process_with(reader, writer).values
   end
 end
