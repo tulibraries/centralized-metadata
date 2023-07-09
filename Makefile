@@ -60,3 +60,6 @@ deploy: scan lint
 		then \
 			docker push $(HARBOR)/$(IMAGE):latest; \
 		fi
+
+rswag:
+	bundle exec rake rswag
