@@ -58,14 +58,14 @@ RSpec.configure do |config|
               type: "array",
               items: { "$ref" => "#/components/schemas/LocalNote" },
             },
-            LocalVariant: {
+            LocalVarLabel: {
               type: "object",
               required: ["cm_local_var_label"],
               properties:  { id: { type: "integer"}, cm_local_var_label: { type: "string"} },
             },
-            LocalVariants: {
+            LocalVarLabels: {
               type: "array",
-              items: { "$ref" => "#/components/schemas/LocalVariant" }
+              items: { "$ref" => "#/components/schemas/LocalVarLabel" }
             },
             Record: {
               type: "object",

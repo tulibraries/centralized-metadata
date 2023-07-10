@@ -173,12 +173,12 @@ paths:
                 value:
                   cm_local_note: Hello World
         required: true
-  "/records/{record_id}/local_variants":
+  "/records/{record_id}/local_var_labels":
     get:
-      summary: local_variants of a record
+      summary: local_var_labels of a record
       tags:
-      - local_variants
-      description: Returns a JSON array of local variants associated to a specific
+      - local_var_labels
+      description: Returns a JSON array of local var_labels associated to a specific
         record.
       parameters:
       - name: record_id
@@ -195,22 +195,22 @@ paths:
           content:
             application/json:
               examples:
-                no-variants:
+                no-var_labels:
                   value: "[]"
-                a-variant:
+                a-var_label:
                   value:
                   - id: 1
                     cm_local_var_label: foo
-                some-variants:
+                some-var_labels:
                   value:
                   - id: 1
                     cm_local_var_label: foo
                   - id: 2
                     cm_local_var_label: bar
     post:
-      summary: create a new variant
+      summary: create a new var_label
       tags:
-      - local_variants
+      - local_var_labels
       parameters:
       - name: record_id
         in: path
@@ -218,7 +218,7 @@ paths:
         required: true
         schema:
           type: string
-      description: This endpoint creates a new local variant for specified record
+      description: This endpoint creates a new local var_label for specified record
       responses:
         '422':
           description: unsuccessful
@@ -227,34 +227,34 @@ paths:
           content:
             application/json:
               examples:
-                some-variants:
+                some-var_labels:
                   value:
                   - id: 1
                     cm_local_var_label: foo
                   - id: 2
                     cm_local_var_label: bar
-                a-variant:
+                a-var_label:
                   value:
                   - id: 1
                     cm_local_var_label: foo
               schema:
-                "$ref": "#/components/schemas/LocalVariants"
+                "$ref": "#/components/schemas/LocalVarLabels"
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/LocalVariant"
+              "$ref": "#/components/schemas/LocalVarLabel"
             examples:
               default:
-                summary: create a new variant
+                summary: create a new var_label
                 value:
                   cm_local_var_label: Hello World
         required: true
-  "/records/{record_id}/local_variants/{variant_id}":
+  "/records/{record_id}/local_var_labels/{var_label_id}":
     get:
-      summary: show a local variant
+      summary: show a local var_label
       tags:
-      - local_variants
+      - local_var_labels
       parameters:
       - name: record_id
         in: path
@@ -262,13 +262,13 @@ paths:
         required: true
         schema:
           type: string
-      - name: variant_id
+      - name: var_label_id
         in: path
-        description: The id of the centralized metadata local variant
+        description: The id of the centralized metadata local var_label
         required: true
         schema:
           type: string
-      description: This endpoint returns value o a specific local variant.
+      description: This endpoint returns value o a specific local var_label.
       responses:
         '422':
           description: unsuccessful
@@ -279,9 +279,9 @@ paths:
               schema:
                 type: string
     delete:
-      summary: delete a local variant
+      summary: delete a local var_label
       tags:
-      - local_variants
+      - local_var_labels
       parameters:
       - name: record_id
         in: path
@@ -289,13 +289,13 @@ paths:
         required: true
         schema:
           type: string
-      - name: variant_id
+      - name: var_label_id
         in: path
-        description: The id of the centralized metadata local variant
+        description: The id of the centralized metadata local var_label
         required: true
         schema:
           type: string
-      description: This endpoint deletes a specific local variant.
+      description: This endpoint deletes a specific local var_label.
       responses:
         '422':
           description: unsuccessful
@@ -306,9 +306,9 @@ paths:
               schema:
                 type: string
     put:
-      summary: update a  variant
+      summary: update a  var_label
       tags:
-      - local_variants
+      - local_var_labels
       parameters:
       - name: record_id
         in: path
@@ -316,13 +316,13 @@ paths:
         required: true
         schema:
           type: string
-      - name: variant_id
+      - name: var_label_id
         in: path
-        description: The id of the centralized metadata local variant
+        description: The id of the centralized metadata local var_label
         required: true
         schema:
           type: string
-      description: This endpoint updates a local variant for specified record
+      description: This endpoint updates a local var_label for specified record
       responses:
         '422':
           description: unsuccessful
@@ -331,15 +331,15 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/LocalVariant"
+                "$ref": "#/components/schemas/LocalVarLabel"
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/LocalVariant"
+              "$ref": "#/components/schemas/LocalVarLabel"
             examples:
               default:
-                summary: update a  variant
+                summary: update a  var_label
                 value:
                   cm_local_var_label: Hello World
         required: true
@@ -510,7 +510,7 @@ components:
       type: array
       items:
         "$ref": "#/components/schemas/LocalNote"
-    LocalVariant:
+    LocalVarLabel:
       type: object
       required:
       - cm_local_var_label
@@ -519,10 +519,10 @@ components:
           type: integer
         cm_local_var_label:
           type: string
-    LocalVariants:
+    LocalVarLabels:
       type: array
       items:
-        "$ref": "#/components/schemas/LocalVariant"
+        "$ref": "#/components/schemas/LocalVarLabel"
     Record:
       type: object
       required:
