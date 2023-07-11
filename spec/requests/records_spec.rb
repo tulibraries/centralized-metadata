@@ -8,9 +8,9 @@ RSpec.describe "Records", type: :request do
     record = Record.first
     metadatum = LocalMetadatum.create(cm_local_pref_label: "test_pref")
     note = LocalNote.create(cm_local_note: "test_note")
-    variant = LocalVariant.create(cm_local_var_label: "test_var")
+    var_label = LocalVarLabel.create(cm_local_var_label: "test_var")
     metadatum.local_notes << note
-    metadatum.local_variants << variant
+    metadatum.local_var_labels << var_label
     record.local_metadatum = metadatum
   end
 
