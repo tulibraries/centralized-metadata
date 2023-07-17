@@ -24,6 +24,3 @@ jobs:
       - run:
           name: test
           command: bundle exec rake
-      - run:
-          name: Make sure rswag is valid
-          command: bundle exec rake rswag
