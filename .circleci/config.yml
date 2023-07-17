@@ -24,3 +24,9 @@ jobs:
       - run:
           name: test
           command: bundle exec rake
+      - run:
+          name: Make sure rswag is valid
+          command: bundle exec rake rswag
+      - run:
+          name: Check rswag build did not update anything.
+          command: if [[ $(git diff) ]]; then error 1; fi
