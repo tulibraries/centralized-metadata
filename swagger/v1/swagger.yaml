@@ -1,0 +1,782 @@
+---
+openapi: 3.0.1
+info:
+  title: Centralized Metadata Records
+  version: v1
+paths:
+  "/records/{record_id}/local_notes":
+    get:
+      summary: local_notes of a record
+      tags:
+      - local_notes
+      description: Returns a JSON array of local notes associated to a specific record.
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                no-notes:
+                  value: "[]"
+                a-note:
+                  value:
+                  - id: 1
+                    cm_local_note: foo
+                some-notes:
+                  value:
+                  - id: 1
+                    cm_local_note: foo
+                  - id: 2
+                    cm_local_note: bar
+    post:
+      summary: create a new note
+      tags:
+      - local_notes
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      description: This endpoint creates a new local note for specified record
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                some-notes:
+                  value:
+                  - id: 1
+                    cm_local_note: foo
+                  - id: 2
+                    cm_local_note: bar
+                a-note:
+                  value:
+                  - id: 1
+                    cm_local_note: foo
+              schema:
+                "$ref": "#/components/schemas/LocalNotes"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocalNote"
+            examples:
+              default:
+                summary: create a new note
+                value:
+                  cm_local_note: Hello World
+        required: true
+  "/records/{record_id}/local_notes/{note_id}":
+    get:
+      summary: show a local note
+      tags:
+      - local_notes
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        description: The id of the centralized metadata local note
+        required: true
+        schema:
+          type: string
+      description: This endpoint returns value o a specific local note.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      summary: delete a local note
+      tags:
+      - local_notes
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        description: The id of the centralized metadata local note
+        required: true
+        schema:
+          type: string
+      description: This endpoint deletes a specific local note.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      summary: update a  note
+      tags:
+      - local_notes
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        description: The id of the centralized metadata local note
+        required: true
+        schema:
+          type: string
+      description: This endpoint updates a local note for specified record
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocalNote"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocalNote"
+            examples:
+              default:
+                summary: update a  note
+                value:
+                  cm_local_note: Hello World
+        required: true
+  "/records/{record_id}/local_var_labels":
+    get:
+      summary: local_var_labels of a record
+      tags:
+      - local_var_labels
+      description: Returns a JSON array of local var_labels associated to a specific
+        record.
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                no-var_labels:
+                  value: "[]"
+                a-var_label:
+                  value:
+                  - id: 1
+                    cm_local_var_label: foo
+                some-var_labels:
+                  value:
+                  - id: 1
+                    cm_local_var_label: foo
+                  - id: 2
+                    cm_local_var_label: bar
+    post:
+      summary: create a new var_label
+      tags:
+      - local_var_labels
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      description: This endpoint creates a new local var_label for specified record
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                some-var_labels:
+                  value:
+                  - id: 1
+                    cm_local_var_label: foo
+                  - id: 2
+                    cm_local_var_label: bar
+                a-var_label:
+                  value:
+                  - id: 1
+                    cm_local_var_label: foo
+              schema:
+                "$ref": "#/components/schemas/LocalVarLabels"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocalVarLabel"
+            examples:
+              default:
+                summary: create a new var_label
+                value:
+                  cm_local_var_label: Hello World
+        required: true
+  "/records/{record_id}/local_var_labels/{var_label_id}":
+    get:
+      summary: show a local var_label
+      tags:
+      - local_var_labels
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: var_label_id
+        in: path
+        description: The id of the centralized metadata local var_label
+        required: true
+        schema:
+          type: string
+      description: This endpoint returns value o a specific local var_label.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      summary: delete a local var_label
+      tags:
+      - local_var_labels
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: var_label_id
+        in: path
+        description: The id of the centralized metadata local var_label
+        required: true
+        schema:
+          type: string
+      description: This endpoint deletes a specific local var_label.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      summary: update a  var_label
+      tags:
+      - local_var_labels
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the centralized metadata record
+        required: true
+        schema:
+          type: string
+      - name: var_label_id
+        in: path
+        description: The id of the centralized metadata local var_label
+        required: true
+        schema:
+          type: string
+      description: This endpoint updates a local var_label for specified record
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocalVarLabel"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocalVarLabel"
+            examples:
+              default:
+                summary: update a  var_label
+                value:
+                  cm_local_var_label: Hello World
+        required: true
+  "/records":
+    get:
+      summary: list records
+      tags:
+      - records
+      description: "This web service returns records in a JSON format. \n      The
+        pagination default is set to return 25 records at a time. If you would like
+        to change this,\n      add the parameter per_page=number_desired to the query
+        parameters."
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Records"
+    post:
+      summary: create record
+      tags:
+      - records
+      parameters: []
+      description: "This web service creates a new record. There are two methods for
+        adding records.\n\n      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc'
+        https://centralized-metadata-qa.k8s.temple.edu \n\n      Ingest with a rake
+        task: rake db:ingest[spec/fixtures/marc]."
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Record"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                marc_file:
+                  type: string
+                  format: binary
+                kind:
+                  type: string
+  "/records/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show record
+      tags:
+      - records
+      description: This web service returns an individual record in JSON format.
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Record"
+    patch:
+      summary: update record
+      tags:
+      - records
+      description: This web service updates a record. But just the specific fields
+        of the record "value" field. Use if you want to execute a partial update of
+        a record.
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '422':
+          description: unsuccessful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Record"
+            examples:
+              example1:
+                summary: update record
+                value:
+                  cm_id:
+                  - fst01423682
+                  cm_pref_label:
+                  - Abbreviations of titles
+                  cm_source_vocab:
+                  - lcgft
+                  cm_import_method:
+                  - MARC binary
+                  cm_filename:
+                  - TEUM_CNS_GNR.mrc
+                  cm_type:
+                  - genre
+        required: true
+        description: The value section of the centralized-metadata record
+    put:
+      summary: update record
+      tags:
+      - records
+      description: This web service updates a record.
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '422':
+          description: unsuccessful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Record"
+            examples:
+              example1:
+                summary: update record
+                value:
+                  cm_id:
+                  - fst01423682
+                  cm_pref_label:
+                  - Abbreviations of titles
+                  cm_source_vocab:
+                  - lcgft
+                  cm_import_method:
+                  - MARC binary
+                  cm_filename:
+                  - TEUM_CNS_GNR.mrc
+                  cm_type:
+                  - genre
+        required: true
+        description: The value section of the centralized-metadata record
+    delete:
+      summary: delete record
+      tags:
+      - records
+      description: This web service deletes a record.
+      responses:
+        '200':
+          description: successful
+servers:
+- url: https://centralized-metadata-qa.k8s.temple.edu
+- url: http://localhost:3000
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: centralized-metadata-qa.k8s.temple.edu
+components:
+  schemas:
+    LocalNote:
+      type: object
+      required:
+      - cm_local_note
+      properties:
+        id:
+          type: integer
+        cm_local_note:
+          type: string
+    LocalNotes:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LocalNote"
+    LocalVarLabel:
+      type: object
+      required:
+      - cm_local_var_label
+      properties:
+        id:
+          type: integer
+        cm_local_var_label:
+          type: string
+    LocalVarLabels:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LocalVarLabel"
+    Record:
+      type: object
+      required:
+      - cm_id
+      properties:
+        cm_id:
+          type: array
+          items:
+            type: string
+        cm_pref_label:
+          type: array
+          items:
+            type: string
+        cm_var_label:
+          type: array
+          items:
+            type: string
+        cm_source_vocab:
+          type: array
+          items:
+            type: string
+        cm_import_method:
+          type: array
+          items:
+            type: string
+        cm_filename:
+          type: array
+          items:
+            type: string
+        cm_type:
+          type: array
+          items:
+            type: string
+        cm_see_also:
+          type: array
+          items:
+            type: string
+        cm_lc_class:
+          type: array
+          items:
+            type: string
+        cm_narrower_term:
+          type: array
+          items:
+            type: string
+        cm_broader_term:
+          type: array
+          items:
+            type: string
+        cm_use_subject:
+          type: array
+          items:
+            type: string
+        cm_undiff_name:
+          type: array
+          items:
+            type: string
+        cm_birth_date:
+          type: array
+          items:
+            type: string
+        cm_death_date:
+          type: array
+          items:
+            type: string
+        cm_establishment_date:
+          type: array
+          items:
+            type: string
+        cm_termination_date:
+          type: array
+          items:
+            type: string
+        cm_start_period:
+          type: array
+          items:
+            type: string
+        cm_end_period:
+          type: array
+          items:
+            type: string
+        cm_place_of_birth:
+          type: array
+          items:
+            type: string
+        cm_place_of_death:
+          type: array
+          items:
+            type: string
+        cm_associated_country:
+          type: array
+          items:
+            type: string
+        cm_residencehq:
+          type: array
+          items:
+            type: string
+        cm_other_associated_place:
+          type: array
+          items:
+            type: string
+        cm_field_activity:
+          type: array
+          items:
+            type: string
+        cm_associated_group:
+          type: array
+          items:
+            type: string
+        cm_occupation:
+          type: array
+          items:
+            type: string
+        cm_gender:
+          type: array
+          items:
+            type: string
+        cm_type_family:
+          type: array
+          items:
+            type: string
+        cm_prom_member:
+          type: array
+          items:
+            type: string
+        cm_heredity_title:
+          type: array
+          items:
+            type: string
+        cm_associated_language:
+          type: array
+          items:
+            type: string
+        cm_fuller_name:
+          type: array
+          items:
+            type: string
+        cm_type_corporate_body:
+          type: array
+          items:
+            type: string
+        cm_type_jurisdiction:
+          type: array
+          items:
+            type: string
+        cm_other_designation:
+          type: array
+          items:
+            type: string
+        cm_title_person:
+          type: array
+          items:
+            type: string
+        cm_content_type:
+          type: array
+          items:
+            type: string
+        cm_form_work:
+          type: array
+          items:
+            type: string
+        cm_medium_performance:
+          type: array
+          items:
+            type: string
+        cm_solist:
+          type: array
+          items:
+            type: string
+        cm_doubling_instrument:
+          type: array
+          items:
+            type: string
+        cm_alternative_medium_performance:
+          type: array
+          items:
+            type: string
+        cm_original_key:
+          type: array
+          items:
+            type: string
+        cm_transposed_key:
+          type: array
+          items:
+            type: string
+        cm_music_num_designation:
+          type: array
+          items:
+            type: string
+        cm_audience_characteristics:
+          type: array
+          items:
+            type: string
+        cm_characteristics:
+          type: array
+          items:
+            type: string
+        cm_work_time_creation:
+          type: array
+          items:
+            type: string
+        cm_aggwork_time_creation:
+          type: array
+          items:
+            type: string
+        cm_work_language:
+          type: array
+          items:
+            type: string
+        cm_notmusic_format:
+          type: array
+          items:
+            type: string
+        cm_beginning_date_created:
+          type: array
+          items:
+            type: string
+        cm_ending_date_created:
+          type: array
+          items:
+            type: string
+        cm_place_origin_work:
+          type: array
+          items:
+            type: string
+        cm_series_pubdates:
+          type: array
+          items:
+            type: string
+        cm_series_num_peculiar:
+          type: array
+          items:
+            type: string
+        cm_series_num_ex:
+          type: array
+          items:
+            type: string
+        cm_series_placepub:
+          type: array
+          items:
+            type: string
+        cm_series_analysis:
+          type: array
+          items:
+            type: string
+        cm_series_tracing_practice:
+          type: array
+          items:
+            type: string
+        cm_series_classificaton_practice:
+          type: array
+          items:
+            type: string
+    Records:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Record"
