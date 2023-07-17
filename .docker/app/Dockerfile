@@ -21,6 +21,7 @@ RUN apk add -U --no-cache \
       libxslt-dev=1.1.38-r0 &&\
     bundle config set --local without "development test" && \
     bundle install --jobs=8 && \
+    bundle exec rake rswag && \
     find "$GEM_HOME" -name Gemfile.lock -exec rm "{}" \; && \
     rm -rf tmp/* && \
     apk del build-dependencies && \

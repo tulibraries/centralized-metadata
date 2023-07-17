@@ -36,3 +36,6 @@ centralized_metadata-test
 # sqlite3 artifact
 ./centralized_metadata
 centralized_metadata
+
+# Remove swagger build files.
+/swagger/*
