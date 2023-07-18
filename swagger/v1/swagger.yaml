@@ -343,6 +343,58 @@ paths:
                 value:
                   cm_local_var_label: Hello World
         required: true
+  "/marc_file/delete":
+    post:
+      summary: Delete matching records
+      tags:
+      - marc_file
+      parameters: []
+      description: This endpoint deletes records in the database that match records
+        in the posted marc file.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Records"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                marc_file:
+                  type: string
+                  format: binary
+                kind:
+                  type: string
+  "/marc_file/ids":
+    post:
+      summary: Get record ids
+      tags:
+      - marc_file
+      parameters: []
+      description: This endpoint processes a posted marc file and returns the ids
+        of the records defined in the marc file.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                marc_file:
+                  type: string
+                  format: binary
+                kind:
+                  type: string
   "/records":
     get:
       summary: list records

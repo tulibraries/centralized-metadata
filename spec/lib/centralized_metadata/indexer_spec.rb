@@ -50,4 +50,36 @@ RSpec.describe CentralizedMetadata::Indexer do
       end
     end
   end
+
+  describe "get_records" do
+    let(:records) { CentralizedMetadata::Indexer.get_records(filepath) }
+
+
+    context "given a filepath to a marc records" do
+      let(:filepath)  { "./spec/fixtures/marc/louis_armstrong.mrc" }
+
+      it "gets an array of records processed through config file" do
+        expect(records).to eq([
+          {"cm_id"=>["2043308"],
+           "cm_pref_label"=>["Armstrong, Louis, 1901-1971. prf"],
+           "cm_import_method"=>["MARC binary"],
+           "cm_filename"=>["louis_armstrong.mrc"],
+           "cm_type"=>["personal name"],
+           "cm_see_also"=>
+           ["Biographical and program notes by Stanley Dance ([2] p. : 1 port.) in container; personnel and original issue and matrix no. on container.",
+            "Louis Armstrong, trumpet and vocals, and his band."],
+            "cm_audience_characteristics"=>["discussion"],
+            "cm_characteristics"=>["discussion"],
+            "cm_notmusic_format"=>["discussion"]}])
+      end
+    end
+
+    context "filepath does not exist" do
+      let(:filepath) { "file/to/nowhere" }
+
+      it "should fail" do
+        expect { records }.to raise_error
+      end
+    end
+  end
 end
