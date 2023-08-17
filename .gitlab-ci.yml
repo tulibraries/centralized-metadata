@@ -42,9 +42,9 @@ build:
 
 scan:
   stage: scan
-  extends: .scanimage_high
-  variables:
-    THRESHOLD: 10
+  extends: .scanimage_extended
+  except:
+    - tags
 
 tag:
   stage: tag
