@@ -5,7 +5,7 @@ RSpec.describe "MarcFile", type: :request do
 
   path "/marc_file/delete" do
 
-    post("Delete matching records") do
+    post("delete records using MARC file") do
       tags "marc_file"
       consumes  "multipart/form-data"
       produces "application/json"
@@ -18,7 +18,7 @@ RSpec.describe "MarcFile", type: :request do
         }
       }
 
-      description "This endpoint deletes records in the database that match records in the posted marc file."
+      description "This web service deletes records in the Centralized Metadata Repository that match records from the posted MARC file."
 
       response(422, "unsuccessful") do
         let(:marc_file) { Rack::Test::UploadedFile.new(Rails.root.join("./spec/spec_helper.rb")) }
@@ -58,7 +58,7 @@ RSpec.describe "MarcFile", type: :request do
 
   path "/marc_file/ids" do
 
-    post("Get record ids") do
+    post("retrieve record ids from MARC file") do
       tags "marc_file"
       consumes  "multipart/form-data"
       produces "application/json"
@@ -71,7 +71,7 @@ RSpec.describe "MarcFile", type: :request do
         }
       }
 
-      description "This endpoint processes a posted marc file and returns the ids of the records defined in the marc file."
+      description "This web service processes a posted MARC file and returns the ids of the records defined in the MARC file."
 
       response(422, "unsuccessful") do
         let(:marc_file) { Rack::Test::UploadedFile.new(Rails.root.join("./spec/spec_helper.rb")) }
