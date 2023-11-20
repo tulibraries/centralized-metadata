@@ -4,10 +4,10 @@ require "swagger_helper"
 RSpec.describe "LocalNotes", type: :request do
 
   path "/records/{record_id}/local_notes" do
-    get("local_notes of a record") do
+    get("show local note fields") do
       tags "local_notes"
-      description "Returns a JSON array of local notes associated to a specific record."
-      parameter name: "record_id", in: :path, type: :string, description: "The id of the centralized metadata record", required: true
+      description "This web service retrieves local note field(s) (cm_local_note) associated with a Centralized Metadata Repository record, as a JSON array."
+      parameter name: "record_id", in: :path, type: :string, description: "The id of the Centralized Metadata Repository record", required: true
 
       response(422, "unsuccessful") do
         let(:record_id) { "not-a-record" }
@@ -60,18 +60,18 @@ RSpec.describe "LocalNotes", type: :request do
       end
     end
 
-    post("create a new note") do
+    post("create local note fields") do
       tags "local_notes"
       consumes  "application/json"
 
 
-      parameter name: "record_id", in: :path, type: :string, description: "The id of the centralized metadata record", required: true
+      parameter name: "record_id", in: :path, type: :string, description: "The id of the Centralized Metadata Repository record", required: true
       parameter name: :local_note, in: :body, schema: { "$ref" => "#/components/schemas/LocalNote" }, required: true
 
       request_body_example name: "default", value: { cm_local_note: "Hello World" }
       produces "application/json"
 
-      description "This endpoint creates a new local note for specified record"
+      description "This endpoint creates local note field(s) (cm_local_note) for a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
         let(:record_id) { "not-a-record" }
@@ -122,13 +122,13 @@ RSpec.describe "LocalNotes", type: :request do
   end
 
   path("/records/{record_id}/local_notes/{note_id}") do
-    get("show a local note") do
+    get("show local note field") do
       tags "local_notes"
-      parameter name: "record_id", in: :path, type: :string, description: "The id of the centralized metadata record", required: true
-      parameter name: "note_id", in: :path, type: :string, description: "The id of the centralized metadata local note", required: true
+      parameter name: "record_id", in: :path, type: :string, description: "The id of the Centralized Metadata Repository record", required: true
+      parameter name: "note_id", in: :path, type: :string, description: "The id of the local note field", required: true
       produces "application/json"
 
-      description "This endpoint returns value o a specific local note."
+      description "This web service retrieves the value of a local note field (cm_local_note) from a Centralized Metadata Repository record. ."
       response(422, "unsuccessful") do
 
         context "Record does not exist" do
@@ -169,13 +169,73 @@ RSpec.describe "LocalNotes", type: :request do
       end
     end
 
-    delete("delete a local note") do
+    put("update a local note field") do
       tags "local_notes"
-      parameter name: "record_id", in: :path, type: :string, description: "The id of the centralized metadata record", required: true
-      parameter name: "note_id", in: :path, type: :string, description: "The id of the centralized metadata local note", required: true
+      consumes  "application/json"
+
+
+      parameter name: "record_id", in: :path, type: :string, description: "The id of the Centralized Metadata Repository record", required: true
+      parameter name: "note_id", in: :path, type: :string, description: "The id of the local note field", required: true
+
+      parameter name: :local_note, in: :body, schema: { "$ref" => "#/components/schemas/LocalNote" }, required: true
+
       produces "application/json"
 
-      description "This endpoint deletes a specific local note."
+      description "This web service updates a local note field (cm_local_note) in a Centralized Metadata Repository record. "
+
+      response(422, "unsuccessful") do
+
+        context "Record does not exist" do
+          let(:note_id) { 1 }
+          let(:record_id) { "not-a-record" }
+          let(:local_note) { { cm_local_note: "foo"} }
+
+          run_test!
+        end
+
+        context "Record has no previous notes" do
+          let (:note_id ) { 1 }
+          let (:record_id) { "create-a-local-note" }
+          let (:notes) { nil }
+          let (:local_note) { { cm_local_note: "foo"} }
+
+          run_test!
+        end
+      end
+
+      response(200, "successful") do
+
+        before do
+          make_local_notes_record(record_id, notes)
+        end
+
+        request_body_example name: "default", value: { cm_local_note: "Hello World" }
+
+        schema "$ref" => "#/components/schemas/LocalNote"
+
+
+        context "Record has a previous notes" do
+          let (:note_id) { 1 }
+          let (:record_id) { "create-a-local-note-2" }
+          let (:notes) { ["bar"] }
+          let (:local_note) { { cm_local_note: "foo"} }
+
+          run_test! do | response|
+
+            data = JSON.parse(response.body)
+            expect(data).to eq({"id" => 1, "cm_local_note" => "foo" })
+          end
+        end
+      end
+    end
+
+    delete("delete a local note field") do
+      tags "local_notes"
+      parameter name: "record_id", in: :path, type: :string, description: "The id of the Centralized Metadata Repository record", required: true
+      parameter name: "note_id", in: :path, type: :string, description: "The id of the local note field", required: true
+      produces "application/json"
+
+      description "This web service deletes a local note field (cm_local_note) from a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
 
@@ -224,65 +284,6 @@ RSpec.describe "LocalNotes", type: :request do
 
     end
 
-    put("update a  note") do
-      tags "local_notes"
-      consumes  "application/json"
-
-
-      parameter name: "record_id", in: :path, type: :string, description: "The id of the centralized metadata record", required: true
-      parameter name: "note_id", in: :path, type: :string, description: "The id of the centralized metadata local note", required: true
-
-      parameter name: :local_note, in: :body, schema: { "$ref" => "#/components/schemas/LocalNote" }, required: true
-
-      produces "application/json"
-
-      description "This endpoint updates a local note for specified record"
-
-      response(422, "unsuccessful") do
-
-        context "Record does not exist" do
-          let(:note_id) { 1 }
-          let(:record_id) { "not-a-record" }
-          let(:local_note) { { cm_local_note: "foo"} }
-
-          run_test!
-        end
-
-        context "Record has no previous notes" do
-          let (:note_id ) { 1 }
-          let (:record_id) { "create-a-local-note" }
-          let (:notes) { nil }
-          let (:local_note) { { cm_local_note: "foo"} }
-
-          run_test!
-        end
-      end
-
-      response(200, "successful") do
-
-        before do
-          make_local_notes_record(record_id, notes)
-        end
-
-        request_body_example name: "default", value: { cm_local_note: "Hello World" }
-
-        schema "$ref" => "#/components/schemas/LocalNote"
-
-
-        context "Record has a previous notes" do
-          let (:note_id) { 1 }
-          let (:record_id) { "create-a-local-note-2" }
-          let (:notes) { ["bar"] }
-          let (:local_note) { { cm_local_note: "foo"} }
-
-          run_test! do | response|
-
-            data = JSON.parse(response.body)
-            expect(data).to eq({"id" => 1, "cm_local_note" => "foo" })
-          end
-        end
-      end
-    end
   end
 
   def make_local_notes_record(record_id, notes = [])

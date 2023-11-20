@@ -1,19 +1,20 @@
 ---
 openapi: 3.0.1
 info:
-  title: Centralized Metadata Records
+  title: Centralized Metadata Repository
   version: v1
 paths:
   "/records/{record_id}/local_notes":
     get:
-      summary: local_notes of a record
+      summary: show local note fields
       tags:
       - local_notes
-      description: Returns a JSON array of local notes associated to a specific record.
+      description: This web service retrieves local note field(s) (cm_local_note)
+        associated with a Centralized Metadata Repository record, as a JSON array.
       parameters:
       - name: record_id
         in: path
-        description: The id of the centralized metadata record
+        description: The id of the Centralized Metadata Repository record
         required: true
         schema:
           type: string
@@ -38,17 +39,18 @@ paths:
                   - id: 2
                     cm_local_note: bar
     post:
-      summary: create a new note
+      summary: create local note fields
       tags:
       - local_notes
       parameters:
       - name: record_id
         in: path
-        description: The id of the centralized metadata record
+        description: The id of the Centralized Metadata Repository record
         required: true
         schema:
           type: string
-      description: This endpoint creates a new local note for specified record
+      description: This endpoint creates local note field(s) (cm_local_note) for a
+        Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -76,56 +78,30 @@ paths:
               "$ref": "#/components/schemas/LocalNote"
             examples:
               default:
-                summary: create a new note
+                summary: create local note fields
                 value:
                   cm_local_note: Hello World
         required: true
   "/records/{record_id}/local_notes/{note_id}":
     get:
-      summary: show a local note
+      summary: show local note field
       tags:
       - local_notes
       parameters:
       - name: record_id
         in: path
-        description: The id of the centralized metadata record
+        description: The id of the Centralized Metadata Repository record
         required: true
         schema:
           type: string
       - name: note_id
         in: path
-        description: The id of the centralized metadata local note
+        description: The id of the local note field
         required: true
         schema:
           type: string
-      description: This endpoint returns value o a specific local note.
-      responses:
-        '422':
-          description: unsuccessful
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: string
-    delete:
-      summary: delete a local note
-      tags:
-      - local_notes
-      parameters:
-      - name: record_id
-        in: path
-        description: The id of the centralized metadata record
-        required: true
-        schema:
-          type: string
-      - name: note_id
-        in: path
-        description: The id of the centralized metadata local note
-        required: true
-        schema:
-          type: string
-      description: This endpoint deletes a specific local note.
+      description: This web service retrieves the value of a local note field (cm_local_note)
+        from a Centralized Metadata Repository record. .
       responses:
         '422':
           description: unsuccessful
@@ -136,23 +112,24 @@ paths:
               schema:
                 type: string
     put:
-      summary: update a  note
+      summary: update a local note field
       tags:
       - local_notes
       parameters:
       - name: record_id
         in: path
-        description: The id of the centralized metadata record
+        description: The id of the Centralized Metadata Repository record
         required: true
         schema:
           type: string
       - name: note_id
         in: path
-        description: The id of the centralized metadata local note
+        description: The id of the local note field
         required: true
         schema:
           type: string
-      description: This endpoint updates a local note for specified record
+      description: 'This web service updates a local note field (cm_local_note) in
+        a Centralized Metadata Repository record. '
       responses:
         '422':
           description: unsuccessful
@@ -169,21 +146,50 @@ paths:
               "$ref": "#/components/schemas/LocalNote"
             examples:
               default:
-                summary: update a  note
+                summary: update a local note field
                 value:
                   cm_local_note: Hello World
         required: true
-  "/records/{record_id}/local_var_labels":
-    get:
-      summary: local_var_labels of a record
+    delete:
+      summary: delete a local note field
       tags:
-      - local_var_labels
-      description: Returns a JSON array of local var_labels associated to a specific
-        record.
+      - local_notes
       parameters:
       - name: record_id
         in: path
-        description: The id of the centralized metadata record
+        description: The id of the Centralized Metadata Repository record
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        description: The id of the local note field
+        required: true
+        schema:
+          type: string
+      description: This web service deletes a local note field (cm_local_note) from
+        a Centralized Metadata Repository record.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
+  "/records/{record_id}/local_var_labels":
+    get:
+      summary: show local variant label fields
+      tags:
+      - local_var_labels
+      description: This web service retrieves the local variant label fields (cm_local_var_label)
+        associated to a Centralized Metadata Repository record, formatted as a JSON
+        array.
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the Centralized Metadata Repository record
         required: true
         schema:
           type: string
@@ -208,17 +214,18 @@ paths:
                   - id: 2
                     cm_local_var_label: bar
     post:
-      summary: create a new var_label
+      summary: create local variant label fields
       tags:
       - local_var_labels
       parameters:
       - name: record_id
         in: path
-        description: The id of the centralized metadata record
+        description: The id of the Centralized Metadata Repository record
         required: true
         schema:
           type: string
-      description: This endpoint creates a new local var_label for specified record
+      description: The web service creates local variant label field(s) (cm_local_var_label)
+        for a Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -246,56 +253,30 @@ paths:
               "$ref": "#/components/schemas/LocalVarLabel"
             examples:
               default:
-                summary: create a new var_label
+                summary: create local variant label fields
                 value:
                   cm_local_var_label: Hello World
         required: true
   "/records/{record_id}/local_var_labels/{var_label_id}":
     get:
-      summary: show a local var_label
+      summary: show local variant label field
       tags:
       - local_var_labels
       parameters:
       - name: record_id
         in: path
-        description: The id of the centralized metadata record
+        description: The id of the Centralized Metadata Repository record
         required: true
         schema:
           type: string
       - name: var_label_id
         in: path
-        description: The id of the centralized metadata local var_label
+        description: The id of the local variant label field
         required: true
         schema:
           type: string
-      description: This endpoint returns value o a specific local var_label.
-      responses:
-        '422':
-          description: unsuccessful
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: string
-    delete:
-      summary: delete a local var_label
-      tags:
-      - local_var_labels
-      parameters:
-      - name: record_id
-        in: path
-        description: The id of the centralized metadata record
-        required: true
-        schema:
-          type: string
-      - name: var_label_id
-        in: path
-        description: The id of the centralized metadata local var_label
-        required: true
-        schema:
-          type: string
-      description: This endpoint deletes a specific local var_label.
+      description: This web service retrieves the value of a local variant label field
+        (cm_local_var_label) in a Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -306,23 +287,24 @@ paths:
               schema:
                 type: string
     put:
-      summary: update a  var_label
+      summary: update local variant label field
       tags:
       - local_var_labels
       parameters:
       - name: record_id
         in: path
-        description: The id of the centralized metadata record
+        description: The id of the Centralized Metadata Repository record
         required: true
         schema:
           type: string
       - name: var_label_id
         in: path
-        description: The id of the centralized metadata local var_label
+        description: The id of the local variant label field
         required: true
         schema:
           type: string
-      description: This endpoint updates a local var_label for specified record
+      description: This web service updates the value of a local variant label field
+        (cm_local_var_label) in a Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -339,18 +321,46 @@ paths:
               "$ref": "#/components/schemas/LocalVarLabel"
             examples:
               default:
-                summary: update a  var_label
+                summary: update local variant label field
                 value:
                   cm_local_var_label: Hello World
         required: true
+    delete:
+      summary: delete local variant label field
+      tags:
+      - local_var_labels
+      parameters:
+      - name: record_id
+        in: path
+        description: The id of the Centralized Metadata Repository record
+        required: true
+        schema:
+          type: string
+      - name: var_label_id
+        in: path
+        description: The id of the local variant label field
+        required: true
+        schema:
+          type: string
+      description: This web service deletes a local variant label field (cm_local_var_label)
+        in a Centralized Metadata Repository record.
+      responses:
+        '422':
+          description: unsuccessful
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: string
   "/marc_file/delete":
     post:
-      summary: Delete matching records
+      summary: delete records using MARC file
       tags:
       - marc_file
       parameters: []
-      description: This endpoint deletes records in the database that match records
-        in the posted marc file.
+      description: This web service deletes records in the Centralized Metadata Repository
+        that match records from the posted MARC file.
       responses:
         '422':
           description: unsuccessful
@@ -373,12 +383,12 @@ paths:
                   type: string
   "/marc_file/ids":
     post:
-      summary: Get record ids
+      summary: retrieve record ids from MARC file
       tags:
       - marc_file
       parameters: []
-      description: This endpoint processes a posted marc file and returns the ids
-        of the records defined in the marc file.
+      description: This web service processes a posted MARC file and returns the ids
+        of the records defined in the MARC file.
       responses:
         '422':
           description: unsuccessful
@@ -400,10 +410,10 @@ paths:
       summary: list records
       tags:
       - records
-      description: "This web service returns records in a JSON format. \n      The
-        pagination default is set to return 25 records at a time. If you would like
-        to change this,\n      add the parameter per_page=number_desired to the query
-        parameters."
+      description: This web service retrieves a list of the Centralized Metadata Repository
+        records in a JSON format. The pagination default is set to return 25 records
+        at a time. If you would like to change this, add the parameter per_page=number_desired
+        to the query parameters.
       responses:
         '200':
           description: successful
@@ -416,10 +426,11 @@ paths:
       tags:
       - records
       parameters: []
-      description: "This web service creates a new record. There are two methods for
-        adding records.\n\n      Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc'
-        https://centralized-metadata-qa.k8s.temple.edu \n\n      Ingest with a rake
-        task: rake db:ingest[spec/fixtures/marc]."
+      description: "This web service creates Centralized Metadata Repository records
+        from a MARC binary file. There are two methods for adding records. \n      Using
+        a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc'
+        https://centralized-metadata-qa.k8s.temple.edu\n      Ingest with a rake task:
+        rake db:ingest[spec/fixtures/marc]."
       responses:
         '200':
           description: successful
@@ -450,7 +461,8 @@ paths:
       summary: show record
       tags:
       - records
-      description: This web service returns an individual record in JSON format.
+      description: This web service retreives a Centralized Metadata Repository record
+        in a JSON format.
       responses:
         '200':
           description: successful
@@ -458,47 +470,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Record"
-    patch:
-      summary: update record
-      tags:
-      - records
-      description: This web service updates a record. But just the specific fields
-        of the record "value" field. Use if you want to execute a partial update of
-        a record.
-      parameters: []
-      responses:
-        '200':
-          description: successful
-        '422':
-          description: unsuccessful
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/Record"
-            examples:
-              example1:
-                summary: update record
-                value:
-                  cm_id:
-                  - fst01423682
-                  cm_pref_label:
-                  - Abbreviations of titles
-                  cm_source_vocab:
-                  - lcgft
-                  cm_import_method:
-                  - MARC binary
-                  cm_filename:
-                  - TEUM_CNS_GNR.mrc
-                  cm_type:
-                  - genre
-        required: true
-        description: The value section of the centralized-metadata record
     put:
       summary: update record
       tags:
       - records
-      description: This web service updates a record.
+      description: This web service updates a Centralized Metadata Repository record
+        as an entire resource from a MARC binary file.
       parameters: []
       responses:
         '200':
@@ -527,12 +504,48 @@ paths:
                   cm_type:
                   - genre
         required: true
-        description: The value section of the centralized-metadata record
+        description: The value section of the Centralized Metadata Repository record
+    patch:
+      summary: update record
+      tags:
+      - records
+      description: This web service updates a Centralized Metadata Repository record
+        with partial data, restricted to the specific fields. Use if you want to execute
+        a partial update of a record.
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '422':
+          description: unsuccessful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Record"
+            examples:
+              example1:
+                summary: update record
+                value:
+                  cm_id:
+                  - fst01423682
+                  cm_pref_label:
+                  - Abbreviations of titles
+                  cm_source_vocab:
+                  - lcgft
+                  cm_import_method:
+                  - MARC binary
+                  cm_filename:
+                  - TEUM_CNS_GNR.mrc
+                  cm_type:
+                  - genre
+        required: true
+        description: The value section of the Centralized Metadata Repository record
     delete:
       summary: delete record
       tags:
       - records
-      description: This web service deletes a record.
+      description: This web service deletes a Centralized Metadata Repository record.
       responses:
         '200':
           description: successful
@@ -549,32 +562,6 @@ servers:
       default: centralized-metadata-qa.k8s.temple.edu
 components:
   schemas:
-    LocalNote:
-      type: object
-      required:
-      - cm_local_note
-      properties:
-        id:
-          type: integer
-        cm_local_note:
-          type: string
-    LocalNotes:
-      type: array
-      items:
-        "$ref": "#/components/schemas/LocalNote"
-    LocalVarLabel:
-      type: object
-      required:
-      - cm_local_var_label
-      properties:
-        id:
-          type: integer
-        cm_local_var_label:
-          type: string
-    LocalVarLabels:
-      type: array
-      items:
-        "$ref": "#/components/schemas/LocalVarLabel"
     Record:
       type: object
       required:
@@ -832,3 +819,29 @@ components:
       type: array
       items:
         "$ref": "#/components/schemas/Record"
+    LocalNote:
+      type: object
+      required:
+      - cm_local_note
+      properties:
+        id:
+          type: integer
+        cm_local_note:
+          type: string
+    LocalNotes:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LocalNote"
+    LocalVarLabel:
+      type: object
+      required:
+      - cm_local_var_label
+      properties:
+        id:
+          type: integer
+        cm_local_var_label:
+          type: string
+    LocalVarLabels:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LocalVarLabel"

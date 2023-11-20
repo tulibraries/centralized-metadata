@@ -19,7 +19,7 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'Centralized Metadata Records',
+        title: 'Centralized Metadata Repository',
         version: 'v1'
       },
       paths: {},
@@ -49,6 +49,20 @@ RSpec.configure do |config|
 
         components: {
           schemas: {
+            Record: {
+              type: "object",
+              required: %w(cm_id),
+              properties: CentralizedMetadata::Indexer.fields.reduce({}) { |acc, f|
+                acc.merge("#{f}": {
+                  type: "array",
+                  items: { type: "string" },
+                })
+              }
+            },
+            Records: {
+              type: "array",
+              items: { "$ref" => "#/components/schemas/Record" }
+            },
             LocalNote: {
               type: "object",
               required: ["cm_local_note"],
@@ -66,20 +80,6 @@ RSpec.configure do |config|
             LocalVarLabels: {
               type: "array",
               items: { "$ref" => "#/components/schemas/LocalVarLabel" }
-            },
-            Record: {
-              type: "object",
-              required: %w(cm_id),
-              properties: CentralizedMetadata::Indexer.fields.reduce({}) { |acc, f|
-                acc.merge("#{f}": {
-                  type: "array",
-                  items: { type: "string" },
-                })
-              }
-            },
-            Records: {
-              type: "array",
-              items: { "$ref" => "#/components/schemas/Record" }
             },
           }
         }
