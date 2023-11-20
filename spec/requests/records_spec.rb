@@ -18,7 +18,7 @@ RSpec.describe "Records", type: :request do
     get('list records') do
       tags 'records'
       produces "application/json"
-      description "This web service retrieves a list of the Centralized Metadata Repository records in a JSON format. The pagination default is set to return 25 records at a time. If you would like to change this, add the parameter per_page=number_desired to the query parameters."
+      description "This web service retrieves a list of the Centralized Metadata Repository records in a JSON format. The pagination default is set to return 25 records at a time. If you would like to change this, add the parameter per_page=number_desired to the query parameters. This service also takes a 'page' parameter."
       response(200, 'successful') do        
         schema "$ref" => "#/components/schemas/Records"
 
@@ -44,7 +44,7 @@ RSpec.describe "Records", type: :request do
       end
     end
 
-    post('create record') do
+    post('creates records') do
       tags 'records'
       consumes  'multipart/form-data'
       produces 'application/json'
@@ -62,7 +62,7 @@ RSpec.describe "Records", type: :request do
       Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metadata-qa.k8s.temple.edu
       Ingest with a rake task: rake db:ingest[spec/fixtures/marc]."
       response(200, 'successful') do
-        schema "$ref" => "#/components/schemas/Record"
+        schema "$ref" => "#/components/schemas/Records"
 
         it "returns http success" do
           expect(response).to have_http_status(:success)
