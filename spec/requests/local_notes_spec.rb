@@ -71,7 +71,7 @@ RSpec.describe "LocalNotes", type: :request do
       request_body_example name: "default", value: { cm_local_note: "Hello World" }
       produces "application/json"
 
-      description "This endpoint creates local note field(s) (cm_local_note) for a Centralized Metadata Repository record."
+      description "This web service creates local note field(s) (cm_local_note) for a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
         let(:record_id) { "not-a-record" }
@@ -169,7 +169,7 @@ RSpec.describe "LocalNotes", type: :request do
       end
     end
 
-    put("update a local note field") do
+    put("update local note field") do
       tags "local_notes"
       consumes  "application/json"
 
@@ -229,7 +229,7 @@ RSpec.describe "LocalNotes", type: :request do
       end
     end
 
-    delete("delete a local note field") do
+    delete("delete local note field") do
       tags "local_notes"
       parameter name: "record_id", in: :path, type: :string, description: "The id of the Centralized Metadata Repository record", required: true
       parameter name: "note_id", in: :path, type: :string, description: "The id of the local note field", required: true

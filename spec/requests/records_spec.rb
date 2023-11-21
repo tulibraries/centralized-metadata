@@ -44,7 +44,7 @@ RSpec.describe "Records", type: :request do
       end
     end
 
-    post('creates records') do
+    post('create records') do
       tags 'records'
       consumes  'multipart/form-data'
       produces 'application/json'
