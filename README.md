@@ -1,24 +1,37 @@
-# Centralized Metadata
+# Centralized Metadata Repository
 
-## Uploading files
+An API built with Rails that stores name authority records with corresponding local metadata.
+
+See also https://github.com/tulibraries/centralized-metadata-dags. 
+
+## System Requirements 
+
+TO DO
+
+## Getting Started 
+
+TO DO
+
+## Creating records with MARC files
+
+### Option 1: Use the API controller
 
 Use curl to upload files to a running instance of the application
 
-Example:
+Example 
 
-
-### Using the API controller
 ```
 curl -F "marc_file=@spec/fixtures/marc/louis_armstrong.mrc" https://centralized-metadata-qa.k8s.temple.edu/records
-
 ```
 
-### Using the rake task
+### Option 2: Use the rake task
+
+Individual file
 ```
 rake  db:ingest[spec/fixtures/marc/louis_armstrong.mrc]
 ```
 
-Or pass in a directory to ingest all *.mrc content inside said directory:
+File directory
 
 ```
 rake  db:ingest[spec/fixtures/marc]
@@ -28,6 +41,4 @@ rake  db:ingest[spec/fixtures/marc]
 
 This API uses [Rswag](https://github.com/rswag/rswag) to generate swagger documentation.  
 
-Existing documentation can be found in spec/requests/records_spec.rb. If you need to edit this file, be sure to run the `bundle exec rails rswag` command to run the updates.
-
-Do not update the swagger.yaml file by hand.  Use swagger tests to create it and also test the API.
+Use Swagger tests in spec/requests to describe and test the API operations. Run the `bundle exec rails rswag` command to generate and update the swagger.yaml file based on the tests. Do not update the swagger.yaml file directly.

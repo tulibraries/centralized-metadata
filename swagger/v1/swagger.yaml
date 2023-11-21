@@ -49,8 +49,8 @@ paths:
         required: true
         schema:
           type: string
-      description: This endpoint creates local note field(s) (cm_local_note) for a
-        Centralized Metadata Repository record.
+      description: This web service creates local note field(s) (cm_local_note) for
+        a Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -112,7 +112,7 @@ paths:
               schema:
                 type: string
     put:
-      summary: update a local note field
+      summary: update local note field
       tags:
       - local_notes
       parameters:
@@ -146,12 +146,12 @@ paths:
               "$ref": "#/components/schemas/LocalNote"
             examples:
               default:
-                summary: update a local note field
+                summary: update local note field
                 value:
                   cm_local_note: Hello World
         required: true
     delete:
-      summary: delete a local note field
+      summary: delete local note field
       tags:
       - local_notes
       parameters:
@@ -422,7 +422,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Records"
     post:
-      summary: creates records
+      summary: create records
       tags:
       - records
       parameters: []
