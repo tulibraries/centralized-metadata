@@ -10,7 +10,7 @@ class CentralizedMetadata::Indexer
     filepath = "./spec/fixtures/marc" if ["yes", "true", true].include?(ENV["CM_USE_FIXTURES"])
 
     if File.directory?(filepath)
-      Dir.glob("#{filepath}/*.mrc").each { |f|
+      Dir.glob("#{filepath}/*").each { |f|
         get_indexer(filepath, options)
           .process(f)
       }
