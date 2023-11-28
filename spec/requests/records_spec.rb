@@ -2,8 +2,10 @@ require 'rails_helper'
 require 'swagger_helper'
 
 RSpec.describe "Records", type: :request do
-  before do
-    file = fixture_file_upload("louis_armstrong.mrc")
+
+  before(:each) do |test|
+    fixture_file = test.metadata[:multi_records] ? "TEUMGNRN.241" : "louis_armstrong.mrc"
+    file = fixture_file_upload(fixture_file)
     post "/records", params: { marc_file: file }
     record = Record.first
     metadatum = LocalMetadatum.create(cm_local_pref_label: "test_pref")
@@ -12,6 +14,7 @@ RSpec.describe "Records", type: :request do
     metadatum.local_notes << note
     metadatum.local_var_labels << var_label
     record.local_metadatum = metadatum
+    post "/records", params: { marc_file: file }
   end
 
   path '/records' do
@@ -19,10 +22,22 @@ RSpec.describe "Records", type: :request do
       tags 'records'
       produces "application/json"
       description "This web service retrieves a list of the Centralized Metadata Repository records in a JSON format. The pagination default is set to return 25 records at a time. If you would like to change this, add the parameter per_page=number_desired to the query parameters. This service also takes a 'page' parameter."
+      parameter name: "page",
+                in: :query,
+                type: :string,
+                description: 'page number',
+                required: false
+      parameter name: "per_page",
+                in: :query,
+                type: :string,
+                description: 'number of records per page',
+                required: false
+
       response(200, 'successful') do        
         schema "$ref" => "#/components/schemas/Records"
-
-        let(:record) { JSON.parse(response.body).first }
+ 
+        let(:records) { JSON.parse(response.body) }
+        let(:record) { records.first }
 
         run_test!
 
@@ -38,6 +53,15 @@ RSpec.describe "Records", type: :request do
         it "gets records that contain a cm_filename" do
           expect(record).to have_key("cm_filename")
           expect(record["cm_filename"]).to eq(["louis_armstrong.mrc"])
+        end
+
+        it "paginates per default value when no param passed", :multi_records do
+          expect(records.size).to eq(25)
+        end
+
+        it "paginates results according to per_page value", :multi_records do
+          get "/records?page=2&per_page=10"
+          expect(records.size).to eq(10)
         end
       end
     end
@@ -55,7 +79,6 @@ RSpec.describe "Records", type: :request do
           kind: { type: :string }
         }
       }
-
 
       description "This web service creates Centralized Metadata Repository records from a MARC binary file. There are two methods for adding records. 
       Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metadata-qa.k8s.temple.edu
@@ -102,6 +125,7 @@ RSpec.describe "Records", type: :request do
 
         it "gets a record that contains a cm_updated_at and cm_created_at value " do
           record = JSON.parse(response.body)
+
           expect(record).to have_key("cm_created_at")
           expect(record).to have_key("cm_updated_at")
           expect(record.dig("local_metadatum", "cm_local_pref_label")).to eq("test_pref")
