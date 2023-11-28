@@ -429,6 +429,19 @@ paths:
         records in a JSON format. The pagination default is set to return 25 records
         at a time. If you would like to change this, add the parameter per_page=number_desired
         to the query parameters. This service also takes a 'page' parameter.
+      parameters:
+      - name: page
+        in: query
+        description: page number
+        required: false
+        schema:
+          type: string
+      - name: per_page
+        in: query
+        description: number of records per page
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
