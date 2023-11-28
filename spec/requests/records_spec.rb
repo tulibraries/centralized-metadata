@@ -60,7 +60,7 @@ RSpec.describe "Records", type: :request do
         end
 
         it "paginates results according to per_page value", :multi_records do
-          get "/records?per_page=10"
+          get "/records?page=2&per_page=10"
           expect(records.size).to eq(10)
         end
       end
