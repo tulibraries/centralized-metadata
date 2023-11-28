@@ -366,6 +366,15 @@ paths:
           description: unsuccessful
         '200':
           description: successful
+          headers:
+            X-CM-Records-Processed-Count:
+              schema:
+                type: integer
+              description: The number of records processed.
+            X-CM-Total-Records-Count:
+              schema:
+                type: integer
+              description: The total number of records int the database.
           content:
             application/json:
               schema:
@@ -394,6 +403,12 @@ paths:
           description: unsuccessful
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
       requestBody:
         content:
           multipart/form-data:
@@ -434,6 +449,15 @@ paths:
       responses:
         '200':
           description: successful
+          headers:
+            X-CM-Records-Processed-Count:
+              schema:
+                type: integer
+              description: The number of records processed.
+            X-CM-Total-Records-Count:
+              schema:
+                type: integer
+              description: The total number of records int the database.
           content:
             application/json:
               schema:
@@ -549,6 +573,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Record"
 servers:
 - url: https://centralized-metadata-qa.k8s.temple.edu
 - url: http://localhost:3000
@@ -564,8 +592,6 @@ components:
   schemas:
     Record:
       type: object
-      required:
-      - cm_id
       properties:
         cm_id:
           type: array
@@ -815,6 +841,17 @@ components:
           type: array
           items:
             type: string
+        cm_created_at:
+          type: string
+          format: date
+        cm_updated_at:
+          type: string
+          format: date
+        local_metadatum:
+          "$ref": "#/components/schemas/LocalMetadatum"
+          x-nullable: true
+      required:
+      - cm_id
     Records:
       type: array
       items:
@@ -845,3 +882,12 @@ components:
       type: array
       items:
         "$ref": "#/components/schemas/LocalVarLabel"
+    LocalMetadatum:
+      type: object
+      properties:
+        local_notes:
+          type: array
+          "$ref": "#/components/schemas/LocalNotes"
+        local_var_labels:
+          type: array
+          "$ref": "#/components/schemas/LocalVarLabels"

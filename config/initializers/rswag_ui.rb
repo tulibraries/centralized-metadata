@@ -14,3 +14,21 @@ Rswag::Ui.configure do |c|
   # c.basic_auth_enabled = true
   # c.basic_auth_credentials 'username', 'password'
 end
+
+# TODO: Remove once following issue gets resolved and we can configure ourselves without this monkey-patch.
+# https://github.com/rswag/rswag/issues/704
+module ResponseValidator
+  def validation_options_from(metadata)
+    is_strict = !!metadata.fetch(
+      :swagger_strict_schema_validation,
+      @config.swagger_strict_schema_validation
+    )
+
+    {
+      struct: is_strict,
+      noAdditionalProperties: true
+    }
+  end
+end
+
+Rswag::Specs::ResponseValidator.prepend ResponseValidator

@@ -311,7 +311,6 @@ DEPENDENCIES
   rake
   rspec-rails
   rswag
-  rswag-specs
   sqlite3
   traject
   tzinfo-data

@@ -1,13 +1,18 @@
 require "centralized_metadata"
 
 class MarcFileController < ApplicationController
+
+  include TotalRecordsCountHeader
+  include RecordsProcessedCountHeader
+
   rescue_from Exception do |exception|
     render json: exception, status: :unprocessable_entity
   end
 
   def delete
     ids = get_ids(params)
-    render json: Record.where(id: ids).destroy_all
+    @records = Record.where(id: ids).destroy_all
+    render json: @records
   end
 
   def ids
