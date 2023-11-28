@@ -47,17 +47,23 @@ RSpec.configure do |config|
           }
         }],
 
+                #The property '#/0' contained undefined properties: 'cm_created_at, cm_updated_at, local_metadatum'
         components: {
           schemas: {
             Record: {
               type: "object",
-              required: %w(cm_id),
               properties: CentralizedMetadata::Indexer.fields.reduce({}) { |acc, f|
                 acc.merge("#{f}": {
                   type: "array",
                   items: { type: "string" },
                 })
-              }
+              }.merge({
+                "cm_created_at": { type: "string", format: "date" },
+                "cm_updated_at": { type: "string", format: "date" },
+                "local_metadatum": { "$ref" => "#/components/schemas/LocalMetadatum", "x-nullable": true }
+
+              }),
+              required: [ "cm_id" ],
             },
             Records: {
               type: "array",
@@ -80,6 +86,13 @@ RSpec.configure do |config|
             LocalVarLabels: {
               type: "array",
               items: { "$ref" => "#/components/schemas/LocalVarLabel" }
+            },
+            LocalMetadatum: {
+              type: "object",
+              properties: {
+                local_notes: { type: :array, "$ref" => "#/components/schemas/LocalNotes" },
+                local_var_labels: { type: :array, "$ref" => "#/components/schemas/LocalVarLabels" },
+              }
             },
           }
         }

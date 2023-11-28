@@ -24,9 +24,7 @@ RSpec.describe "Records", type: :request do
 
         let(:record) { JSON.parse(response.body).first }
 
-        before do
-          get "/records"
-        end
+        run_test!
 
         it "returns http success" do
           expect(response).to have_http_status(:success)
@@ -58,14 +56,29 @@ RSpec.describe "Records", type: :request do
         }
       }
 
+
       description "This web service creates Centralized Metadata Repository records from a MARC binary file. There are two methods for adding records. 
       Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metadata-qa.k8s.temple.edu
       Ingest with a rake task: rake db:ingest[spec/fixtures/marc]."
       response(200, 'successful') do
+        header "X-CM-Records-Processed-Count", schema: { type: :integer }, description: "The number of records processed."
+        header "X-CM-Total-Records-Count", schema: { type: :integer }, description: "The total number of records int the database."
+
         schema "$ref" => "#/components/schemas/Records"
 
-        it "returns http success" do
-          expect(response).to have_http_status(:success)
+        context "A marc file is provided" do
+          let(:marc_file) { Rack::Test::UploadedFile.new(Rails.root.join("./spec/fixtures/marc/louis_armstrong.mrc")) }
+
+          run_test!
+
+          it "returns http success" do
+            expect(response).to have_http_status(:success)
+          end
+
+          it "returns a list of created records" do
+            data = JSON.parse(response.body)
+            expect(data.first["cm_id"]).to eq(["2043308"])
+          end
         end
       end
     end
@@ -83,8 +96,11 @@ RSpec.describe "Records", type: :request do
       response(200, 'successful') do
         schema "$ref" => "#/components/schemas/Record"
 
+        let(:id) { "2043308"}
+
+        run_test!
+
         it "gets a record that contains a cm_updated_at and cm_created_at value " do
-          get "/records/2043308"
           record = JSON.parse(response.body)
           expect(record).to have_key("cm_created_at")
           expect(record).to have_key("cm_updated_at")
@@ -124,23 +140,26 @@ RSpec.describe "Records", type: :request do
 
       response(200, 'successful') do
         context "A record is sent in as a payload in the request" do
-          let(:payload) { { cm_id: ["put-test"], cm_type: ["foobar"] }.to_json }
+          let(:Record) { { "cm_id" => ["put-test"], "cm_type" =>  ["foobar"] } }
+          let(:id) { "put-test" }
+          run_test!
 
           it "should completely replace the value or the record in the database with the updated value" do
-
-            put "/records/put-test", params: payload , headers: { 'Content-Type' => 'application/json' }
-
             expect(response).to be_successful
             data = JSON.parse(body)
-            expect(data.except("cm_updated_at", "cm_created_at", "local_metadatum")).to eq(JSON.parse(payload))
+            expect(data.except("cm_updated_at", "cm_created_at", "local_metadatum")).to eq(self.Record)
           end
         end
       end
 
       response(422, 'unsuccessful') do
         context "not sending required field in API call" do
-          it "should errror out because we need something to update to" do
-            put "/records/put-test"
+
+          let(:id) { "put-test" }
+          let(:Record) { {} }
+          run_test!
+
+          it "should error out because we need something to update to" do
             expect(response.status).to eq(422)
 
             data = JSON.parse(body)
@@ -149,10 +168,11 @@ RSpec.describe "Records", type: :request do
         end
 
         context "not having required cm_id value" do
-          let(:payload) { {}.to_json }
+          let(:id) { "put-test" }
+          let(:Record) { { "cm_type" =>  ["foobar"] } }
+          run_test!
 
           it "should error out because the cm_id value is required" do
-            put "/records/put-test", params: payload , headers: { 'Content-Type' => 'application/json' }
             expect(response.status).to eq(422)
 
             data = JSON.parse(body)
@@ -161,10 +181,11 @@ RSpec.describe "Records", type: :request do
         end
 
         context "cm_id value is not equal to :id in records/:id path" do
-          let(:payload) { { cm_id: ["not-put-test"], cm_type: ["foobar"] }.to_json }
+          let(:id) { "put-test" }
+          let(:Record) { { cm_id: ["not-put-test"], cm_type: ["foobar"] } }
+          run_test!
 
           it "should error out because the value of the cm_id field to be updated should match the path id" do
-            put "/records/put-test", params: payload , headers: { 'Content-Type' => 'application/json' }
             expect(response.status).to eq(422)
 
             data = JSON.parse(body)
@@ -215,12 +236,11 @@ RSpec.describe "Records", type: :request do
       response(200, 'successful') do
 
         context "A record is sent in as a payload in the request" do
-          let(:payload) { { cm_id: ["patch-test"], cm_type: ["foobar"] }.to_json }
+          let(:id) { "patch-test" }
+          let(:Record) { { cm_id: ["patch-test"], cm_type: ["foobar"] } }
+          run_test!
 
           it "should only replace/update the specific fields in the payload" do
-
-            patch "/records/patch-test", params: payload , headers: { 'Content-Type' => 'application/json' }
-
             expect(response).to be_successful
             data = JSON.parse(body)
             expect(data.except("cm_updated_at", "cm_created_at", "local_metadatum")).to eq({
@@ -248,10 +268,11 @@ RSpec.describe "Records", type: :request do
         end
 
         context "not having required cm_id value" do
-          let(:payload) { {}.to_json }
+          let(:id) { "patch-test" }
+          let(:Record) { {} }
+          run_test!
 
           it "should error out because the cm_id value is required" do
-            put "/records/patch-test", params: payload , headers: { 'Content-Type' => 'application/json' }
             expect(response.status).to eq(422)
 
             data = JSON.parse(body)
@@ -259,10 +280,11 @@ RSpec.describe "Records", type: :request do
           end
 
           context "cm_id value is not equal to :id in records/:id path" do
-            let(:payload) { { cm_id: ["not-patch-test"], cm_type: ["foobar"] }.to_json }
+            let(:id) { "patch-test" }
+            let(:Record) { { cm_id: ["not-patch-test"], cm_type: ["foobar"] } }
+            run_test!
 
             it "should error out because the value of the cm_id field to be updated should match the path id" do
-              put "/records/patch-test", params: payload , headers: { 'Content-Type' => 'application/json' }
               expect(response.status).to eq(422)
 
               data = JSON.parse(body)
@@ -288,11 +310,30 @@ RSpec.describe "Records", type: :request do
       }
     end
 
-    delete('delete record') do
-      tags 'records'
+    delete("delete record") do
+      before do
+        Record.new(
+          id: "delete-test",
+          value: {
+            "cm_id"=>["delete-test"],
+            "cm_pref_label"=>["Armstrong, Louis, 1901-1971. prf"],
+            "cm_import_method"=>["MARC binary"],
+            "cm_type"=>["personal name"],
+            "cm_see_also"=>
+          ["Biographical and program notes by Stanley Dance ([2] p. : 1 port.) in container; personnel and original issue and matrix no. on container.",
+           "Louis Armstrong, trumpet and vocals, and his band."],
+          }.to_json
+        ).save!
+      end
+
+      tags "records"
       description "This web service deletes a Centralized Metadata Repository record."
-      response(200, 'successful') do
-        let(:id) { '123' }
+      produces "application/json"
+      response(200, "successful") do
+        schema "$ref" => "#/components/schemas/Record"
+
+        let(:id) { "delete-test"}
+        run_test!
 
         it "returns http success" do
           expect(response).to have_http_status(:success)

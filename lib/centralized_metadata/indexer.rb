@@ -9,15 +9,31 @@ class CentralizedMetadata::Indexer
     filepath ||= ENV["CM_SOURCE"] || ""
     filepath = "./spec/fixtures/marc" if ["yes", "true", true].include?(ENV["CM_USE_FIXTURES"])
 
+
+    records = []
+
     if File.directory?(filepath)
       Dir.glob("#{filepath}/*").each { |f|
-        get_indexer(filepath, options)
-          .process(f)
+        records += ingest(f, options)
       }
     elsif File.exist?(filepath)
-        get_indexer(filepath, options)
-          .process(filepath)
+      records += get_records(filepath, options)
     end
+
+    Record.upsert_all(records.map { |r|
+      { id: r["cm_id"].join(""), value: r }
+    }) unless records.empty?
+
+    records
+  end
+
+
+  def self.get_records(filepath, options={})
+    indexer = get_indexer(filepath, options)
+    writer = Traject::ArrayWriter.new
+    reader = Traject::MarcReader.new(filepath, {})
+
+    indexer.process_with(reader, writer).values
   end
 
   def self.get_indexer(filepath="", options={})
@@ -41,11 +57,4 @@ class CentralizedMetadata::Indexer
       .map(&:field_name)
   end
 
-  def self.get_records(filepath)
-    indexer = get_indexer(filepath)
-    writer = Traject::ArrayWriter.new
-    reader = Traject::MarcReader.new(filepath, {})
-
-    indexer.process_with(reader, writer).values
-  end
 end
