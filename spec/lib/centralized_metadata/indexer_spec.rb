@@ -67,10 +67,7 @@ RSpec.describe CentralizedMetadata::Indexer do
            "cm_type"=>["personal name"],
            "cm_see_also"=>
            ["Biographical and program notes by Stanley Dance ([2] p. : 1 port.) in container; personnel and original issue and matrix no. on container.",
-            "Louis Armstrong, trumpet and vocals, and his band."],
-            "cm_audience_characteristics"=>["discussion"],
-            "cm_characteristics"=>["discussion"],
-            "cm_notmusic_format"=>["discussion"]}])
+            "Louis Armstrong, trumpet and vocals, and his band."]}])
       end
     end
 
