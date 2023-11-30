@@ -18,7 +18,7 @@ RSpec.describe "MarcFile", type: :request do
         }
       }
 
-      description "This web service deletes records in the Centralized Metadata Repository that match records from the posted MARC file."
+      description "Deletes records in the Centralized Metadata Repository that match records from the posted MARC file."
 
       response(422, "unsuccessful") do
         let(:marc_file) { Rack::Test::UploadedFile.new(Rails.root.join("./spec/spec_helper.rb")) }
@@ -86,7 +86,7 @@ RSpec.describe "MarcFile", type: :request do
         }
       }
 
-      description "This web service processes a posted MARC file and returns the ids of the records defined in the MARC file."
+      description "Processes a posted MARC file and returns the ids of the records defined in the MARC file. This endpoint is used for reference only and will not affect database records in the repository."
 
       response(422, "unsuccessful") do
         let(:marc_file) { Rack::Test::UploadedFile.new(Rails.root.join("./spec/spec_helper.rb")) }

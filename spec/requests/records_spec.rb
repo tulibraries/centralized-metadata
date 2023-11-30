@@ -21,7 +21,7 @@ RSpec.describe "Records", type: :request do
     get('list records') do
       tags 'records'
       produces "application/json"
-      description "This web service retrieves a list of the Centralized Metadata Repository records in a JSON format. The pagination default is set to return 25 records at a time. If you would like to change this, add the parameter per_page=number_desired to the query parameters. This service also takes a 'page' parameter."
+      description "Retrieves a list of the Centralized Metadata Repository records in a JSON format. The pagination default is set to return 25 records on the first page. Add the parameters per_page=# and/or page=# to update this."
       parameter name: "page",
                 in: :query,
                 type: :string,
@@ -80,7 +80,7 @@ RSpec.describe "Records", type: :request do
         }
       }
 
-      description "This web service creates Centralized Metadata Repository records from a MARC binary file. There are two methods for adding records. 
+      description "Creates Centralized Metadata Repository record(s) from a MARC binary file. There are two methods for adding records. 
       Using a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metadata-qa.k8s.temple.edu
       Ingest with a rake task: rake db:ingest[spec/fixtures/marc]."
       response(200, 'successful') do
@@ -114,7 +114,7 @@ RSpec.describe "Records", type: :request do
     get('show record') do
       produces "application/json"
       tags 'records'
-      description "This web service retreives a Centralized Metadata Repository record in a JSON format."
+      description "Retreives a Centralized Metadata Repository record in a JSON format."
 
       response(200, 'successful') do
         schema "$ref" => "#/components/schemas/Record"
@@ -157,7 +157,7 @@ RSpec.describe "Records", type: :request do
 
       tags 'records'
 
-      description "This web service updates a Centralized Metadata Repository record as an entire resource from a MARC binary file."
+      description "Updates a Centralized Metadata Repository record as an entire resource from a MARC binary file."
 
       consumes "application/json"
       produces "application/json"
@@ -253,7 +253,7 @@ RSpec.describe "Records", type: :request do
       end
 
       tags 'records'
-      description 'This web service updates a Centralized Metadata Repository record with partial data, restricted to the specific fields. Use if you want to execute a partial update of a record.' 
+      description 'Updates a Centralized Metadata Repository record with partial data, restricted to the specific fields. Use if you want to execute a partial update of a record.' 
       consumes "application/json"
       produces "application/json"
 
@@ -351,7 +351,7 @@ RSpec.describe "Records", type: :request do
       end
 
       tags "records"
-      description "This web service deletes a Centralized Metadata Repository record."
+      description "Deletes a Centralized Metadata Repository record."
       produces "application/json"
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/Record"

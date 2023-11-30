@@ -6,7 +6,7 @@ RSpec.describe "LocalVarLabels", type: :request do
   path "/records/{record_id}/local_var_labels" do
     get("show local variant label fields") do
       tags "local_var_labels"
-      description "This web service retrieves the local variant label fields (cm_local_var_label) associated to a Centralized Metadata Repository record, formatted as a JSON array."
+      description "Retrieves the local variant label fields (cm_local_var_label) associated to a Centralized Metadata Repository record, formatted as a JSON array."
       parameter name: "record_id", in: :path, type: :string, description: "The id of the Centralized Metadata Repository record", required: true
 
       response(422, "unsuccessful") do
@@ -71,7 +71,7 @@ RSpec.describe "LocalVarLabels", type: :request do
       request_body_example name: "default", value: { cm_local_var_label: "Hello World" }
       produces "application/json"
 
-      description "The web service creates local variant label field(s) (cm_local_var_label) for a Centralized Metadata Repository record."
+      description "Creates local variant label field(s) (cm_local_var_label) for a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
         let(:record_id) { "not-a-record" }  
@@ -128,7 +128,7 @@ RSpec.describe "LocalVarLabels", type: :request do
       parameter name: "var_label_id", in: :path, type: :string, description: "The id of the local variant label field", required: true
       produces "application/json"
 
-      description "This web service retrieves the value of a local variant label field (cm_local_var_label) in a Centralized Metadata Repository record."
+      description "Retrieves the value of a local variant label field (cm_local_var_label) in a Centralized Metadata Repository record."
       response(422, "unsuccessful") do
 
         context "Record does not exist" do
@@ -181,7 +181,7 @@ RSpec.describe "LocalVarLabels", type: :request do
 
       produces "application/json"
 
-      description "This web service updates the value of a local variant label field (cm_local_var_label) in a Centralized Metadata Repository record."
+      description "Updates the value of a local variant label field (cm_local_var_label) in a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
 
@@ -235,7 +235,7 @@ RSpec.describe "LocalVarLabels", type: :request do
       parameter name: "var_label_id", in: :path, type: :string, description: "The id of the local variant label field", required: true
       produces "application/json"
 
-      description "This web service deletes a local variant label field (cm_local_var_label) in a Centralized Metadata Repository record."
+      description "Deletes a local variant label field (cm_local_var_label) in a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
 
