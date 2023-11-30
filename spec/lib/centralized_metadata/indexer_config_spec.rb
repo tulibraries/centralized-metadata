@@ -133,4 +133,21 @@ RSpec.describe "Traject configuration" do
       end
     end
   end
+
+  describe "check that spec with single subfield splits" do
+
+    context "385a field with one subfield a" do
+      it "output single cm_audience_characteristics instance" do
+        record.append(MARC::DataField.new("385", nil, nil, ["a", "Lawyers"]))
+        expect(indexer.map_record(record)["cm_audience_characteristics"].count).to eq(1)
+      end
+    end
+    
+    context "385a field with two subfield a" do
+      it "output two cm_audience_characteristics field instance" do
+        record.append(MARC::DataField.new("385", nil, nil, ["a", "Lawyers"], ["a", "Judges"]))
+        expect(indexer.map_record(record)["cm_audience_characteristics"].count).to eq(2)
+      end
+    end
+  end
 end
