@@ -55,15 +55,12 @@ to_field "cm_alternative_medium_performance", extract_marc("382p")
 to_field "cm_original_key", extract_original_key
 to_field "cm_transposed_key", extract_marc("384|1*|a")
 to_field "cm_music_num_designation", extract_marc_subfields("383abcde")
-# future work for cm_audience_characteristics: handle repeated subfields as a separate instances of Solr field
-to_field "cm_audience_characteristics", extract_marc_subfields("385a")
-# future work for cm_characteristics: handle repeated subfields as a separate instances of Solr field
-to_field "cm_characteristics", extract_marc_subfields("386a")
+to_field "cm_audience_characteristics", extract_marc("385a")
+to_field "cm_characteristics", extract_marc("386a")
 to_field "cm_work_time_creation", extract_work_time_creation
 to_field "cm_aggwork_time_creation", extract_marc("388|2*|a")
 to_field "cm_work_language", extract_marc("100l:110l:111l:130l")
-# future work for cm_notmusic_format: handle repeated subfields as a separate instances of Solr field
-to_field "cm_notmusic_format", extract_marc_subfields("348a")
+to_field "cm_notmusic_format", extract_marc("348a")
 to_field "cm_beginning_date_created", extract_marc("046k")
 to_field "cm_ending_date_created", extract_marc("046l")
 to_field "cm_place_origin_work", extract_marc("370g")
