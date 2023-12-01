@@ -26,7 +26,7 @@ RSpec.describe "MarcFile", type: :request do
 
         it "returns a json with the error message" do
           data = JSON.parse(response.body)
-          expect(data).to eq("invalid record length: # Thi")
+          expect(data).to eq("invalid record length: requi")
         end
       end
 

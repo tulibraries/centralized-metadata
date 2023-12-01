@@ -6,11 +6,34 @@ See also https://github.com/tulibraries/centralized-metadata-dags.
 
 ## System Requirements 
 
-TO DO
+Postgres DB: latest
+Ruby: latest
 
 ## Getting Started 
 
-TO DO
+If you don't already have postgres installed, make sure to do that.  On Macs you can install postgres with the following command:
+
+```
+brew install postgresql
+```
+
+Next, make sure the postgres server is running. On Macs you can check the status of the database with the command:
+
+```
+brew services
+```
+
+If postgresql is not running then start it with:
+
+```
+brew services start postgresql
+```
+
+Make sure you have a DB user called "posgres" that can be used to run the app.  On Macs you can use the following command:
+
+``
+createuser --superuser postgres
+```
 
 ## Creating records with MARC files
 

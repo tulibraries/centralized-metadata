@@ -10,26 +10,20 @@ default: &default
   timeout: 5000
   host: <%= ENV["CM_DB_HOST"] || "localhost" %>
   database: <%= ENV["CM_DB_NAME"] || "centralized_metadata"  %>
-  username: <%= ENV["CM_DB_USER"] || "root" %>
+  username: <%= ENV["CM_DB_USER"] || "postgres" %>
   password: <%= ENV["CM_DB_PASSWORD"] || "" %>
 
 development:
   <<: *default
-  adapter: <%= ENV["CM_DB_ADAPTOR"] || "sqlite3" %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  adapter: <%= ENV["CM_DB_ADAPTOR"] || "sqlite3" %>
   database: centralized_metadata-test
 
 production:
   <<: *default
-  host: <%= ENV["CM_DB_HOST"] || "localhost" %>
-  database: <%= ENV["CM_DB_NAME"] %>
-  username: <%= ENV["CM_DB_USER"] %>
-  password: <%= ENV["CM_DB_PASSWORD"] %>
   pool: 15
   timeout: 5000
