@@ -9,8 +9,8 @@ paths:
       summary: show local note fields
       tags:
       - local_notes
-      description: This web service retrieves local note field(s) (cm_local_note)
-        associated with a Centralized Metadata Repository record, as a JSON array.
+      description: Retrieves local note field(s) (cm_local_note) associated with a
+        Centralized Metadata Repository record, as a JSON array.
       parameters:
       - name: record_id
         in: path
@@ -49,8 +49,8 @@ paths:
         required: true
         schema:
           type: string
-      description: This web service creates local note field(s) (cm_local_note) for
-        a Centralized Metadata Repository record.
+      description: Creates local note field(s) (cm_local_note) for a Centralized Metadata
+        Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -100,8 +100,8 @@ paths:
         required: true
         schema:
           type: string
-      description: This web service retrieves the value of a local note field (cm_local_note)
-        from a Centralized Metadata Repository record. .
+      description: Retrieves the value of a local note field (cm_local_note) from
+        a Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -128,8 +128,8 @@ paths:
         required: true
         schema:
           type: string
-      description: 'This web service updates a local note field (cm_local_note) in
-        a Centralized Metadata Repository record. '
+      description: Updates a local note field (cm_local_note) in a Centralized Metadata
+        Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -167,8 +167,8 @@ paths:
         required: true
         schema:
           type: string
-      description: This web service deletes a local note field (cm_local_note) from
-        a Centralized Metadata Repository record.
+      description: Deletes a local note field (cm_local_note) from a Centralized Metadata
+        Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -183,9 +183,8 @@ paths:
       summary: show local variant label fields
       tags:
       - local_var_labels
-      description: This web service retrieves the local variant label fields (cm_local_var_label)
-        associated to a Centralized Metadata Repository record, formatted as a JSON
-        array.
+      description: Retrieves the local variant label fields (cm_local_var_label) associated
+        to a Centralized Metadata Repository record, formatted as a JSON array.
       parameters:
       - name: record_id
         in: path
@@ -224,8 +223,8 @@ paths:
         required: true
         schema:
           type: string
-      description: The web service creates local variant label field(s) (cm_local_var_label)
-        for a Centralized Metadata Repository record.
+      description: Creates local variant label field(s) (cm_local_var_label) for a
+        Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -275,8 +274,8 @@ paths:
         required: true
         schema:
           type: string
-      description: This web service retrieves the value of a local variant label field
-        (cm_local_var_label) in a Centralized Metadata Repository record.
+      description: Retrieves the value of a local variant label field (cm_local_var_label)
+        in a Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -303,8 +302,8 @@ paths:
         required: true
         schema:
           type: string
-      description: This web service updates the value of a local variant label field
-        (cm_local_var_label) in a Centralized Metadata Repository record.
+      description: Updates the value of a local variant label field (cm_local_var_label)
+        in a Centralized Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -342,8 +341,8 @@ paths:
         required: true
         schema:
           type: string
-      description: This web service deletes a local variant label field (cm_local_var_label)
-        in a Centralized Metadata Repository record.
+      description: Deletes a local variant label field (cm_local_var_label) in a Centralized
+        Metadata Repository record.
       responses:
         '422':
           description: unsuccessful
@@ -359,8 +358,8 @@ paths:
       tags:
       - marc_file
       parameters: []
-      description: This web service deletes records in the Centralized Metadata Repository
-        that match records from the posted MARC file.
+      description: Deletes records in the Centralized Metadata Repository that match
+        records from the posted MARC file.
       responses:
         '422':
           description: unsuccessful
@@ -396,8 +395,9 @@ paths:
       tags:
       - marc_file
       parameters: []
-      description: This web service processes a posted MARC file and returns the ids
-        of the records defined in the MARC file.
+      description: Processes a posted MARC file and returns the ids of the records
+        defined in the MARC file. This endpoint is used for reference only and will
+        not affect database records in the repository.
       responses:
         '422':
           description: unsuccessful
@@ -425,10 +425,9 @@ paths:
       summary: list records
       tags:
       - records
-      description: This web service retrieves a list of the Centralized Metadata Repository
-        records in a JSON format. The pagination default is set to return 25 records
-        at a time. If you would like to change this, add the parameter per_page=number_desired
-        to the query parameters. This service also takes a 'page' parameter.
+      description: Retrieves a list of the Centralized Metadata Repository records
+        in a JSON format. The pagination default is set to return 25 records on the
+        first page. Add the parameters per_page=# and/or page=# to update this.
       parameters:
       - name: page
         in: query
@@ -454,11 +453,10 @@ paths:
       tags:
       - records
       parameters: []
-      description: "This web service creates Centralized Metadata Repository records
-        from a MARC binary file. There are two methods for adding records. \n      Using
-        a curl statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc'
-        https://centralized-metadata-qa.k8s.temple.edu\n      Ingest with a rake task:
-        rake db:ingest[spec/fixtures/marc]."
+      description: "Creates Centralized Metadata Repository record(s) from a MARC
+        binary file. There are two methods for adding records. \n      Using a curl
+        statement: curl -F 'marc_file=@spec/fixtures/marc/louis_armstrong.mrc' https://centralized-metadata-qa.k8s.temple.edu\n
+        \     Ingest with a rake task: rake db:ingest[spec/fixtures/marc]."
       responses:
         '200':
           description: successful
@@ -498,8 +496,7 @@ paths:
       summary: show record
       tags:
       - records
-      description: This web service retreives a Centralized Metadata Repository record
-        in a JSON format.
+      description: Retreives a Centralized Metadata Repository record in a JSON format.
       responses:
         '200':
           description: successful
@@ -511,8 +508,8 @@ paths:
       summary: update record
       tags:
       - records
-      description: This web service updates a Centralized Metadata Repository record
-        as an entire resource from a MARC binary file.
+      description: Updates a Centralized Metadata Repository record as an entire resource
+        from a MARC binary file.
       parameters: []
       responses:
         '200':
@@ -546,9 +543,9 @@ paths:
       summary: update record
       tags:
       - records
-      description: This web service updates a Centralized Metadata Repository record
-        with partial data, restricted to the specific fields. Use if you want to execute
-        a partial update of a record.
+      description: Updates a Centralized Metadata Repository record with partial data,
+        restricted to the specific fields. Use if you want to execute a partial update
+        of a record.
       parameters: []
       responses:
         '200':
@@ -582,7 +579,7 @@ paths:
       summary: delete record
       tags:
       - records
-      description: This web service deletes a Centralized Metadata Repository record.
+      description: Deletes a Centralized Metadata Repository record.
       responses:
         '200':
           description: successful

@@ -6,7 +6,7 @@ RSpec.describe "LocalNotes", type: :request do
   path "/records/{record_id}/local_notes" do
     get("show local note fields") do
       tags "local_notes"
-      description "This web service retrieves local note field(s) (cm_local_note) associated with a Centralized Metadata Repository record, as a JSON array."
+      description "Retrieves local note field(s) (cm_local_note) associated with a Centralized Metadata Repository record, as a JSON array."
       parameter name: "record_id", in: :path, type: :string, description: "The id of the Centralized Metadata Repository record", required: true
 
       response(422, "unsuccessful") do
@@ -71,7 +71,7 @@ RSpec.describe "LocalNotes", type: :request do
       request_body_example name: "default", value: { cm_local_note: "Hello World" }
       produces "application/json"
 
-      description "This web service creates local note field(s) (cm_local_note) for a Centralized Metadata Repository record."
+      description "Creates local note field(s) (cm_local_note) for a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
         let(:record_id) { "not-a-record" }
@@ -128,7 +128,7 @@ RSpec.describe "LocalNotes", type: :request do
       parameter name: "note_id", in: :path, type: :string, description: "The id of the local note field", required: true
       produces "application/json"
 
-      description "This web service retrieves the value of a local note field (cm_local_note) from a Centralized Metadata Repository record. ."
+      description "Retrieves the value of a local note field (cm_local_note) from a Centralized Metadata Repository record."
       response(422, "unsuccessful") do
 
         context "Record does not exist" do
@@ -181,7 +181,7 @@ RSpec.describe "LocalNotes", type: :request do
 
       produces "application/json"
 
-      description "This web service updates a local note field (cm_local_note) in a Centralized Metadata Repository record. "
+      description "Updates a local note field (cm_local_note) in a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
 
@@ -235,7 +235,7 @@ RSpec.describe "LocalNotes", type: :request do
       parameter name: "note_id", in: :path, type: :string, description: "The id of the local note field", required: true
       produces "application/json"
 
-      description "This web service deletes a local note field (cm_local_note) from a Centralized Metadata Repository record."
+      description "Deletes a local note field (cm_local_note) from a Centralized Metadata Repository record."
 
       response(422, "unsuccessful") do
 

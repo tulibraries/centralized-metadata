@@ -4,6 +4,8 @@
 
 extend CentralizedMetadata::Macros::Custom
 
+# Additional technical and local metadata fields added separately not through this file - ex. cm_created_at and cm_updated_at
+
 to_field "cm_id", extract_marc("001", first: true), gsub(/\s+/, "")
 to_field "cm_pref_label", extract_marc("100:110:111:130:147:148:150:151:155")
 to_field "cm_var_label", extract_marc("400abcdfghjklmnopqrstv:410abcdfghjklmnoprstv:411acdefghklnpqstv:430adfghklmnoprstv:447acdgv:448av:450abgj:451agv:455av")
@@ -15,9 +17,6 @@ to_field "cm_see_also", extract_see_also
 # to_field "cm_skos_exact_match", default("skip")
 # to_field "cm_skos_close_match", default("skip")
 to_field "cm_lc_class", extract_marc("053ab")
-# @see add_update_create_date_metadata! in records controller index and show action.
-#to_field "cm_created_at", default("pairing")
-#to_field "cm_updated_at", default("pairing")
 to_field "cm_narrower_term", extract_narrower_term
 to_field "cm_broader_term", extract_broader_term
 to_field "cm_use_subject", extract_use_subject
