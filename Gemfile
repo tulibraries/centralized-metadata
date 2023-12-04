@@ -46,9 +46,7 @@ group :development, :test do
   gem "byebug", platform: :mri
   gem "pry-rails"
   gem "capybara"
-
-  # Trying this out for testing only.
-  gem "sqlite3"
+  gem 'database_cleaner-active_record'
 end
 
 group :development do
