@@ -3,8 +3,8 @@ include:
     file:
       - "lint_docker.yaml"
       - "build_and_scan_docker.yaml"
-      - "security_scan.yaml"
       - "kubectl_commands.yaml"
+      - "sast_scanning.yaml"
 
 variables:
   IMAGE: "tulibraries/centralized-metadata"
