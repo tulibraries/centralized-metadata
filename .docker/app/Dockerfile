@@ -10,7 +10,7 @@ ARG RAILS_ENV=production
 
 RUN apk add -U --no-cache \
       bash=5.2.26-r0 \
-      tzdata=2024a-r1 \
+      tzdata=2024b-r0 \
       postgresql16-client=16.3-r0 \
       gcompat=1.1.0-r4 \
       libxslt=1.1.39-r1 && \
