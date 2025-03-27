@@ -10,7 +10,7 @@ ARG RAILS_ENV=production
 
 RUN apk add -U --no-cache \
       bash=5.2.37-r0 \
-      tzdata=2025a-r0 \
+      tzdata=2025b-r0 \
       postgresql16-client=16.8-r0 \
       gcompat=1.1.0-r4 \
       libxslt=1.1.42-r2 && \
@@ -18,7 +18,7 @@ RUN apk add -U --no-cache \
       build-base=0.5-r3 \
       git=2.47.2-r0 \
       postgresql16-dev=16.8-r0 \
-      libxslt-dev=1.1.42-r2 &&\
+      libxslt-dev=1.1.42-r2 && \
     bundle config set --local without "development test" && \
     bundle install --jobs=8 && \
     find "$GEM_HOME" -name Gemfile.lock -exec rm "{}" \; && \
