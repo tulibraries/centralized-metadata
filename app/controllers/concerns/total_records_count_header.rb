@@ -4,7 +4,7 @@ module TotalRecordsCountHeader
   extend ActiveSupport::Concern
 
   included do
-    after_action :set_total_records_count_header, only: [:create, :delete]
+    after_action :set_total_records_count_header, only: [:create, :destroy]
   end
 
   def set_total_records_count_header
