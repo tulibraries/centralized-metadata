@@ -23,13 +23,13 @@ jobs:
       - run: bundle install
       - run:
           name: Set Up Database
-          command: bundle exec rails db:setup
+          command: RAILS_ENV=test bundle exec rails db:setup
       - run:
           name: test
           command: RAILS_ENV=test bundle exec rake
       - run:
           name: Make sure rswag is valid
-          command: bundle exec rake rswag
+          command: RAILS_ENV=test bundle exec rake rswag
       - run:
           name: Check rswag build did not update anything.
           command: if [[ $(git diff) ]]; then error 1; fi
