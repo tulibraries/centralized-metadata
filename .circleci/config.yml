@@ -26,7 +26,7 @@ jobs:
           command: bundle exec rails db:setup
       - run:
           name: test
-          command: bundle exec rake
+          command: RAILS_ENV=test bundle exec rake
       - run:
           name: Make sure rswag is valid
           command: bundle exec rake rswag
