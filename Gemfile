@@ -6,6 +6,7 @@ gem "rails", "~> 7.2.2"
 
 gem "active_model_serializers"
 gem "api-pagination", "~> 5.0"
+gem "cgi", ">= 0.4.2"
 gem "kaminari", "~> 1.2"
 gem "mutex_m"
 gem "nokogiri", "1.18.4"
