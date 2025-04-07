@@ -2,16 +2,21 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.8"
-gem "pg"
-gem "okcomputer"
-gem "rake"
-gem "puma", "~> 5.6"
-gem "nokogiri", "1.18.4"
+gem "rails", "~> 7.2.2"
+
+gem "active_model_serializers"
 gem "api-pagination", "~> 5.0"
 gem "kaminari", "~> 1.2"
+gem "mutex_m"
+gem "nokogiri", "1.18.4"
+gem "okcomputer"
+gem "ostruct"
+gem "pg"
+gem "puma"
+gem "rake"
 gem "rswag"
-gem "active_model_serializers"
+gem "traject"
+gem "unf_ext", "0.0.8.2"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -37,16 +42,14 @@ gem "bootsnap", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem "rack-cors"
 
-gem "traject"
-
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  gem "rspec-rails"
   gem "byebug", platform: :mri
-  gem "pry-rails"
   gem "capybara"
   gem 'database_cleaner-active_record'
+  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "pry-rails"
+  gem "rspec-rails"
 end
 
 group :development do

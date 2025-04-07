@@ -6,13 +6,21 @@ class MarcFileController < ApplicationController
   include RecordsProcessedCountHeader
 
   rescue_from Exception do |exception|
-    render json: exception, status: :unprocessable_entity
+    unless performed?
+      render json: exception, status: :unprocessable_entity
+    end
   end
 
   def delete
     ids = get_ids(params)
-    @records = Record.where(id: ids).destroy_all
-    render json: @records
+    @records = Record.where(id: ids)
+    @records_count = @records
+    records_to_render = @records.to_a
+    @records.destroy_all
+    response.headers["X-CM-Records-Processed-Count"] = @records_count.count
+    response.headers["X-CM-Total-Records-Count"] = Record.count
+
+    render json: records_to_render
   end
 
   def ids

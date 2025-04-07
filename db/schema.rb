@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_01_160710) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_28_192730) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,7 +24,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_160710) do
   end
 
   create_table "local_notes", force: :cascade do |t|
-    t.integer "local_metadatum_id", null: false
+    t.bigint "local_metadatum_id", null: false
     t.string "cm_local_note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_160710) do
   end
 
   create_table "local_var_labels", force: :cascade do |t|
-    t.integer "local_metadatum_id", null: false
+    t.bigint "local_metadatum_id", null: false
     t.string "cm_local_var_label"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_160710) do
   end
 
   create_table "records", id: :string, force: :cascade do |t|
-    t.jsonb "value", default: "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"{}\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\"\""
+    t.jsonb "value", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

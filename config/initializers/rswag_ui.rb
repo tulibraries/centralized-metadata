@@ -8,27 +8,14 @@ Rswag::Ui.configure do |c|
   # (under swagger_root) as JSON or YAML endpoints, then the list below should
   # correspond to the relative paths for those endpoints.
 
-  c.swagger_endpoint '/api-docs/v1/swagger.yaml', 'API V1 Docs'
+  c.openapi_endpoint '/api-docs/v1/swagger.yaml', 'API V1 Docs'
 
   # Add Basic Auth in case your API is private
   # c.basic_auth_enabled = true
   # c.basic_auth_credentials 'username', 'password'
 end
 
-# TODO: Remove once following issue gets resolved and we can configure ourselves without this monkey-patch.
-# https://github.com/rswag/rswag/issues/704
 module ResponseValidator
-  def validation_options_from(metadata)
-    is_strict = !!metadata.fetch(
-      :swagger_strict_schema_validation,
-      @config.swagger_strict_schema_validation
-    )
-
-    {
-      struct: is_strict,
-      noAdditionalProperties: true
-    }
-  end
 end
 
 Rswag::Specs::ResponseValidator.prepend ResponseValidator

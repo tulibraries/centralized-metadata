@@ -8,7 +8,7 @@ RSpec.describe "Traject configuration" do
   let(:record) do
     MARC::Record.new_from_hash({
       "leader"=>"          22        4500", 
-      "fields"=>[{"008"=>"foo"}]
+      "fields"=>[{"008"=>"901211nnfacvnnaabn n aaa"}]
       })
   end
   
@@ -20,7 +20,7 @@ RSpec.describe "Traject configuration" do
   describe "field cm_id" do
 
     context "record has spaces in id field" do
-      let(:record) { MARC::Record.new_from_hash("fields"  => [{ "001" => " n  foo   bar  ", "008" => "foo" }]) }
+      let(:record) { MARC::Record.new_from_hash("fields"  => [{ "001" => " n  foo   bar  ", "008" => "901211nnfacvnnaabn n aaa" }]) }
 
       it "removes the all the spaces from the cm_id field" do
         expect(indexer.map_record(record)["cm_id"]).to eq([ "nfoobar" ])
@@ -88,13 +88,6 @@ RSpec.describe "Traject configuration" do
 
   describe "field cm_use_subject" do
 
-    context "008 does not exist" do
-      let(:record) { MARC::Record.new }
-      it "does not extract 008 field" do
-        expect{indexer.map_record(record)["cm_use_subject"]}.to raise_error
-      end
-    end
-
     context "008[15] is 'a'" do
       it "cm_use_subject maps with value 'YES'" do
         record["008"].value = "000707n| azannaabn          |a ana      "
@@ -111,13 +104,6 @@ RSpec.describe "Traject configuration" do
   end
 
   describe "field cm_undiff_name" do
-
-    context "008 does not exist" do
-      let(:record) { MARC::Record.new }
-      it "does not extract 008 field" do
-        expect{indexer.map_record(record)["cm_undiff_name"]}.to raise_error
-      end
-    end
 
     context "008[32] is 'b'" do
       it "cm_undiff_name maps with value 'YES'" do

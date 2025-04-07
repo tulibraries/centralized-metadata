@@ -58,7 +58,10 @@ class RecordsController < ApplicationController
 
   # DELETE /records/1
   def destroy
-   render json: @record.destroy
+    @record_count = 1
+    response.headers["X-CM-Records-Processed-Count"] = @record_count
+    response.headers["X-CM-Total-Records-Count"] = Record.count
+    render json: @record.destroy
   end
 
   private

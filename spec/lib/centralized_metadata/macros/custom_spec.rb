@@ -9,7 +9,7 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
   let(:record) do
     MARC::Record.new_from_hash({
       "leader"=>"          22        4500",
-      "fields"=>[{"008"=>"foo"}]
+      "fields"=>[{"008"=>"901211nnfacvnnaabn n aaa"}]
       })
   end
 

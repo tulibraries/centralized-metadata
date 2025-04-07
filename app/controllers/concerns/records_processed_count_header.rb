@@ -4,7 +4,7 @@ module RecordsProcessedCountHeader
   extend ActiveSupport::Concern
 
   included do
-    after_action :set_records_processed_count_header, only: [:create, :delete]
+    after_action :set_records_processed_count_header, only: [:create]
   end
 
   def set_records_processed_count_header
