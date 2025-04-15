@@ -8,6 +8,7 @@ USER root
 
 ARG RAILS_ENV=production
 
+# hadolint ignore=SC2034
 RUN apk add -U --no-cache \
       bash=5.2.37-r0 \
       tzdata=2025b-r0 \
