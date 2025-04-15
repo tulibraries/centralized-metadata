@@ -14,6 +14,7 @@ RUN apk add -U --no-cache \
       postgresql16-client=16.8-r0 \
       gcompat=1.1.0-r4 \
       libxslt=1.1.42-r2 && \
+      libgcc=13.2.1_git20240309-r1 && \
     apk add -U --no-cache --virtual build-dependencies \
       build-base=0.5-r3 \
       git=2.47.2-r0 \
