@@ -6,6 +6,8 @@ COPY . .
 
 USER root
 
+RUN chmod 1777 /tmp
+
 ARG RAILS_ENV=production
 
 RUN apk add -U --no-cache \
@@ -27,10 +29,9 @@ RUN apk add -U --no-cache \
     rm -rf tmp/* && \
     apk del build-dependencies && \
     rm -rf /var/cache/apk/ && \
-    chown nobody -R /app/tmp && \
-    chown nobody -R /app/log
+    mkdir -p /tmp/log && chmod 1777 /tmp/log
 
-USER nobody
+USER 65534:65534
 
 ENTRYPOINT [".docker/app/entrypoint.sh"]
 EXPOSE 3000
