@@ -7,8 +7,8 @@ extend CentralizedMetadata::Macros::Custom
 # Additional technical and local metadata fields added separately not through this file - ex. cm_created_at and cm_updated_at
 
 to_field "cm_id", extract_marc("001", first: true), gsub(/\s+/, "")
-to_field "cm_pref_label", extract_marc("100:110:111:130:147:148:150:151:155")
-to_field "cm_var_label", extract_marc("400abcdfghjklmnopqrstv:410abcdfghjklmnoprstv:411acdefghklnpqstv:430adfghklmnoprstv:447acdgv:448av:450abgj:451agv:455av")
+to_field "cm_pref_label", extract_marc("100:110:111:130:147:148:150:151:155:162")
+to_field "cm_var_label", extract_marc("400abcdfghjklmnopqrstv:410abcdfghjklmnoprstv:411acdefghklnpqstv:430adfghklmnoprstv:447acdgv:448av:450abgj:451agv:455av:462a")
 to_field "cm_source_vocab", add_source_vocab
 to_field "cm_import_method", add_import_method
 to_field "cm_filename", add_filename

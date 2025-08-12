@@ -2,6 +2,7 @@
 
 require "traject"
 require "centralized_metadata"
+require "rails_helper"
 
 
 RSpec.describe CentralizedMetadata::Macros::Custom do
@@ -251,40 +252,97 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       end
     end
 
-    context "filename contains string GNR" do
-      it "will set cm_source_vocab to lcgft" do
-        indexer.settings[:filename] = "TEUSGNR.061"
+
+    context "If 040a is 'DNLM'" do
+      it "sets vocab = mesh" do
+        record.append(MARC::DataField.new("040", nil, nil, ["a", "DNLM"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["mesh"])
+      end
+    end
+
+    context "If 040e is 'lcmpt'" do
+      it "sets vocab = lcmpt" do
+        record.append(MARC::DataField.new("040", nil, nil, ["e", "lcmpt"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcmpt"])
+      end
+    end
+
+    context "If 040f is 'lcgft'" do
+      it "sets vocab = lcgft" do
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "lcgft"]))
         expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcgft"])
       end
     end
 
-    context "filename contains string NAM" do
-      it "will set cm_source_vocab to lcnaf" do
-        indexer.settings[:filename] = "TEUMNAMN.282"
-        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
+    # 040 $f cases
+    context "If 040f is 'gsafd'" do
+      it "sets vocab = gsafd" do
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "gsafd"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["gsafd"])
       end
     end
 
-    context "filename contains string TTL" do
-      it "will set cm_source_vocab to lcnaf" do
-        indexer.settings[:filename] = "TEUSTTL.048"
-        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
+    context "If 040f is 'rbmscv'" do
+      it "sets vocab = rbmscv" do
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "rbmscv"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["rbmscv"])
       end
     end
 
-    context "filename contains string SUB and 008/11 is 1" do
-      it "will set cm_source_vocab to lcsh" do
-        indexer.settings[:filename] = "TEUSSUB.045"
-        record["008"].value = "190402|| anannbabn          |n ana     |"
-        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcsh"])
+    context "If 040f is 'olacvggt'" do
+      it "sets vocab = olacvggt" do
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "olacvggt"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["olacvggt"])
       end
     end
 
-    context "filename contains string SUB and 040f is fast" do
-      it "will set cm_source_vocab to fast" do
-        indexer.settings[:filename] = "TEUSSUB.060"
-        record.append(MARC::DataField.new("040", nil, nil, ["f", "fast"], ["a", "PPT"]))
+    context "If 040f is 'homoit'" do
+      it "sets vocab = homoit" do
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "homoit"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["homoit"])
+      end
+    end
+
+    context "If 040f is 'lcdgt'" do
+      it "sets vocab = lcdgt" do
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "lcdgt"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcdgt"])
+      end
+    end
+
+    context "If 040f is 'fast'" do
+      it "sets vocab = fast" do
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "fast"]))
         expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["fast"])
+      end
+    end
+
+    # 024 $2 cases
+    context "If 0242 is 'aat'" do
+      it "sets vocab = aat" do
+        record.append(MARC::DataField.new("024", nil, nil, ["2", "aat"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["aat"])
+      end
+    end
+
+    context "If 0242 is 'tgm'" do
+      it "sets vocab = tgm" do
+        record.append(MARC::DataField.new("024", nil, nil, ["2", "tgm"]))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["tgm"])
+      end
+    end
+
+    # 008/11 case
+    context "If 008/11 is 'a'" do
+      let(:record) do
+        MARC::Record.new_from_hash({
+          "leader"=>"          22        4500",
+          "fields"=>[{"008"=>"901211nnfaaannaabn n aaa"}]
+          })
+      end
+      it "sets vocab = lcsh" do
+        record.leader = "00000nam a2200000 a 4500"
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcsh"])
       end
     end
   end
