@@ -82,7 +82,7 @@ module CentralizedMetadata::Macros::Custom
 
   def extract_see_also
     lambda do |rec, acc|
-      Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av").collect_matching_lines(rec) do |field, spec, extractor|
+      Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av:562a").collect_matching_lines(rec) do |field, spec, extractor|
         see_also_datafields = rec.fields.select { |f| f if extractor.interesting_tag?(f.tag) }
         selected_datafields = field if see_also_datafields.include?(field)
       
@@ -98,7 +98,7 @@ module CentralizedMetadata::Macros::Custom
   
   def extract_narrower_term
     lambda do |rec, acc|
-      Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av").collect_matching_lines(rec) do |field, spec, extractor|
+      Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av:562a").collect_matching_lines(rec) do |field, spec, extractor|
         narrower_term_datafields = rec.fields.select { |f| f if extractor.interesting_tag?(f.tag) }
         selected_datafields = field if narrower_term_datafields.include?(field)
         
@@ -112,7 +112,7 @@ module CentralizedMetadata::Macros::Custom
 
   def extract_broader_term
     lambda do |rec, acc|
-      Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av").collect_matching_lines(rec) do |field, spec, extractor|
+      Traject::MarcExtractor.cached("500abcdfghjklmnopqrstv:510abcdfghjklmnoprstv:511acdefghklnpqstv:530adfghklmnoprstv:547acdgv:548av:550abgj:551agv:555av:562a").collect_matching_lines(rec) do |field, spec, extractor|
         broader_term_datafields = rec.fields.select { |f| f if extractor.interesting_tag?(f.tag) }
         selected_datafields = field if broader_term_datafields.include?(field)
         
@@ -138,20 +138,42 @@ module CentralizedMetadata::Macros::Custom
     lambda do |rec, acc|
       filename = get_filename || ""
       case
-      when filename.include?("GNR")
-        acc << "lcgft"
-
-      when filename.include?("NAM") || filename.include?("TTL")
-        acc << "lcnaf"
-
-      when filename.include?("MSH")
+      when rec["040"] && rec["040"]["a"] == "DNLM"
         acc << "mesh"
+      when rec["040"] && rec["040"]["e"] == "lcmpt"
+        acc << "lcmpt"
 
-      when filename.include?("SUB") && rec["008"].value[11] == "a"
-        acc << "lcsh"
+      # For 040 $f values
+      when rec["040"] && rec["040"]["f"] == "lcgft"
+        acc << "lcgft"
+      when rec["040"] && rec["040"]["f"] == "gsafd"
+        acc << "gsafd"
 
-      when filename.include?("SUB") && rec["040"]&.subfields&.any? { |sf| sf.code == "f" && sf.value == "fast"}
+      when rec["040"] && rec["040"]["f"] == "rbmscv"
+        acc << "rbmscv"
+
+      when rec["040"] && rec["040"]["f"] == "olacvggt"
+        acc << "olacvggt"
+
+      when rec["040"] && rec["040"]["f"] == "homoit"
+        acc << "homoit"
+
+      when rec["040"] && rec["040"]["f"] == "lcdgt"
+        acc << "lcdgt"
+
+      when rec["040"] && rec["040"]["f"] == "fast"
         acc << "fast"
+
+        # For 024 $2 values
+      when rec["024"] && rec["024"]["2"] == "aat"
+        acc << "aat"
+
+      when rec["024"] && rec["024"]["2"] == "tgm"
+        acc << "tgm"
+
+        # For 008/11 fixed field value
+      when rec["008"]&.value && rec["008"].value[11] == "a"
+        acc << "lcsh"
       end
     end  
   end
