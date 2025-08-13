@@ -136,6 +136,22 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       end
     end
 
+    context "field 150 exists AND  040f is 'lcdgt'" do
+      it "will set type to 'demographic group term'" do
+        record.append(MARC::DataField.new("150", nil, nil, ["a", "Geology"]))
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "lcdgt"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["demographic group term"])
+      end
+    end
+
+    context "field 150 exists AND  040f is not 'lcdgt'" do
+      it "will set type to 'topical subject'" do
+        record.append(MARC::DataField.new("150", nil, nil, ["a", "Geology"]))
+        record.append(MARC::DataField.new("040", nil, nil, ["f", "foo"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["topical subject"])
+      end
+    end
+
     context "field 151 exists" do
       it "will set type to 'geographic subject'" do
         record.append(MARC::DataField.new("151", nil, nil, ["a", "Great Lakes"]))
@@ -147,6 +163,13 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       it "will set type to 'genre'" do
         record.append(MARC::DataField.new("155", nil, nil, ["a", "Cartoon"]))
         expect(indexer.map_record(record)["cm_type"]).to eq(["genre"])
+      end
+    end
+
+    context "field 162 exists" do
+      it "will set type to 'medium of performance term'" do
+        record.append(MARC::DataField.new("162", nil, nil, ["a", "Cartoon"]))
+        expect(indexer.map_record(record)["cm_type"]).to eq(["medium of performance term"])
       end
     end
   end
@@ -343,6 +366,41 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
       it "sets vocab = lcsh" do
         record.leader = "00000nam a2200000 a 4500"
         expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcsh"])
+      end
+    end
+
+    context "field 100 present" do
+      it "sets vocab = lcnaf" do
+        record.append(MARC::DataField.new("100", nil, nil))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
+      end
+    end
+
+    context "field 110 present" do
+      it "sets vocab = lcnaf" do
+        record.append(MARC::DataField.new("110", nil, nil))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
+      end
+    end
+
+    context "field 111 present" do
+      it "sets vocab = lcnaf" do
+        record.append(MARC::DataField.new("111", nil, nil))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
+      end
+    end
+
+    context "field 130 present" do
+      it "sets vocab = lcnaf" do
+        record.append(MARC::DataField.new("130", nil, nil))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
+      end
+    end
+
+    context "field 151 present" do
+      it "sets vocab = lcnaf" do
+        record.append(MARC::DataField.new("151", nil, nil))
+        expect(indexer.map_record(record)["cm_source_vocab"]).to eq(["lcnaf"])
       end
     end
   end
