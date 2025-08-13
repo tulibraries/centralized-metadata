@@ -64,8 +64,10 @@ RSpec.describe CentralizedMetadata::Indexer do
            "cm_pref_label"=>["Armstrong, Louis, 1901-1971. prf"],
            "cm_import_method"=>["MARC binary"],
            "cm_filename"=>["louis_armstrong.mrc"],
+           "cm_source_vocab" => ["lcnaf"],
            "cm_type"=>["personal name"],
            "cm_see_also"=>
+
            ["Biographical and program notes by Stanley Dance ([2] p. : 1 port.) in container; personnel and original issue and matrix no. on container.",
             "Louis Armstrong, trumpet and vocals, and his band."]}])
       end

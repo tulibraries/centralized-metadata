@@ -34,6 +34,10 @@ module CentralizedMetadata::Macros::Custom
     end
   end
 
+  def get_field_value(rec, field_name, label_name)
+    rec[field_name][label_name] if rec[field_name]
+  end
+
   def set_type
     lambda do |rec, acc|
       case
@@ -68,7 +72,10 @@ module CentralizedMetadata::Macros::Custom
       when rec["148"]
         acc << "chronological term"
 
-      when rec["150"]
+      when rec["150"] && get_field_value(rec, "040", "f") == "lcdgt"
+        acc << "demographic group term"
+
+      when rec["150"] && get_field_value(rec, "040", "f") != "lcdgt"
         acc << "topical subject"
 
       when rec["151"]
@@ -76,6 +83,9 @@ module CentralizedMetadata::Macros::Custom
       
       when rec["155"]
         acc << "genre"
+
+      when rec["162"]
+        acc << "medium of performance term"
       end
     end
   end
@@ -174,6 +184,9 @@ module CentralizedMetadata::Macros::Custom
         # For 008/11 fixed field value
       when rec["008"]&.value && rec["008"].value[11] == "a"
         acc << "lcsh"
+
+      when rec["100"] || rec["110"] || rec["111"] || rec["130"] || rec ["151"]
+        acc << "lcnaf"
       end
     end  
   end
