@@ -356,11 +356,11 @@ RSpec.describe CentralizedMetadata::Macros::Custom do
     end
 
     # 008/11 case
-    context "If 008/11 is 'a'" do
+    context "If 008/11 is 'a' and 001 begins 'sh'" do
       let(:record) do
         MARC::Record.new_from_hash({
           "leader"=>"          22        4500",
-          "fields"=>[{"008"=>"901211nnfaaannaabn n aaa"}]
+          "fields"=>[{"001" => "sh85050339", "008" => "901211nnfaaannaabn n aaa"}]
           })
       end
       it "sets vocab = lcsh" do
