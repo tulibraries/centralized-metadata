@@ -182,7 +182,7 @@ module CentralizedMetadata::Macros::Custom
         acc << "tgm"
 
         # For 008/11 fixed field value
-      when rec["008"]&.value && rec["008"].value[11] == "a"
+      when rec["008"]&.value && rec["008"].value[11] == "a" && rec["001"]&.value&.start_with?("sh")
         acc << "lcsh"
 
       when rec["100"] || rec["110"] || rec["111"] || rec["130"] || rec ["151"]
