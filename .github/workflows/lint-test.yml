@@ -23,18 +23,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+
     - name: Setup Postgres
       uses: ikalnytskyi/action-setup-postgres@v7
       with:
         username: postgres
         password: postgres
         database: centralized_metadata_test
-
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true
 
     - name: Set up database
       run: bundle exec rails db:setup
