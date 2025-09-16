@@ -48,6 +48,5 @@ jobs:
     - name: Check that rswag generation didn't change files
       uses: tj-actions/verify-changed-files@v20
       with:
-        files: |
-          swagger/
+        files: swagger/
         fail-if-changed: true
