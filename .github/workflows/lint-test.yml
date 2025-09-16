@@ -1,0 +1,65 @@
+name: Lint and Test
+
+on:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch: {}
+
+env:
+  RAILS_ENV: test
+  CM_DB_NAME: centralized_metadata_test
+  CM_DB_PASSWORD: postgres
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ruby-version: ['3.4']
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: centralized_metadata_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+
+    - name: Set up database
+      run: |
+        bundle exec rails db:setup
+
+    - name: Run tests
+      run: |
+        bundle exec rake
+
+    - name: Generate rswag documentation
+      run: |
+        bundle exec rake rswag
+
+    - name: Check that rswag generation didn't change files
+      run: |
+        if [[ $(git diff) ]]; then
+          echo "rswag generation changed files - please commit the changes"
+          git diff
+          exit 1
+        fi
