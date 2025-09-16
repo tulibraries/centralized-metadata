@@ -1,0 +1,52 @@
+name: Lint and Test
+
+on:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch: {}
+
+env:
+  RAILS_ENV: test
+  CM_DB_NAME: centralized_metadata_test
+  CM_DB_PASSWORD: postgres
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ruby-version: ['3.4']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+
+    - name: Setup Postgres
+      uses: ikalnytskyi/action-setup-postgres@v7
+      with:
+        username: postgres
+        password: postgres
+        database: centralized_metadata_test
+
+    - name: Set up database
+      run: bundle exec rails db:setup
+
+    - name: Run tests
+      run: bundle exec rake
+
+    - name: Generate rswag documentation
+      run: bundle exec rake rswag
+
+    - name: Check that rswag generation didn't change files
+      uses: tj-actions/verify-changed-files@v20
+      with:
+        files: swagger/
+        fail-if-changed: true
