@@ -50,13 +50,3 @@ jobs:
       with:
         files: swagger/
         fail-if-changed: true
-
-  notify_on_failure:
-    if: failure()
-    needs: [test]
-    uses: tulibraries/.github/.github/workflows/slack-notify.yml@main
-    with:
-      repo: ${{ github.repository }}
-      run_id: ${{ github.run_id }}
-      workflow: ${{ github.workflow }}
-    secrets: inherit
