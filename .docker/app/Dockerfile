@@ -11,7 +11,7 @@ ARG RAILS_ENV=production
 RUN apk add -U --no-cache \
       bash=5.3.3-r1 \
       tzdata=2025c-r0 \
-      postgresql17-client=17.7-r0 \
+      postgresql17-client=17.8-r0 \
       gcompat=1.1.0-r4 \
       libxslt=1.1.43-r3 \
       libstdc++=15.2.0-r2 && \
@@ -19,7 +19,7 @@ RUN apk add -U --no-cache \
       build-base=0.5-r3 \
       git=2.52.0-r0 \
       yaml-dev=0.2.5-r2 \
-      postgresql17-dev=17.7-r0 \
+      postgresql17-dev=17.8-r0 \
       libxslt-dev=1.1.43-r3 && \
     bundle config set --local without "development test" && \
     bundle install --jobs=8 && \
