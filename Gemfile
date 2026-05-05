@@ -17,7 +17,7 @@ gem "puma"
 gem "rake"
 gem "rswag"
 gem "traject"
-gem "unf_ext", "0.0.8.2"
+gem "unf_ext", "0.0.9.1"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
