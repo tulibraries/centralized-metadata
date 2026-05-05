@@ -335,7 +335,7 @@ GEM
     tsort (0.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    unf_ext (0.0.8.2)
+    unf_ext (0.0.9.1)
     useragent (0.16.11)
     websocket-driver (0.7.7)
       base64
@@ -379,7 +379,7 @@ DEPENDENCIES
   rswag
   traject
   tzinfo-data
-  unf_ext (= 0.0.8.2)
+  unf_ext (= 0.0.9.1)
 
 BUNDLED WITH
    2.6.2
