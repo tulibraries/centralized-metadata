@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "traject"
+require "centralized_metadata/macros/custom"
 
 class CentralizedMetadata::Indexer
   INDEXER_CONFIG_FILE =  "#{File.dirname(__FILE__)}/indexer_config.rb"
