@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "traject"
-require "centralized_metadata/macros/custom"
 
 class CentralizedMetadata::Indexer
   INDEXER_CONFIG_FILE =  "#{File.dirname(__FILE__)}/indexer_config.rb"
@@ -9,7 +8,6 @@ class CentralizedMetadata::Indexer
   def self.ingest(filepath, options = {})
     filepath ||= ENV["CM_SOURCE"] || ""
     filepath = "./spec/fixtures/marc" if ["yes", "true", true].include?(ENV["CM_USE_FIXTURES"])
-
 
     records = []
 
@@ -28,7 +26,6 @@ class CentralizedMetadata::Indexer
     records
   end
 
-
   def self.get_records(filepath, options={})
     indexer = get_indexer(filepath, options)
     writer = Traject::ArrayWriter.new
@@ -38,27 +35,24 @@ class CentralizedMetadata::Indexer
   end
 
   def self.get_indexer(filepath="", options={})
-  options = options.with_indifferent_access
+    options = options.with_indifferent_access
 
-  writer_class_name = options["writer_class_name"] ||
-    "CentralizedMetadata::ActiveRecordWriter"
+    writer_class_name = options["writer_class_name"] ||
+      "CentralizedMetadata::ActiveRecordWriter"
 
-  indexer = Traject::Indexer::MarcIndexer.new(
-    writer_class_name: writer_class_name,
-    "active_record.model": Record,
-    filename: File.basename(filepath),
-    original_filename: options.dig(:original_filename)
-  )
+    indexer = Traject::Indexer::MarcIndexer.new(
+      writer_class_name: writer_class_name,
+      "active_record.model": Record,
+      filename: File.basename(filepath),
+      original_filename: options.dig(:original_filename)
+    )
 
-  indexer.extend CentralizedMetadata::Macros::Custom
-
-  indexer.load_config_file("#{File.dirname(__FILE__)}/indexer_config.rb")
-  indexer
-end
+    indexer.load_config_file(INDEXER_CONFIG_FILE)
+    indexer
+  end
 
   def self.fields
     get_indexer.instance_variable_get(:@index_steps)
       .map(&:field_name)
   end
-
 end
