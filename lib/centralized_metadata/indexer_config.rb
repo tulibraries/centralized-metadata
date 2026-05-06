@@ -1,6 +1,6 @@
 
 # Include custom traject macros
-#
+require_relative "macros/custom"
 
 extend CentralizedMetadata::Macros::Custom
 
