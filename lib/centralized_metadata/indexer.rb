@@ -3,8 +3,6 @@
 require "traject"
 require "centralized_metadata/macros/custom"
 
-Traject::Indexer::MarcIndexer.include CentralizedMetadata::Macros::Custom
-
 class CentralizedMetadata::Indexer
   INDEXER_CONFIG_FILE =  "#{File.dirname(__FILE__)}/indexer_config.rb"
 
@@ -40,20 +38,23 @@ class CentralizedMetadata::Indexer
   end
 
   def self.get_indexer(filepath="", options={})
-    options = options.with_indifferent_access
-    writer_class_name  = options["writer_class_name"] ||
-      "CentralizedMetadata::ActiveRecordWriter"
+  options = options.with_indifferent_access
 
+  writer_class_name = options["writer_class_name"] ||
+    "CentralizedMetadata::ActiveRecordWriter"
 
-    indexer = Traject::Indexer::MarcIndexer.new(
-      writer_class_name: writer_class_name,
-      "active_record.model": Record,
-      filename: File.basename(filepath),
-      original_filename: options.dig(:original_filename)
-    )
-    indexer.load_config_file("#{File.dirname(__FILE__)}/indexer_config.rb")
-    indexer
-  end
+  indexer = Traject::Indexer::MarcIndexer.new(
+    writer_class_name: writer_class_name,
+    "active_record.model": Record,
+    filename: File.basename(filepath),
+    original_filename: options.dig(:original_filename)
+  )
+
+  indexer.extend CentralizedMetadata::Macros::Custom
+
+  indexer.load_config_file("#{File.dirname(__FILE__)}/indexer_config.rb")
+  indexer
+end
 
   def self.fields
     get_indexer.instance_variable_get(:@index_steps)
