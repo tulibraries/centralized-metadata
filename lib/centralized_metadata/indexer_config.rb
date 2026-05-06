@@ -1,8 +1,6 @@
 
 # Include custom traject macros
-require_relative "macros/custom"
-
-self.extend CentralizedMetadata::Macros::Custom
+extend CentralizedMetadata::Macros::Custom
 
 # Additional technical and local metadata fields added separately not through this file - ex. cm_created_at and cm_updated_at
 
