@@ -221,7 +221,7 @@ GEM
     nokogiri (1.19.1-x86_64-linux-musl)
       racc (~> 1.4)
     okcomputer (1.19.0)
-    ostruct (0.6.1)
+    ostruct (0.6.3)
     pg (1.5.9)
     pp (0.6.3)
       prettyprint
