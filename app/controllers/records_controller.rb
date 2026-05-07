@@ -5,6 +5,8 @@ class RecordsController < ApplicationController
   include TotalRecordsCountHeader
   include RecordsProcessedCountHeader
 
+  MISSING_CM_ID_MESSAGE = "param is missing or the value is empty: cm_id"
+
   before_action :set_record, only: %i[ show update destroy ]
 
   # GET /records
@@ -29,14 +31,10 @@ class RecordsController < ApplicationController
 
   # PATCH/PUT /records/1
   def update
-    begin
-      id = params.require(:id)
-      cm_id = params.require(:cm_id)&.first
-    rescue => e
-      @record.errors.add(:params, "#{e.message}")
-    end
+    id = params.require(:id)
+    cm_id = required_cm_id
 
-    if id != cm_id
+    if cm_id.present? && id != cm_id
       @record.errors.add(:cm_id, "The :cm_id and :id values must match.")
     end
 
@@ -79,5 +77,12 @@ class RecordsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def value_params
       params.slice(*CentralizedMetadata::Indexer.fields).permit!.to_hash
+    end
+
+    def required_cm_id
+      params.expect(cm_id: []).first
+    rescue ActionController::ParameterMissing
+      @record.errors.add(:params, MISSING_CM_ID_MESSAGE)
+      nil
     end
 end

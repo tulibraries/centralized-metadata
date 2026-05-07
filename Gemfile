@@ -2,7 +2,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.2.2"
+gem "rails", "~> 8.1"
 
 gem "active_model_serializers"
 gem "api-pagination", "~> 5.0"
@@ -13,11 +13,18 @@ gem "nokogiri", "1.19.3"
 gem "okcomputer"
 gem "ostruct"
 gem "pg"
+gem "propshaft"
 gem "puma"
 gem "rake"
 gem "rswag"
 gem "traject"
 gem "unf_ext", "0.0.9.1"
+
+# Use JavaScript with ESM import maps.
+gem "importmap-rails"
+
+# Use Dart Sass to build application CSS.
+gem "dartsass-rails"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"

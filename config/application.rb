@@ -9,14 +9,19 @@ Bundler.require(*Rails.groups)
 module CentralizedMetadata
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.2
+    config.load_defaults 8.1
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    Rails.application.config.autoload_paths += %W(#{Rails.root}/lib)
-    Rails.application.config.autoload_paths -= %W(#{Rails.root}/app/assets)
-    Rails.application.config.autoload_paths -= %W(#{Rails.root}/app/tasks)
+    config.autoload_lib(ignore: %w[
+      assets
+      centralized_metadata/indexer_config.rb
+      tasks
+    ])
+
+    # Dart Sass builds stylesheets into app/assets/builds for Propshaft to serve.
+    config.assets.excluded_paths << Rails.root.join("app/assets/stylesheets")
 
     # Configuration for the application, engines, and railties goes here.
     #

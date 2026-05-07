@@ -30,9 +30,13 @@ centralized_metadata-test
 !/tmp/storage/
 !/tmp/storage/.keep
 
+# Ignore built assets, but keep the directory.
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
 # sqlite3 artifact
 ./centralized_metadata
-centralized_metadata
+/centralized_metadata-*
