@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem "rails", "~> 8.1"
 
 gem "active_model_serializers"
-gem "api-pagination", "~> 5.0"
+gem "api-pagination", "~> 7.1"
 gem "cgi", ">= 0.4.2"
 gem "kaminari", "~> 1.2"
 gem "mutex_m"
