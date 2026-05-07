@@ -17,11 +17,11 @@ jobs:
 
     strategy:
       matrix:
-        ruby-version: ['3.4']
+        ruby-version: ["3.4"]
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -30,7 +30,7 @@ jobs:
         bundler-cache: true
 
     - name: Setup Postgres
-      uses: ikalnytskyi/action-setup-postgres@v7
+      uses: ikalnytskyi/action-setup-postgres@v8
       with:
         username: postgres
         password: postgres
