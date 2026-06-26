@@ -61,4 +61,19 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Configure Database_Cleaner to support reset_id
+  # We must explicitly reset_ids by configuration
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:deletion, reset_ids: true)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 end
+
+DatabaseCleaner.strategy = [:deletion, { reset_ids: true }]
