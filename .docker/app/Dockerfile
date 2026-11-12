@@ -20,7 +20,7 @@ RUN apk add -U --no-cache \
       git=2.54.1-r0 \
       yaml-dev=0.2.5-r2 \
       postgresql17-dev=17.11-r0 \
-      libxslt-dev=1.1.43-r3 && \
+      libxslt-dev=1.1.43-r4 && \
     bundle config set --local without "development test" && \
     bundle install --jobs=8 && \
     find "$GEM_HOME" -name Gemfile.lock -exec rm "{}" \; && \
